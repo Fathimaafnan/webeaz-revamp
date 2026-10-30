@@ -18,6 +18,7 @@ const links = [
   { label: "Industries", href: "/industries" },
   { label: "Our Work", href: "/our-work" },
   { label: "Company", href: "/company" },
+  { label: "About", href: "/about" },
   { label: "Insights", href: "/insights" },
 ];
 

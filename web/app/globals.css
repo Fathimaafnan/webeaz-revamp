@@ -12,7 +12,7 @@
   /* Light brand tints for use on dark section backgrounds,
      where the base brand colours lose contrast */
   --color-brand-blue-light: #5cb3ee;
-  /* Chrome blue — the navbar, mobile panel, profile menu and footer.
+  /* Chrome blue â€” the navbar, mobile panel, profile menu and footer.
      This is the mid stop of the homepage canvas gradient, so the
      fixed chrome, the hero field and the footer are one continuous
      brand blue rather than three ad-hoc navies. Chosen because
@@ -22,7 +22,7 @@
   --color-brand-orange-light: #fbb85c;
   --color-ink: #101418;
   --color-ink-soft: #1a2129;
-  /* Body copy sits in a light cool grey — softer than a neutral
+  /* Body copy sits in a light cool grey â€” softer than a neutral
      slate, which is what keeps long paragraphs readable across a
      whole page rather than only in isolation. */
   --color-muted: #667085;
@@ -31,7 +31,7 @@
   --color-line: #e2e8f2;
   --color-surface: #f7f9fc;
 
-  /* Refined neutral family — the "grey" third of the
+  /* Refined neutral family â€” the "grey" third of the
      blue / orange / white / grey brand identity. Gives
      surfaces, borders and secondary text a real ramp
      instead of a single flat value. */
@@ -47,17 +47,17 @@
   --color-grey-800: #1a212b;
   --color-grey-900: #0c121a;
 
-  /* Display type scale — fluid, tighter tracking. Premium
+  /* Display type scale â€” fluid, tighter tracking. Premium
      editorial hierarchy instead of one repeated 36px size. */
-  /* Display type scale — confident and BOLD, not oversized.
+  /* Display type scale â€” confident and BOLD, not oversized.
      Headings carry weight 700 rather than 600: that is what makes
      a heading read as important without growing it. Line heights
      are a touch more open than a display-tight setting so long
      headings breathe.
 
-     These are the sizes the whole site hangs off — the homepage
+     These are the sizes the whole site hangs off â€” the homepage
      hero, the three marketing heroes and every `SectionHeading`
-     on every page — so the display ceiling is what actually sets
+     on every page â€” so the display ceiling is what actually sets
      how large the biggest type on the site gets. It is now 68px
      for the display step (the hero h1) and 52px for h1, which is
      the band the pages were designed to hold: the hero line
@@ -94,7 +94,7 @@
      That distinction matters. Overriding the emitted classes
      (`.text-sm { font-size: 16px }` and friends) would have to be
      unlayered to beat Tailwind's utilities layer, and an unlayered
-     rule outranks EVERY layered rule at every width — which would
+     rule outranks EVERY layered rule at every width â€” which would
      silently kill all twenty responsive size pairs in the project,
      so `sm:text-2xl` and friends would stop working and the page
      would render one flat size everywhere.
@@ -105,7 +105,7 @@
      the breakpoint still wins inside its own media query.
 
      Every step moves up together, which is what keeps the hierarchy
-     intact — the gap between a caption and a section heading gets
+     intact â€” the gap between a caption and a section heading gets
      slightly wider, not flatter:
 
        xs   12 -> 14      labels and captions
@@ -134,7 +134,7 @@
   --shadow-glow-blue: 0 0 28px rgba(16, 118, 188, 0.5);
   --shadow-glow-orange: 0 0 28px rgba(247, 149, 34, 0.5);
 
-  /* Layered card shadows — a low ambient contact shadow plus a
+  /* Layered card shadows â€” a low ambient contact shadow plus a
      soft directional one reads more premium than a single blur. */
   --shadow-card: 0 1px 2px rgba(12, 18, 26, 0.04),
     0 8px 24px -14px rgba(12, 18, 26, 0.14);
@@ -143,7 +143,7 @@
   --shadow-lift: 0 36px 72px -32px rgba(10, 26, 45, 0.3);
   --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-  /* Section rhythm — generous, consistent vertical cadence */
+  /* Section rhythm â€” generous, consistent vertical cadence */
   --spacing-section: 5.5rem;
   --spacing-section-lg: 7.5rem;
 
@@ -152,7 +152,7 @@
 }
 
 /* ============================================================
-   TYPE SCALE — SMALLEST STEPS
+   TYPE SCALE â€” SMALLEST STEPS
 
    The named steps of the scale (xs through 5xl) are redefined as
    THEME VARIABLES in the `@theme` block above, not as overrides
@@ -163,7 +163,7 @@
    `.text-sm { font-size: 16px }` and forcing it to beat Tailwind's
    utilities layer, which means writing it UNLAYERED. An unlayered
    rule outranks every layered rule regardless of specificity, at
-   every width — so `sm:text-2xl` and `lg:text-4xl`, all twenty
+   every width â€” so `sm:text-2xl` and `lg:text-4xl`, all twenty
    responsive size pairs in this project, would have silently
    stopped working and the whole site would render one flat size
    everywhere. A theme variable has no such side effect: Tailwind
@@ -274,8 +274,8 @@ body {
 }
 
 /* Directional and scale entrances, driven by Reveal's `from` prop.
-   Only the starting offset differs — duration, easing and opacity
-   are shared with `.reveal` — so four variants still read as one
+   Only the starting offset differs â€” duration, easing and opacity
+   are shared with `.reveal` â€” so four variants still read as one
    motion system rather than four.
 
    The cascade here is deliberate and fragile if reordered, so:
@@ -313,7 +313,7 @@ body {
     transition: none;
   }
 
-  /* Card lift/lighting is motion — drop it for reduced-motion users */
+  /* Card lift/lighting is motion â€” drop it for reduced-motion users */
   .card-panel-hover,
   .card-panel-hover-cool {
     transition: none;
@@ -371,7 +371,7 @@ body {
   animation: pulse-soft 4s ease-in-out infinite;
 }
 
-/* Intro splash — brand mark fades in, holds ~1.6s, then eases away */
+/* Intro splash â€” brand mark fades in, holds ~1.6s, then eases away */
 @keyframes intro-enter {
   from {
     opacity: 0;
@@ -418,7 +418,7 @@ body {
 }
 
 /* ============================================================
-   INTRO — the brand reveal itself
+   INTRO â€” the brand reveal itself
 
    This is the reference site's signature move, rebuilt for the
    WebEaz lockup: the word sits behind as a faint ghost, and the
@@ -479,7 +479,7 @@ body {
 }
 
 /* ============================================================
-   HERO — animated blue field
+   HERO â€” animated blue field
    Replaces the previous canvas (colour fields, flowing trails and a
    node network) with a CSS-only composition built on the reference
    hero's two real techniques: an organic outline that morphs while
@@ -487,7 +487,7 @@ body {
    delays.
 
    Only `transform`, `opacity` and `border-radius` animate, so the
-   whole background stays on the compositor — no canvas, no
+   whole background stays on the compositor â€” no canvas, no
    requestAnimationFrame, no resize work.
    ============================================================ */
 /* ============================================================
@@ -496,7 +496,7 @@ body {
    A mid-tone WebEaz blue rather than the near-black this used to
    be: #0b5a96 through the medium #1076bc. The headline and lede sit
    in pure and semi-transparent white, which needs a ground deep
-   enough to hold them — the brand blue clears that comfortably at
+   enough to hold them â€” the brand blue clears that comfortably at
    its deep end and still clears AA at the medium end.
    ============================================================ */
 /* ============================================================
@@ -515,10 +515,20 @@ body {
    hero's lower edge and put a hard seam exactly where the page has
    to read as continuous.
    ============================================================ */
-/* Hero background — deep navy to brand blue field with a dotted sphere.
-   Inspired by the Pinterest aesthetic but using WebEaz brand blue
-   (#1076bc) instead of orange. The sphere carries a dotted pattern
-   and subtle glow, creating a premium technology atmosphere. */
+/* Hero background â€” deep navy to brand blue field with a solid
+   glass sphere on the right carrying a dot pattern.
+   Inspired by the IQRAA MARk hero style but rendered in WebEaz
+   brand blue (#1076bc) instead of orange. The sphere carries a
+   grid of dots and subtle glow, creating a premium technology
+   atmosphere.
+   ============================================================ */
+/* Hero background â€” deep navy to brand blue field with a solid
+   glass sphere on the right carrying a dot pattern.
+   Inspired by the IQRAA MARk hero style but rendered in WebEaz
+   brand blue (#1076bc) instead of orange. The sphere carries a
+   grid of dots and subtle glow, creating a premium technology
+   atmosphere.
+   ============================================================ */
 .hero-base,
 .home-canvas {
   background:
@@ -567,7 +577,7 @@ body {
    ============================================================ */
 
 /* Registered so the browser can interpolate them. This is what puts
-   the easing on the compositor instead of in a JavaScript loop —
+   the easing on the compositor instead of in a JavaScript loop â€”
    the pointer handler writes a raw target and the transition does
    the rest, which also means it keeps easing correctly in a tab
    whose frames are being throttled. Where `@property` is
@@ -626,7 +636,7 @@ body {
 
    Four soft light fields carrying the brand: blue leads, orange
    is the complement, one deep blue sits underneath to give the
-   field depth. No edges anywhere — the shape lives entirely in the
+   field depth. No edges anywhere â€” the shape lives entirely in the
    falloff, so these read as light in a dark room rather than as
    circles.
 
@@ -655,7 +665,7 @@ body {
   will-change: transform;
 }
 
-/* The dominant blue — broad, high and to the right. */
+/* The dominant blue â€” broad, high and to the right. */
 .hero-glow-blue {
   top: -22%;
   right: -6%;
@@ -677,7 +687,7 @@ body {
   animation: hero-drift-1 44s ease-in-out infinite alternate;
 }
 
-/* Deep blue, low and left — the floor the other lights sit on. */
+/* Deep blue, low and left â€” the floor the other lights sit on. */
 .hero-glow-deep {
   bottom: -26%;
   left: -18%;
@@ -699,8 +709,7 @@ body {
   animation: hero-drift-2 53s ease-in-out infinite alternate-reverse;
 }
 
-/* Orange — the complement. Kept small, low and to one side so it
-   warms the composition instead of competing with the blue. */
+/* Brand blue glow â€” warm accent */
 .hero-glow-orange {
   bottom: -18%;
   right: 4%;
@@ -722,7 +731,7 @@ body {
   animation: hero-drift-3 37s ease-in-out infinite alternate;
 }
 
-/* A brighter blue core, small and forward — the nearest light, and
+/* A brighter blue core, small and forward â€” the nearest light, and
    the one that leads the pointer response. */
 .hero-glow-bright {
   top: 46%;
@@ -745,38 +754,38 @@ body {
   animation: hero-drift-4 31s ease-in-out infinite alternate-reverse;
 }
 
-/* The spherical globe — WebEaz brand blue field with a dotted pattern.
+/* The spherical globe â€” WebEaz brand blue field with a dotted pattern.
    Positioned on the right side of the hero, echoing the Pinterest
    reference but rendered in WebEaz brand blue instead of orange. */
 .hero-globe {
   position: absolute;
-  top: 10%;
-  right: -2%;
-  width: 52vw;
-  height: 52vw;
-  max-width: 560px;
-  max-height: 560px;
+  top: 8%;
+  right: -4%;
+  width: 56vw;
+  height: 56vw;
+  max-width: 540px;
+  max-height: 540px;
   border-radius: 50%;
   pointer-events: none;
   overflow: hidden;
 }
 
-/* The outer ring of the sphere — a thin blue hairline. */
+/* The outer ring of the sphere â€” a thin blue hairline. */
 .hero-globe-band {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1px solid rgba(16, 118, 188, 0.25);
-  animation: hero-globe-rotate 20s linear infinite;
+  border: 1px solid rgba(16, 118, 188, 0.15);
+  animation: hero-globe-rotate 25s linear infinite;
 }
 
-/* Individual dots inside the sphere — scattered dots in WebEaz blue,
+/* Individual dots inside the sphere â€” scattered dots in WebEaz blue,
    reading as data points or stars in a constellation. */
 .hero-globe-dot {
   position: absolute;
   border-radius: 50%;
-  background: rgba(146, 205, 250, 0.55);
-  animation: hero-globe-dot-pulse 6s ease-in-out infinite alternate;
+  background: rgba(146, 205, 250, 0.25);
+  animation: hero-globe-dot-pulse 8s ease-in-out infinite alternate;
 }
 
 .hero-globe-dot:nth-child(1)  { top: 20%; left: 20%; width: 10px; height: 10px; }
@@ -835,7 +844,7 @@ body {
    DIGITAL ECOSYSTEM
 
    Nodes, the links between them, and light travelling along a few
-   of those links — the abstract picture of connected business
+   of those links â€” the abstract picture of connected business
    systems. Deliberately clustered left and right and left sparse
    through the middle, because the middle is where the headline
    lives.
@@ -851,7 +860,7 @@ body {
   height: 100%;
   pointer-events: none;
   /* The whole ecosystem leans with the pointer, but far less than
-     the lights do — it should feel like a background, not a
+     the lights do â€” it should feel like a background, not a
      foreground object being dragged. */
   transform: translate3d(
     calc(var(--mx) * 14px),
@@ -862,14 +871,14 @@ body {
 }
 
 /* Connections. Each breathes on its own period, so the graph is
-   never all-lit or all-dark at once — some links fade up while
+   never all-lit or all-dark at once â€” some links fade up while
    others fade out. */
 .hero-net-edge {
   fill: none;
-  stroke: rgba(16, 118, 188, 0.32);
-  stroke-width: 1;
+  stroke: rgba(16, 118, 188, 0.18);
+  stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
-  animation: hero-net-breathe 9s ease-in-out infinite;
+  animation: hero-net-breathe 10s ease-in-out infinite;
 }
 
 .hero-net-edge-2 {
@@ -896,7 +905,7 @@ body {
 /* Orange sits on a handful of links only, so the accent reads as
    a deliberate signal rather than a wash. */
 .hero-net-edge-warm {
-  stroke: rgba(16, 118, 188, 0.6);
+  stroke: rgba(247, 149, 34, 0.35);
 }
 
 @keyframes hero-net-breathe {
@@ -910,191 +919,14 @@ body {
 }
 
 /* Data in transit. A short bright dash marching along a longer
-   faint one — the whole flow effect is a stroke-dashoffset, so it
+   faint one â€” the whole flow effect is a stroke-dashoffset, so it
    costs nothing beyond a compositor-friendly property. */
 .hero-net-flow {
   fill: none;
   stroke: rgba(146, 205, 250, 0.95);
   stroke-width: 1.5;
   stroke-linecap: round;
-  stroke-dasharray: 3 150;
-  vector-effect: non-scaling-stroke;
-  animation: hero-net-march 9s linear infinite;
-  opacity: 0.85;
-}
-
-.hero-net-flow-2 {
-  stroke: rgba(146, 205, 250, 0.9);
-  stroke-dasharray: 3 120;
-  animation-duration: 11s;
-  animation-delay: -3s;
-}
-.hero-net-flow-3 {
-  stroke: rgba(146, 205, 250, 0.9);
-  stroke-dasharray: 4 190;
-  animation-duration: 14s;
-  animation-delay: -7s;
-}
-.hero-net-flow-4 {
-  stroke: rgba(16, 118, 188, 0.9);
-  stroke-dasharray: 3 170;
-  animation-duration: 12s;
-  animation-delay: -5s;
-}
-
-@keyframes hero-net-march {
-  from {
-    stroke-dashoffset: 153;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Nodes. A slow breath rather than a blink, on staggered periods. */
-.hero-net-node {
-  fill: rgba(146, 205, 250, 0.55);
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: hero-net-node 7s ease-in-out infinite;
-}
-
-.hero-net-node-warm {
-  fill: rgba(146, 205, 250, 0.62);
-}
-.hero-net-node-2 {
-  animation-duration: 9s;
-  animation-delay: -2.5s;
-}
-.hero-net-node-3 {
-  animation-duration: 11s;
-  animation-delay: -5s;
-}
-.hero-net-node-4 {
-  animation-duration: 8s;
-  animation-delay: -1s;
-}
-
-@keyframes hero-net-node {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.35);
-  }
-}
-
-/* ============================================================
-   CENTRE CALM
-
-   The headline, its lede and both CTAs sit in the middle of this
-   hero, so the middle is darkened back down on purpose — the light
-   and the ecosystem live at the sides, and this is what guarantees
-   the copy keeps its contrast no matter where the pointer pushes
-   the lights.
-   ============================================================ */
-.hero-calm {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    56% 44% at 50% 50%,
-    rgba(4, 8, 16, 0.78) 0%,
-    rgba(4, 8, 16, 0.5) 48%,
-    transparent 78%
-  );
-}
-
-/* ============================================================
-   DIGITAL ECOSYSTEM
-
-   Nodes, the links between them, and light travelling along a few
-   of those links — the abstract picture of connected business
-   systems. Deliberately clustered left and right and left sparse
-   through the middle, because the middle is where the headline
-   lives.
-
-   Two clusters, linked by a few long paths that carry the data
-   pulses. Everything is SVG with a dash offset or an opacity
-   animation on it; there is no per-frame work of any kind.
-   ============================================================ */
-.hero-network {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  /* The whole ecosystem leans with the pointer, but far less than
-     the lights do — it should feel like a background, not a
-     foreground object being dragged. */
-  transform: translate3d(
-    calc(var(--mx) * 14px),
-    calc(var(--my) * 10px),
-    0
-  );
-  will-change: transform;
-}
-
-/* Connections. Each breathes on its own period, so the graph is
-   never all-lit or all-dark at once — some links fade up while
-   others fade out. */
-.hero-net-edge {
-  fill: none;
-  stroke: rgba(16, 118, 188, 0.3);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  animation: hero-net-breathe 9s ease-in-out infinite;
-}
-
-.hero-net-edge-2 {
-  animation-duration: 11.5s;
-  animation-delay: -2s;
-}
-.hero-net-edge-3 {
-  animation-duration: 7.5s;
-  animation-delay: -4.5s;
-}
-.hero-net-edge-4 {
-  animation-duration: 13s;
-  animation-delay: -1s;
-}
-.hero-net-edge-5 {
-  animation-duration: 10s;
-  animation-delay: -6s;
-}
-.hero-net-edge-6 {
-  animation-duration: 12s;
-  animation-delay: -3s;
-}
-
-/* Orange sits on a handful of links only, so the accent reads as
-   a deliberate signal rather than a wash. */
-.hero-net-edge-warm {
-  stroke: rgba(16, 118, 188, 0.6);
-}
-
-@keyframes hero-net-breathe {
-  0%,
-  100% {
-    opacity: 0.16;
-  }
-  50% {
-    opacity: 0.62;
-  }
-}
-
-/* Data in transit. A short bright dash marching along a longer
-   faint one — the whole "flow" effect is a stroke-dashoffset, so
-   it costs nothing but a compositor-friendly property. */
-.hero-net-flow {
-  fill: none;
-  stroke: rgba(146, 205, 250, 0.95);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 3 150;
+  stroke-dasharray: 2 120;
   vector-effect: non-scaling-stroke;
   animation: hero-net-march 9s linear infinite;
   opacity: 0.85;
@@ -1137,7 +969,7 @@ body {
 }
 
 .hero-net-node-warm {
-  fill: rgba(146, 205, 250, 0.62);
+  fill: rgba(247, 149, 34, 0.3);
 }
 .hero-net-node-2 {
   animation-duration: 9s;
@@ -1168,7 +1000,184 @@ body {
    CENTRE CALM
 
    The headline, its lede and both CTAs sit in the middle of this
-   hero, so the middle gets darkened back down on purpose — the
+   hero, so the middle is darkened back down on purpose â€” the light
+   and the ecosystem live at the sides, and this is what guarantees
+   the copy keeps its contrast no matter where the pointer pushes
+   the lights.
+   ============================================================ */
+.hero-calm {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    56% 44% at 50% 50%,
+    rgba(4, 8, 16, 0.78) 0%,
+    rgba(4, 8, 16, 0.5) 48%,
+    transparent 78%
+  );
+}
+
+/* ============================================================
+   DIGITAL ECOSYSTEM
+
+   Nodes, the links between them, and light travelling along a few
+   of those links â€” the abstract picture of connected business
+   systems. Deliberately clustered left and right and left sparse
+   through the middle, because the middle is where the headline
+   lives.
+
+   Two clusters, linked by a few long paths that carry the data
+   pulses. Everything is SVG with a dash offset or an opacity
+   animation on it; there is no per-frame work of any kind.
+   ============================================================ */
+.hero-network {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* The whole ecosystem leans with the pointer, but far less than
+     the lights do â€” it should feel like a background, not a
+     foreground object being dragged. */
+  transform: translate3d(
+    calc(var(--mx) * 14px),
+    calc(var(--my) * 10px),
+    0
+  );
+  will-change: transform;
+}
+
+/* Connections. Each breathes on its own period, so the graph is
+   never all-lit or all-dark at once â€” some links fade up while
+   others fade out. */
+.hero-net-edge {
+  fill: none;
+  stroke: rgba(16, 118, 188, 0.3);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  animation: hero-net-breathe 9s ease-in-out infinite;
+}
+
+.hero-net-edge-2 {
+  animation-duration: 11.5s;
+  animation-delay: -2s;
+}
+.hero-net-edge-3 {
+  animation-duration: 7.5s;
+  animation-delay: -4.5s;
+}
+.hero-net-edge-4 {
+  animation-duration: 13s;
+  animation-delay: -1s;
+}
+.hero-net-edge-5 {
+  animation-duration: 10s;
+  animation-delay: -6s;
+}
+.hero-net-edge-6 {
+  animation-duration: 12s;
+  animation-delay: -3s;
+}
+
+/* Orange sits on a handful of links only, so the accent reads as
+   a deliberate signal rather than a wash. */
+.hero-net-edge-warm {
+  stroke: rgba(247, 149, 34, 0.35);
+}
+
+@keyframes hero-net-breathe {
+  0%,
+  100% {
+    opacity: 0.16;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+
+/* Data in transit. A short bright dash marching along a longer
+   faint one â€” the whole "flow" effect is a stroke-dashoffset, so
+   it costs nothing but a compositor-friendly property. */
+.hero-net-flow {
+  fill: none;
+  stroke: rgba(146, 205, 250, 0.95);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 120;
+  vector-effect: non-scaling-stroke;
+  animation: hero-net-march 9s linear infinite;
+  opacity: 0.85;
+}
+
+.hero-net-flow-2 {
+  stroke: rgba(146, 205, 250, 0.9);
+  stroke-dasharray: 3 120;
+  animation-duration: 11s;
+  animation-delay: -3s;
+}
+.hero-net-flow-3 {
+  stroke: rgba(146, 205, 250, 0.9);
+  stroke-dasharray: 4 190;
+  animation-duration: 14s;
+  animation-delay: -7s;
+}
+.hero-net-flow-4 {
+  stroke: rgba(16, 118, 188, 0.85);
+  stroke-dasharray: 3 170;
+  animation-duration: 12s;
+  animation-delay: -5s;
+}
+
+@keyframes hero-net-march {
+  from {
+    stroke-dashoffset: 153;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Nodes. A slow breath rather than a blink, on staggered periods. */
+.hero-net-node {
+  fill: rgba(146, 205, 250, 0.55);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hero-net-node 7s ease-in-out infinite;
+}
+
+.hero-net-node-warm {
+  fill: rgba(247, 149, 34, 0.3);
+}
+.hero-net-node-2 {
+  animation-duration: 9s;
+  animation-delay: -2.5s;
+}
+.hero-net-node-3 {
+  animation-duration: 11s;
+  animation-delay: -5s;
+}
+.hero-net-node-4 {
+  animation-duration: 8s;
+  animation-delay: -1s;
+}
+
+@keyframes hero-net-node {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+/* ============================================================
+   CENTRE CALM
+
+   The headline, its lede and both CTAs sit in the middle of this
+   hero, so the middle gets darkened back down on purpose â€” the
    light and the ecosystem live at the sides, and this is what
    guarantees the copy keeps its contrast no matter where the
    pointer pushes the lights.
@@ -1232,6 +1241,7 @@ body {
 .hero-vignette {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     radial-gradient(
       118% 82% at 50% 44%,
@@ -1251,7 +1261,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   /* The lights were renamed from `.hero-glow` to `.hero-glow-field`
      and `.hero-glow-core` when the parallax was split into two
-     elements, and this rule was never updated to follow — so it
+     elements, and this rule was never updated to follow â€” so it
      matched nothing and the drift kept running for visitors who ask
      for less motion. The drift lives on the core, the parallax
      transform on the field, so both are named here. */
@@ -1282,8 +1292,8 @@ body {
    SMALLER SCREENS
 
    Same composition, less of it moving. The travelling pulses are
-   the first thing to go — on a phone they are small enough to
-   read as noise rather than as data — and the remaining nodes
+   the first thing to go â€” on a phone they are small enough to
+   read as noise rather than as data â€” and the remaining nodes
    drop to a steady opacity so the graph stays legible without
    pulsing.
 
@@ -1302,7 +1312,7 @@ body {
   }
 }
 
-/* Ambient brand lighting for dark sections —
+/* Ambient brand lighting for dark sections â€”
    slow, barely-there drift so dark sections
    feel alive without competing with content */
 .ambient-glow {
@@ -1327,7 +1337,7 @@ body {
   );
 }
 
-/* Premium DARK orange+blue atmospheric backgrounds —
+/* Premium DARK orange+blue atmospheric backgrounds â€”
    tuned to the Hero's deep foundation. Every section carries a
    different blue/burnt-orange balance so the page reads as one
    cohesive system rather than a repeated single gradient.
@@ -1336,12 +1346,12 @@ body {
    - bases sit in a tight deep navy-to-ink range so adjacent
      sections transition without visible banding
    - a hairline top seam gives each band a defined edge
-   - glows are large, soft and off-centre — light in a room,
+   - glows are large, soft and off-centre â€” light in a room,
      never a spotlight on the copy
    - orange never exceeds blue in area, keeping the brand
      blue dominant with orange as the warm accent */
 
-/* Credibility — deep royal blue, orange warmth low-left */
+/* Credibility â€” deep royal blue, orange warmth low-left */
 .bg-atm-navy {
   background:
     linear-gradient(
@@ -1362,7 +1372,7 @@ body {
     linear-gradient(168deg, #0a1524 0%, #070b12 54%, #0a0f16 100%);
 }
 
-/* What We Do — orange + blue blended atmosphere */
+/* What We Do â€” orange + blue blended atmosphere */
 .bg-atm-blend {
   background:
     linear-gradient(
@@ -1383,7 +1393,7 @@ body {
     linear-gradient(196deg, #0a1120 0%, #0e0d12 52%, #090f16 100%);
 }
 
-/* Business Outcomes — blue atmosphere with orange highlights */
+/* Business Outcomes â€” blue atmosphere with orange highlights */
 .bg-atm-azure {
   background:
     linear-gradient(
@@ -1404,7 +1414,7 @@ body {
     linear-gradient(172deg, #08172a 0%, #060b14 56%, #07101a 100%);
 }
 
-/* Our Work — deeper blue with a single warm glow */
+/* Our Work â€” deeper blue with a single warm glow */
 .bg-atm-abyss {
   background:
     linear-gradient(
@@ -1425,7 +1435,7 @@ body {
     linear-gradient(182deg, #06101e 0%, #05080e 56%, #060d16 100%);
 }
 
-/* Built by WebEaz — blue base with premium orange accents */
+/* Built by WebEaz â€” blue base with premium orange accents */
 .bg-atm-cobalt {
   background:
     linear-gradient(
@@ -1446,7 +1456,7 @@ body {
     linear-gradient(178deg, #07121f 0%, #060a11 56%, #080d13 100%);
 }
 
-/* Why Us — blue-dominant with soft orange lighting */
+/* Why Us â€” blue-dominant with soft orange lighting */
 .bg-atm-steel {
   background:
     linear-gradient(
@@ -1467,7 +1477,7 @@ body {
     linear-gradient(188deg, #081222 0%, #070b12 54%, #090c11 100%);
 }
 
-/* Industries — orange-dominant atmosphere with blue lighting */
+/* Industries â€” orange-dominant atmosphere with blue lighting */
 .bg-atm-ember {
   background:
     linear-gradient(
@@ -1488,7 +1498,7 @@ body {
     linear-gradient(202deg, #150e07 0%, #0b0a10 54%, #110c09 100%);
 }
 
-/* Journey — deep blue with a single subtle orange glow */
+/* Journey â€” deep blue with a single subtle orange glow */
 .bg-atm-midnight {
   background:
     linear-gradient(
@@ -1509,7 +1519,7 @@ body {
     linear-gradient(186deg, #07101e 0%, #05080f 56%, #070c14 100%);
 }
 
-/* Insights — balanced blue + orange */
+/* Insights â€” balanced blue + orange */
 .bg-atm-twin {
   background:
     linear-gradient(
@@ -1530,7 +1540,7 @@ body {
     linear-gradient(176deg, #091120 0%, #0d0c10 54%, #080f16 100%);
 }
 
-/* Ambient brand lighting for dark sections — soft light on a
+/* Ambient brand lighting for dark sections â€” soft light on a
    dark base, tuned so it never washes out body copy */
 .ambient-glow-blue {
   background: radial-gradient(
@@ -1548,7 +1558,7 @@ body {
   );
 }
 
-/* Softer ambient tones for light (white/surface) sections —
+/* Softer ambient tones for light (white/surface) sections â€”
    the same glow language used on dark sections, tuned
    down so text stays easy to read */
 @keyframes glow-drift {
@@ -1568,7 +1578,7 @@ body {
   animation: glow-drift 46s ease-in-out infinite alternate-reverse;
 }
 
-/* Featured Clients — seamless infinite horizontal
+/* Featured Clients â€” seamless infinite horizontal
    marquee; pauses on hover, static for reduced motion */
 .marquee-track {
   display: flex;
@@ -1603,7 +1613,7 @@ body {
   );
 }
 
-/* Individual client glow — soft halo that supports the
+/* Individual client glow â€” soft halo that supports the
    logo without recolouring it */
 .client-glow {
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.12));
@@ -1618,7 +1628,7 @@ body {
     brightness(1.1);
 }
 
-/* Keep every client on ONE horizontal line at every breakpoint —
+/* Keep every client on ONE horizontal line at every breakpoint â€”
    the row scrolls horizontally and loops, it never wraps */
 .clients-row {
   display: flex;
@@ -1630,7 +1640,7 @@ body {
    SHARED CARD SYSTEM
    One design language across every Home page card: deep navy
    surface, hairline border, warm/cool ambient depth, restrained
-   hover lift. Restrained on purpose — depth comes from light
+   hover lift. Restrained on purpose â€” depth comes from light
    and layering, never from heavy glass or 3D.
    ============================================================ */
 
@@ -1680,7 +1690,7 @@ body {
 }
 
 /* Visual header block that gives an image-bearing card its
-   presence — abstract, brand-tinted, never stock photography */
+   presence â€” abstract, brand-tinted, never stock photography */
 .card-media {
   position: relative;
   overflow: hidden;
@@ -1723,7 +1733,7 @@ body {
   background-size: 30px 30px;
 }
 
-/* Hairline orange→blue seam used along card tops */
+/* Hairline orangeâ†’blue seam used along card tops */
 .card-seam {
   height: 1px;
   width: 100%;
@@ -1736,7 +1746,7 @@ body {
 }
 
 /* ============================================================
-   LIGHT BACKGROUND PALETTE — Home page sections below the Hero.
+   LIGHT BACKGROUND PALETTE â€” Home page sections below the Hero.
    Bright, soft brand tints. Orange and blue work as warm/cool
    complements at low intensity, never as dominant colour.
    ============================================================ */
@@ -1746,30 +1756,30 @@ body {
 
    The homepage palette, taken from the logo itself: "Web" is
    #1076bc, "Eaz" is #f79522, everything else is white and the
-   existing grey ramp. No new hues are introduced — these are the
+   existing grey ramp. No new hues are introduced â€” these are the
    project's own tokens, rearranged into a light set.
 
    Six surfaces rather than one, so the page alternates white,
    very light grey, soft blue, soft sand and one brand-blue moment
    at each end. The blue is deliberately a tint on most sections
    and only becomes a solid brand field where the design wants
-   emphasis — a solid blue everywhere would be heavy.
+   emphasis â€” a solid blue everywhere would be heavy.
 
    Sections keep `theme-light`, which is what gives the cards
    inside them their white panels.
    ============================================================ */
 
-/* Clean white — the breathing sections. */
+/* Clean white â€” the breathing sections. */
 .brand-surface-white {
   background: #ffffff;
 }
 
-/* Very light grey — separation without colour. */
+/* Very light grey â€” separation without colour. */
 .brand-surface-mist {
   background: linear-gradient(180deg, #fcfdfe 0%, #f3f7fb 100%);
 }
 
-/* Soft blue tint — the brand read as atmosphere rather than fill. */
+/* Soft blue tint â€” the brand read as atmosphere rather than fill. */
 .brand-surface-sky {
   background:
     radial-gradient(
@@ -1780,7 +1790,7 @@ body {
     linear-gradient(168deg, #f6fafe 0%, #eaf3fc 52%, #f9fcfe 100%);
 }
 
-/* Soft sand — the orange's quiet companion. */
+/* Soft sand â€” the orange's quiet companion. */
 .brand-surface-sand {
   background:
     radial-gradient(
@@ -1791,7 +1801,7 @@ body {
     linear-gradient(172deg, #fefaf4 0%, #fdf3e6 54%, #fefbf7 100%);
 }
 
-/* Blue meeting orange — used once, where a section bridges ideas. */
+/* Blue meeting orange â€” used once, where a section bridges ideas. */
 .brand-surface-mix {
   background:
     radial-gradient(
@@ -1811,7 +1821,7 @@ body {
    an argument rather than open one, so blue lands as emphasis
    instead of wallpaper.
 
-   Deep enough that white text clears AA comfortably — the plain
+   Deep enough that white text clears AA comfortably â€” the plain
    #1076bc only reaches 4.84:1, which is fine for a headline but
    not for the 12px eyebrow labels these sections carry. */
 .brand-surface-brand {
@@ -1875,7 +1885,7 @@ body {
 
    The Services heroes used to be a flat blue rectangle with the
    headline sitting straight on it, and the detail pages put their
-   whole opening row — breadcrumb, icon, actions, illustration —
+   whole opening row â€” breadcrumb, icon, actions, illustration â€”
    on the white working section below, so the first screen of every
    service page read as a plain white template.
 
@@ -1883,7 +1893,7 @@ body {
    (the faint grid, the four brand lights, the node network, the
    centre calm, the top-right lumen and the vignette), the same
    blue ground, and the same glass vocabulary for the surface the
-   headline sits on — a hairline white border over a translucent
+   headline sits on â€” a hairline white border over a translucent
    white fill, which is exactly what the Home hero's badge uses.
 
    These rules are scoped to `.svc-hero` so nothing outside the
@@ -1991,7 +2001,7 @@ body {
 
 /* Category identity.
    The field is the Home hero's, but each category leans it a
-   different way — the warm light moves, the blue goes deeper or
+   different way â€” the warm light moves, the blue goes deeper or
    cooler, the orange grows or retreats. The four categories still
    read as four places while the system stays one. These override
    the Home hero's glow placement rather than replacing it, so the
@@ -2009,7 +2019,7 @@ body {
   height: 54vmax;
 }
 
-/* Digital Growth — the warm one. The orange rises into the open
+/* Digital Growth â€” the warm one. The orange rises into the open
    space on the right, so the category reads warmer without the
    headline ever having to sit on it. */
 .svc-hero[data-accent="ember"] .hero-glow-orange {
@@ -2026,7 +2036,7 @@ body {
   height: 74vmax;
 }
 
-/* Automation — the orderly one. The blue is broad and level, and
+/* Automation â€” the orderly one. The blue is broad and level, and
    the orange is small and tucked into the corner. */
 .svc-hero[data-accent="steel"] .hero-glow-blue {
   top: -30%;
@@ -2041,7 +2051,7 @@ body {
   height: 34vmax;
 }
 
-/* AI — the deepest. The deep-blue floor carries it, and the orange
+/* AI â€” the deepest. The deep-blue floor carries it, and the orange
    is a distant ember low down. */
 .svc-hero[data-accent="midnight"] .hero-glow-deep {
   bottom: -36%;
@@ -2106,7 +2116,7 @@ body {
    headings, translucent whites, and the two light brand tints.
    The shell itself now uses the Home page's brand surfaces, so
    those same utilities are re-pointed at their light-theme
-   equivalents — here rather than in each card, because the three
+   equivalents â€” here rather than in each card, because the three
    card components are shared and this keeps one definition.
 
    `theme-light` on the shell is what turns `.card-panel` white;
@@ -2114,7 +2124,7 @@ body {
    the dark treatment that need an explicit swap.
 
    Scoped to `.svc-surface`, so nothing outside the Services routes
-   is affected — the Home page and the login backdrop are untouched.
+   is affected â€” the Home page and the login backdrop are untouched.
    ============================================================ */
 .svc-surface .text-white {
   color: var(--color-ink);
@@ -2132,7 +2142,7 @@ body {
    AA at 11px.
 
    It now sits on the white working section rather than the blue
-   field, so the old #7b8595 — which was tuned for a dark ground —
+   field, so the old #7b8595 â€” which was tuned for a dark ground â€”
    dropped to 3.73:1. The project's muted token clears AA here at
    4.97:1 and still reads one step back from the body copy. */
 .svc-surface .text-white\/45 {
@@ -2268,7 +2278,7 @@ body {
 }
 
 /* ============================================================
-   DEEP NAVY SURFACE — the contrast anchor.
+   DEEP NAVY SURFACE â€” the contrast anchor.
    Used sparingly for "why us" and closing CTA moments so the
    page has light/dark rhythm instead of one continuous pale
    wash. Pairs with `.card-panel` directly (NOT `.theme-light`),
@@ -2309,7 +2319,7 @@ body {
    LIGHT CARD THEME
    Scoped to `.theme-light` so the dark Services pages keep
    their existing card treatment untouched. Only surface,
-   border and shadow change — never layout or sizing.
+   border and shadow change â€” never layout or sizing.
    ============================================================ */
 
 .theme-light .card-panel {
@@ -2415,7 +2425,7 @@ body {
   );
 }
 
-/* Client logos sit on light — use a soft shadow, not a white bloom */
+/* Client logos sit on light â€” use a soft shadow, not a white bloom */
 .theme-light .client-glow {
   filter: drop-shadow(0 2px 6px rgba(16, 20, 24, 0.1));
 }
@@ -2426,7 +2436,7 @@ body {
     brightness(1.04);
 }
 
-/* Staggered fade-rise — list items re-entering
+/* Staggered fade-rise â€” list items re-entering
    (e.g. the outcomes capability panel) */
 @keyframes fade-rise {
   from {
@@ -2483,7 +2493,7 @@ body {
 
 /* The centre card. The lift lives on the wrapper rather than the card
    because `.card-panel-hover` already animates `transform` and
-   `box-shadow` on the card itself — putting it here keeps the two
+   `box-shadow` on the card itself â€” putting it here keeps the two
    from overwriting each other. Drop-shadow rather than box-shadow so
    it follows the card's own corner radius and reads the same on a
    card, a logo or any other shape. The tint is the brand blue rather
@@ -2503,7 +2513,7 @@ body {
    The "What we do" section is the one that opts in, so this cannot
    reach any other card or carousel on the site.
 
-   Quiet by default — a white disc with a brand-blue hairline — and
+   Quiet by default â€” a white disc with a brand-blue hairline â€” and
    the orange is held back for the hover, so the buttons read as
    navigation rather than as a second call to action competing with
    the section's own CTA. The focus ring is the deep brand blue, which
@@ -2557,7 +2567,7 @@ body {
 }
 
 /* ============================================================
-   PROJECT CARD — reference "project box" behaviour
+   PROJECT CARD â€” reference "project box" behaviour
    The reference holds its project image slightly zoomed and lets
    it settle back on hover, which is what makes the card feel
    alive without any perpetual motion. The overlay wash fades in
@@ -2616,7 +2626,7 @@ body {
     will-change: auto;
   }
 
-  /* No drift, but the centre card is still marked — the rail simply
+  /* No drift, but the centre card is still marked â€” the rail simply
      sits still until the visitor drags it themselves. */
   .rail-item {
     transition: none;
@@ -2638,7 +2648,7 @@ body {
    The reference site does not use one card everywhere: services
    get a round icon disc that swells, articles get an image that
    zooms, projects hold a zoomed frame that settles on hover,
-   logos fade up out of greyscale. This block is that same idea —
+   logos fade up out of greyscale. This block is that same idea â€”
    five separate treatments, each opted into by the section that
    belongs to it, so no two neighbouring sections react alike.
 
@@ -2646,7 +2656,7 @@ body {
    base is exactly what made every card look and behave the same.
    ============================================================ */
 
-/* --- T1 · orb — services & capabilities (ref: service-item) --- */
+/* --- T1 Â· orb â€” services & capabilities (ref: service-item) --- */
 .card-orb {
   position: relative;
   overflow: hidden;
@@ -2666,7 +2676,7 @@ body {
   box-shadow: 0 20px 40px -26px rgba(16, 118, 188, 0.4);
 }
 
-/* The disc, not the card, is what moves — so the card's own text
+/* The disc, not the card, is what moves â€” so the card's own text
    never shifts under the cursor. */
 .card-orb-disc {
   display: grid;
@@ -2705,7 +2715,7 @@ body {
   transform: scale(1.14);
 }
 
-/* --- T2 · editorial — articles & insights (ref: blog-card) --- */
+/* --- T2 Â· editorial â€” articles & insights (ref: blog-card) --- */
 .card-editorial {
   position: relative;
   overflow: hidden;
@@ -2757,7 +2767,7 @@ body {
   width: 3rem;
 }
 
-/* --- T3 · project — case studies (ref: project-box) --- */
+/* --- T3 Â· project â€” case studies (ref: project-box) --- */
 .card-project {
   position: relative;
   overflow: hidden;
@@ -2783,7 +2793,7 @@ body {
   border-radius: 1.5rem 1.5rem 0 0;
 }
 
-/* Held slightly zoomed, then settles as the card is approached —
+/* Held slightly zoomed, then settles as the card is approached â€”
    the reference holds its project frame zoomed and releases it. */
 .card-project-media > * {
   transform: scale(1.07);
@@ -2811,7 +2821,7 @@ body {
 }
 
 /* The technology line is real content, so it is never hidden from
-   anyone — it simply rises into view over the wash on hover. */
+   anyone â€” it simply rises into view over the wash on hover. */
 .card-project-meta {
   opacity: 0;
   transform: translateY(14px);
@@ -2826,7 +2836,7 @@ body {
   transform: translateY(0);
 }
 
-/* --- T4 · quote — testimonials --- */
+/* --- T4 Â· quote â€” testimonials --- */
 .card-quote {
   position: relative;
   overflow: hidden;
@@ -2841,7 +2851,7 @@ body {
     background-color 0.35s ease;
 }
 
-/* No lift here — the left rule thickens instead, so testimonials
+/* No lift here â€” the left rule thickens instead, so testimonials
    read as quoted speech rather than as another raised tile. */
 .card-quote:hover,
 .card-quote:focus-within {
@@ -2851,7 +2861,7 @@ body {
   box-shadow: 0 18px 34px -26px rgba(247, 149, 34, 0.5);
 }
 
-/* --- T5 · accent — industries, features, outcomes --- */
+/* --- T5 Â· accent â€” industries, features, outcomes --- */
 .card-accent {
   position: relative;
   overflow: hidden;
@@ -2887,7 +2897,7 @@ body {
   box-shadow: 0 20px 38px -26px rgba(16, 118, 188, 0.45);
 }
 
-/* --- T5b · accent, dark — the same growing accent rule on the navy
+/* --- T5b Â· accent, dark â€” the same growing accent rule on the navy
    surface. WhyWebEaz sits on a dark section and its card copy is
    white, so it cannot borrow the light treatment above. --- */
 .card-accent-dark {
@@ -2926,7 +2936,7 @@ body {
   box-shadow: 0 26px 48px -26px rgba(0, 0, 0, 0.8);
 }
 
-/* --- T6 · mono — client & partner logos --- */
+/* --- T6 Â· mono â€” client & partner logos --- */
 .card-logo-mono img {
   filter: grayscale(1);
   opacity: 0.5;
@@ -2948,8 +2958,8 @@ body {
    `.card-logo-mono` is shared with the Featured Clients rail, where
    the mono pass is deliberate and wanted, so that rule is left
    exactly as it is. These three groups are a different thing: they
-   are official partner and recognition marks — Google Workspace,
-   Microsoft, AWS, Leadsquared, Startup India — and every one of them
+   are official partner and recognition marks â€” Google Workspace,
+   Microsoft, AWS, Leadsquared, Startup India â€” and every one of them
    is published in full brand colour. The shared rule was reducing
    them to grey at half opacity until a pointer happened to arrive,
    so a visitor who never touched them never saw the marks as they
@@ -2959,13 +2969,13 @@ body {
    stagger and the existing hover lift are untouched, so the logos
    are simply the same marks, in the colours they were always
    published in, whether a pointer is over them or not. Nothing is
-   recoloured, cropped, stretched or replaced — the image files
+   recoloured, cropped, stretched or replaced â€” the image files
    themselves are not edited.
 
    Written after `.card-logo-mono` and at the same specificity, so
    it wins on source order for the resting state. The hover rule
    above is more specific and still applies, and it sets exactly
-   the same colours — the lift is the only thing it changes. */
+   the same colours â€” the lift is the only thing it changes. */
 .partner-logo img {
   filter: none;
   opacity: 1;
@@ -2980,7 +2990,7 @@ body {
    white background. Lifting the opacity does most of the work;
    keeping a trace of grayscale leaves the row cohesive rather than
    turning it into a row of unrelated colour patches. The images
-   themselves are untouched — no recolouring, no cropping. */
+   themselves are untouched â€” no recolouring, no cropping. */
 .clients-logo img {
   filter: grayscale(0.15);
   opacity: 0.92;
@@ -3021,7 +3031,7 @@ body {
   }
 
   /* Content that only appears on hover must not stay hidden when the
-     visitor has asked for no motion — they would never see it. */
+     visitor has asked for no motion â€” they would never see it. */
   .card-editorial-rule {
     width: 3rem;
   }
@@ -3324,9 +3334,9 @@ body {
 .why-cards .card-accent-dark {
   isolation: isolate;
   /* The cards are the brand's own blue now.
-     #1076bc is the exact blue of WebEaz's mark — the same value as
+     #1076bc is the exact blue of WebEaz's mark â€” the same value as
      `--color-brand-blue`, and the same pixel the official dark-bar
-     lockup `webeaz-logo-brand.png` carries — running down through
+     lockup `webeaz-logo-brand.png` carries â€” running down through
      the brand's own deeper shades. The wash that used to sit here
      was a 6-10% tint of the same blue over a light section, which
      left the cards milky and the white copy on them unreadable.
@@ -3395,16 +3405,16 @@ body {
 
 /* ============================================================
 /* ============================================================
-   NAVBAR — TRANSLUCENT WHITE GLASS
+   NAVBAR â€” TRANSLUCENT WHITE GLASS
 
    One surface, no per-section colours and no JavaScript. The bar
    is a single translucent white wash; whatever is behind it shows
    through, and the `backdrop-filter` does the blending. That is the
    whole mechanism, and it is deliberately not a per-section switch:
 
-     over the blue Hero        composes to rgb(216,229,240) — a
+     over the blue Hero        composes to rgb(216,229,240) â€” a
                                 gentle blue tint, not a blue bar
-     over the orange close     composes to rgb(254,236,215) — the
+     over the orange close     composes to rgb(254,236,215) â€” the
                                 same wash reads faintly warm
      over white/grey sections  composes to effectively white
 
@@ -3413,9 +3423,9 @@ body {
 
      1. A flat 78% would put more of a dark Hero behind the logo
         than it needs to carry.
-     2. The falloff puts the more opaque stop where the logo is —
+     2. The falloff puts the more opaque stop where the logo is â€”
         the lockup is vertically centred, so it sits in the upper
-        half — and lets the bar open up toward the bottom edge,
+        half â€” and lets the bar open up toward the bottom edge,
         which is where only the nav labels live. Those carry 5.3:1
         at their worst, so they can afford the extra transparency
         that makes the bar read as glass.
@@ -3476,7 +3486,7 @@ body {
 /* Scrolled state: a shade more opaque, but deliberately NOT solid.
    This bar only comes into play once page content is passing
    underneath, and going fully opaque here is what would have
-   stopped the section colours from showing through — the exact
+   stopped the section colours from showing through â€” the exact
    effect the bar exists for. 93/88 keeps the links readable against
    moving content while still letting each section tint the bar as
    it passes. */
@@ -3499,7 +3509,7 @@ body {
    These are the one place that stays effectively solid on purpose.
    A menu hanging over moving content needs a ground it can rely on,
    and the brief is explicit that the dropdowns keep their own opaque
-   light background — at 99% there is no visible edge between the
+   light background â€” at 99% there is no visible edge between the
    panel and the glass behind it. */
 .navbar-panel {
   background-image: linear-gradient(
@@ -3540,7 +3550,7 @@ body {
 
    The Hero is not touched. `.home-canvas` still paints the same
    gradient it always did and `.home-canvas > .hero-base` still
-   inherits it, so the top of the page is byte-for-byte what it was —
+   inherits it, so the top of the page is byte-for-byte what it was â€”
    the sections simply cover the canvas from the first one down.
 
    Every value below is already a project token:
@@ -3556,17 +3566,17 @@ body {
 
    There are seven grounds and no two adjacent sections share one, so
    the boundaries read without needing a rule or a shadow between
-   them. The order is deliberate and grouped into four movements —
+   them. The order is deliberate and grouped into four movements â€”
    an airy opening, a warmer middle, a cool run, and the close:
 
      FounderSpotlight  white      opening, editorial
      TrustStats        mist
      FeaturedClients   sky
      Capabilities      white
-     Outcomes          sand       — movement turns warm —
+     Outcomes          sand       â€” movement turns warm â€”
      CaseStudies       sky-deep
      Ecosystem         mist
-     Products          peach      — the warm turn, where the two
+     Products          peach      â€” the warm turn, where the two
                                     product showcases sit
      WhyWebEaz         sky
      Industries        white
@@ -3578,13 +3588,13 @@ body {
 
    No section uses `brand-surface-brand` or any other solid dark
    blue. The only saturated ground on the page is `ember`, and it is
-   the brand orange — the brightest colour in the palette, not a dark
+   the brand orange â€” the brightest colour in the palette, not a dark
    one. Ink on it measures 8.34:1.
 
    `sec-ember` also retunes the ambient glows. They are blue and
    orange washes tuned for pale grounds; at their normal strength on
    an orange field the blue one muddies, so it is pulled right down
-   and the orange one — invisible against its own ground anyway — is
+   and the orange one â€” invisible against its own ground anyway â€” is
    switched off, leaving the field itself to carry the motion.
    ============================================================ */
 
@@ -3609,7 +3619,7 @@ body {
 
 /* Every light surface shares one motion. The two brand radials are
    drawn at 150% and fade to transparent well inside their own box,
-   so sliding their position never exposes an edge — what the eye
+   so sliding their position never exposes an edge â€” what the eye
    sees is the blue and orange light slowly changing weight, which
    is the point. 48s is slow enough that it never pulls the eye off
    the copy. */
@@ -3636,7 +3646,7 @@ body {
   }
 }
 
-/* Clean white — the breathing sections. A single cool radial keeps
+/* Clean white â€” the breathing sections. A single cool radial keeps
    it from reading as an empty band without tinting it "blue". */
 .sec-white {
   background-image:
@@ -3653,7 +3663,7 @@ body {
     linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
 }
 
-/* Light grey — separation without colour. */
+/* Light grey â€” separation without colour. */
 .sec-mist {
   background-image:
     radial-gradient(
@@ -3669,7 +3679,7 @@ body {
     linear-gradient(180deg, #fcfdfe 0%, #f1f5fa 100%);
 }
 
-/* Light blue tint — the brand read as atmosphere rather than fill. */
+/* Light blue tint â€” the brand read as atmosphere rather than fill. */
 .sec-sky {
   background-image:
     radial-gradient(
@@ -3702,7 +3712,7 @@ body {
     linear-gradient(168deg, #eff7fe 0%, #dfeaf7 52%, #f4f9fe 100%);
 }
 
-/* Soft sand — the orange's quiet companion. */
+/* Soft sand â€” the orange's quiet companion. */
 .sec-sand {
   background-image:
     radial-gradient(
@@ -3718,12 +3728,12 @@ body {
     linear-gradient(172deg, #fffaf4 0%, #fdefdb 54%, #fffcf8 100%);
 }
 
-/* Warm peach — the "Built by WebEaz" ground.
+/* Warm peach â€” the "Built by WebEaz" ground.
 
    A light orange field taken from the logo's own orange, #f79522,
    held far away from it: the brand colour is used at 8% and 16% over
    a near-white base, so the result is a soft peach and warm cream
-   rather than an orange band. The page keeps its rhythm — the
+   rather than an orange band. The page keeps its rhythm â€” the
    section before this one is sand and the one after is sky, so a
    distinctly warmer ground here reads as the warm turn in the
    middle movement instead of a repeat of either neighbour.
@@ -3731,7 +3741,7 @@ body {
    The warmth is placed LOW on purpose. The section opens with a
    centred heading, and the type on this ground is ink at 17.4:1
    but the lede is a mid grey that needs a light ground to stay
-   legible — at 18.4px it wants 4.5:1, and the orange eyebrow
+   legible â€” at 18.4px it wants 4.5:1, and the orange eyebrow
    wants the same. So the top of the section, where the reading
    happens, is held near-white and the peach pools in the lower
    two-thirds, around the two product showcases. Measured across
@@ -3739,20 +3749,20 @@ body {
    text: the lede's worst is 4.56:1 and the eyebrow's 4.60:1,
    against 4.2:1 if the whole section had been taken down to the
    peachy ground. The peach at the foot of the section measures
-   rgb(253,221,194) — a warm peach at L=0.77, light rather than
+   rgb(253,221,194) â€” a warm peach at L=0.77, light rather than
    dark, and nowhere near the brand orange it came from.
 
    The three brand radials are drawn at 150% of the section box and
    fade to transparent well inside their own box, so sliding their
-   position can never expose an edge — what the eye sees is the warm
+   position can never expose an edge â€” what the eye sees is the warm
    light slowly changing weight, which is the point. `--sec-drift` is
    the project's existing registered property for exactly this, and
    `sec-breathe` is the existing keyframe that moves it, so the
    motion here is the same one the rest of the page's surfaces were
    built around rather than a new mechanism.
 
-   Each radial takes the drift differently — one slides right, one
-   slides left, one slides diagonally — so the field never reads as
+   Each radial takes the drift differently â€” one slides right, one
+   slides left, one slides diagonally â€” so the field never reads as
    a single shape travelling across. The pale centre highlight
    stays still, which keeps the middle of the section calm.
 
@@ -3831,3 +3841,31 @@ body {
     background-size: 100% 100%, 100% 100%, 100% 100%;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

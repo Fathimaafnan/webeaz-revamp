@@ -10,7 +10,6 @@ import WhyWebEaz from "@/components/home/WhyWebEaz";
 import Industries from "@/components/home/Industries";
 import Journey from "@/components/home/Journey";
 import Testimonials from "@/components/home/Testimonials";
-import FounderSpotlight from "@/components/home/FounderSpotlight";
 import Insights from "@/components/home/Insights";
 import Partners from "@/components/home/Partners";
 import FinalCTA from "@/components/home/FinalCTA";
@@ -47,10 +46,7 @@ export default function Home() {
           on, which is the same gradient the Hero always had. */}
       <div className="home-canvas">
         <Hero />
-        {/* The Founder & CEO spotlight sits directly below the Hero so
-            the person leading the company is the first thing visitors
-            meet after the main introduction. */}
-        <FounderSpotlight />
+        {/* The Founder & CEO spotlight has moved to the About page. */}
         <TrustStats />
         <FeaturedClients />
         <Capabilities />
