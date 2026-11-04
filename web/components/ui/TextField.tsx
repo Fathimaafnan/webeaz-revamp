@@ -51,7 +51,7 @@ export default function TextField({
         className={`w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink shadow-[0_1px_2px_0_rgba(11,90,150,0.06)] outline-none transition-all duration-200 placeholder:text-muted focus:border-brand-blue focus:shadow-[0_0_0_4px_rgba(16,118,188,0.14)] ${
           error
             ? "border-red-500"
-            : "border-line hover:border-brand-blue/45"
+            : "border-control hover:border-brand-blue"
         }`}
       />
       {error ? (

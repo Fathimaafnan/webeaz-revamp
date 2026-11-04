@@ -1,13 +1,19 @@
 import type { MetadataRoute } from "next";
-import { allServices, serviceCategories } from "@/lib/services";
+import { getPublishedPosts, getServiceTree } from "@/lib/content";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://www.webeaz.com";
+  const [{ categories, allServices }, posts] = await Promise.all([
+    getServiceTree(),
+    getPublishedPosts(),
+  ]);
   return [
     { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${base}/solutions`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/services`, changeFrequency: "monthly", priority: 0.8 },
-    ...serviceCategories.map((c) => ({
+    ...categories.map((c) => ({
       url: `${base}/services/${c.slug}`,
       changeFrequency: "monthly" as const,
       priority: 0.7,
@@ -17,6 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
+    ...posts
+      .filter((post) => post.slug && post.content.trim())
+      .map((post) => ({
+        url: `${base}/insights/${post.slug}`,
+        lastModified: post.publishedAt ?? undefined,
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+      })),
     {
       url: `${base}/digital`,
       changeFrequency: "monthly",

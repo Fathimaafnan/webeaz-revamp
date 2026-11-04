@@ -75,14 +75,14 @@ export default function FounderSpotlight() {
             wrap around it as well left the two reading as debris. */}
         <Reveal>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-6">
-            <p className="flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-brand-orange-strong">
+            <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-orange-strong">
               <span
                 aria-hidden="true"
                 className="h-px w-9 shrink-0 bg-gradient-to-r from-brand-orange to-brand-orange/20"
               />
               Leadership • Vision • Innovation
             </p>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-brand-blue">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-blue-deep">
               {CEO_SINCE}
             </p>
           </div>
@@ -125,7 +125,7 @@ export default function FounderSpotlight() {
                 {CEO_NAME}
               </p>
 
-              <p className="mt-4 flex items-center gap-3 text-[15px] font-medium tracking-tight text-brand-blue">
+              <p className="mt-4 flex items-center gap-3 text-[15px] font-medium tracking-tight text-brand-blue-deep">
                 <span
                   aria-hidden="true"
                   className="h-4 w-[2px] shrink-0 rounded-full bg-brand-orange"

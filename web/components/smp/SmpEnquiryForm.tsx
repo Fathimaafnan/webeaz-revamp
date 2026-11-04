@@ -91,8 +91,8 @@ export default function SmpEnquiryForm() {
   const labelCls =
     "text-xs font-semibold uppercase tracking-[0.14em] text-brand-blue-deep";
   const inputCls = (bad?: string) =>
-    `mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink transition-colors duration-200 outline-none placeholder:text-muted/70 focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue/25 ${
-      bad ? "border-red-500" : "border-line"
+    `mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink transition-colors duration-200 outline-none placeholder:text-muted focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue-deep ${
+      bad ? "border-red-500" : "border-control"
     }`;
 
   const field = (
@@ -175,8 +175,8 @@ export default function SmpEnquiryForm() {
                 key={g}
                 className={`cursor-pointer rounded-full border px-4 py-2 text-xs font-medium transition-colors duration-200 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-blue ${
                   on
-                    ? "border-brand-orange bg-brand-orange text-ink"
-                    : "border-line bg-white text-muted hover:border-brand-blue/40 hover:text-ink"
+                    ? "border-brand-orange-strong bg-brand-orange text-ink"
+                    : "border-control bg-white text-muted hover:border-brand-blue hover:text-ink"
                 } ${errors.goals ? "border-red-500" : ""}`}
               >
                 <input

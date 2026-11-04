@@ -1,8 +1,10 @@
+import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CardIcon from "@/components/ui/CardIcon";
 import Reveal from "@/components/ui/Reveal";
 import Carousel from "@/components/ui/Carousel";
 import { capabilities } from "@/lib/capabilities";
+import type { HomeSection } from "@/lib/defaults";
 
 const icons = {
   "digital-transformation": "technology",
@@ -25,9 +27,9 @@ const icons = {
  * `group-hover:` effect (icon colour, arrow nudge, brand bloom)
  * and the `.card-panel-hover` lift still work on a plain element.
  */
-export default function Capabilities() {
+export default function Capabilities({ section }: { section: HomeSection }) {
   return (
-    <section className="sec-white theme-light relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24">
+    <section className="sec-white theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       {/* Orange-dominant with soft blue glow */}
       <div
         aria-hidden="true"
@@ -40,9 +42,9 @@ export default function Capabilities() {
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <SectionHeading
-            eyebrow="What we do"
-            title="Technology that moves business forward."
-            description="WebEaz combines technology, digital growth, automation and AI to help businesses build, transform, automate and grow."
+            eyebrow={section.eyebrow}
+            title={section.title}
+            description={section.description}
             align="center"
       />
         </Reveal>
@@ -59,9 +61,21 @@ export default function Capabilities() {
             slideClassName="w-[86%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
           >
             {capabilities.map((c) => (
-              <div
+              <Link
                 key={c.title}
-                className="card-orb group flex h-full flex-col p-6 sm:p-7"
+                href={c.href}
+                aria-label={`Visit ${c.title} service page`}
+                className={`
+                  card-orb group flex h-full flex-col p-6 sm:p-7
+                  rounded-xl border border-transparent
+                  transition-all duration-300 ease-out
+                  hover:-translate-y-2
+                  hover:shadow-lg hover:shadow-brand-blue/25
+                  hover:border-brand-blue/30
+                  focus-visible:outline-2
+                  focus-visible:outline-offset-2
+                  focus-visible:outline-brand-blue
+                `}
               >
                 {/* The reference's service items lead with a round icon
                     disc that swells on hover, rather than a media
@@ -82,19 +96,24 @@ export default function Capabilities() {
                 <h3 className="mt-6 text-xl font-bold tracking-tight text-ink sm:text-2xl">
                   {c.title}
                 </h3>
-                <p className="mt-2.5 font-mono text-[11px] uppercase tracking-wider text-brand-blue-deep">
-                  {c.tags}
-                </p>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  {c.tagList.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-blue-deep"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
                 <p className="mt-4 flex-1 text-sm leading-6 text-muted">
                   {c.description}
                 </p>
 
-                {/* Presentational only — the card is not clickable,
-                    so this repeats the heading for sighted users
-                    but is hidden from assistive tech. */}
+                {/* Arrow indicator — visual navigation cue inside the card link */}
                 <span
                   aria-hidden="true"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-orange-strong transition-colors duration-300 group-hover:text-brand-orange-deep"
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-orange-strong transition-colors duration-300 group-hover:text-brand-orange-strong"
                 >
                   <span
                     aria-hidden="true"
@@ -104,7 +123,7 @@ export default function Capabilities() {
                   </span>
                   {c.title}
                 </span>
-              </div>
+              </Link>
             ))}
           </Carousel>
         </div>

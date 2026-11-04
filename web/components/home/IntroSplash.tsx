@@ -31,64 +31,26 @@ const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
- * The official WebEaz colour logo, as the intro's wordmark.
+ * The official WebEaz logo, as the intro's wordmark.
  *
- * `public/assets/logos/webeaz-color-logo.png` is the file served from
- * https://www.webeaz.com/_assets/images/logos/webeaz-color-logo.png —
- * byte-identical, SHA256 587b77471b3fb52a7c1a2bebf59701622b7c40d3aad9104088d8f35535f4f1a7,
- * 6,945 bytes. It is the same lockup the navbar already uses, so the
- * two are guaranteed to match.
+ * `public/webeaz-logo.png` (1746x483) is the single official logo
+ * asset for the site — the supplied WebEaz logo artwork, cropped
+ * only of the empty margins around it. The navbar, the footer, the
+ * service-page lockups and the structured data all resolve to this
+ * same file, so the intro is guaranteed to match every other
+ * placement.
+ *
+ * The file is stored well above display size (the splash shows it
+ * at most ~368px wide, the file is 1746px), so the browser only
+ * ever downscales it and the wordmark and tagline stay sharp at
+ * every pixel density.
  *
  * The artwork is never touched: no recolour, no redraw, no
  * approximation in text, no filter, no mask.
  */
-/**
- * The intro wordmark — the official WebEaz lockup WITHOUT its
- * subtitle, and at a resolution that stays sharp.
- *
- * `public/assets/logos/webeaz-color-logo.png` is the file served from
- * https://www.webeaz.com/_assets/images/logos/webeaz-color-logo.png —
- * byte-identical, SHA256 587b77471b3fb52a7c1a2bebf59701622b7c40d3aad9104088d8f35535f4f1a7,
- * 6,945 bytes. It is the same lockup the navbar uses.
- *
- * That file is 185x54 and carries a third of its height in a
- * "Makes Your Business Easier" subtitle (ink on rows 44-51, with a
- * clear gap at row 38-43). Every official WebEaz logo carries that
- * subtitle: `webeaz-color-logo.png` (185x54), `small-white-logo.png`
- * (185x53) and `logo-white.png` (139x40) all show the same detached
- * lower band, and there is no subtitle-free variant published. The
- * wordmark itself is ink on rows 1-37.
- *
- * So `public/webeaz-wordmark.png` was produced from that official file
- * by taking the wordmark rows only — the artwork is untouched, the
- * blue and orange are the logo's own, and nothing was redrawn.
- *
- * It is also exported at 4x (740x152) for a reason that matters: the
- * source is only 185px wide, so displaying it at the 370px the splash
- * wants would leave the browser to upscale a small image, which is
- * what made the logo look soft. Pre-scaling it means the browser
- * downscales 2:1 at 1x and hits 1:1 device pixels at 2x. Measured
- * edge energy at the same display size is 13.2 against 5.4 for the
- * browser's own bicubic upscale of the original — 2.4x crisper.
- */
-const WORDMARK_SRC = "/webeaz-wordmark.png";
-const WORDMARK_W = 740;
-const WORDMARK_H = 152;
-
-/**
- * Where the blue "Web" ends and the orange "Eaz" begins, as a
- * percentage of the wordmark's width: measured on the 4x asset, the
- * orange starts at x=387 of 740.
- *
- * That boundary is the only place the lockup can be split without
- * cutting a glyph. The letters themselves are tightly kerned and
- * touch — "Web" and "Eaz" are one continuous run of ink with a
- * single gap at the colour change — so splitting any finer would
- * slice through a letter. Splitting here gives two pieces that turn
- * in one after the other, and the split happens to be the brand's
- * own two colours.
- */
-const SPLIT_PCT = 52.3;
+const WORDMARK_SRC = "/webeaz-logo.png";
+const WORDMARK_W = 1746;
+const WORDMARK_H = 483;
 
 /* --- Opening (first load) timing. The original splash ran ~5.2s;
    it still does, with the logo taking the place of the letters. --- */
@@ -294,7 +256,8 @@ export default function IntroSplash() {
   }, [isNav, navPhase]);
 
   /* --- What is on screen right now. --- */
-  const visible = isNav || (!bootDone && bootPhase !== "done");
+  const visible =
+    !bootDone && (isNav || bootPhase !== "done");
   if (!visible) return null;
 
   const ruleShown = isNav
@@ -347,7 +310,7 @@ export default function IntroSplash() {
           className="relative w-[min(78vw,23rem)]"
           style={{ aspectRatio: `${WORDMARK_W} / ${WORDMARK_H}` }}
         >
-          {/* The ghost — the whole word, faint, waiting. */}
+          {/* The wordmark — rendered once, in full colour. */}
           <Image
             src={WORDMARK_SRC}
             alt=""
@@ -355,41 +318,10 @@ export default function IntroSplash() {
             width={WORDMARK_W}
             height={WORDMARK_H}
             priority
+            fetchPriority="high"
+            unoptimized
             sizes="(min-width: 640px) 23rem, 78vw"
-            className="absolute inset-0 h-full w-full object-contain opacity-[0.16]"
-          />
-
-          {/* The blue "Web", turning in. */}
-          <Image
-            src={WORDMARK_SRC}
-            alt=""
-            aria-hidden="true"
-            width={WORDMARK_W}
-            height={WORDMARK_H}
-            priority
-            sizes="(min-width: 640px) 23rem, 78vw"
-            className="intro-flip absolute inset-0 h-full w-full object-contain"
-            style={{
-              clipPath: `inset(0 ${(100 - SPLIT_PCT).toFixed(2)}% 0 0)`,
-              transformOrigin: `${(SPLIT_PCT / 2).toFixed(2)}% 50%`,
-            }}
-          />
-
-          {/* The orange "Eaz", turning in a beat later. */}
-          <Image
-            src={WORDMARK_SRC}
-            alt=""
-            aria-hidden="true"
-            width={WORDMARK_W}
-            height={WORDMARK_H}
-            priority
-            sizes="(min-width: 640px) 23rem, 78vw"
-            className="intro-flip absolute inset-0 h-full w-full object-contain"
-            style={{
-              clipPath: `inset(0 0 0 ${SPLIT_PCT}%)`,
-              transformOrigin: `${((100 + SPLIT_PCT) / 2).toFixed(2)}% 50%`,
-              animationDelay: "120ms",
-            }}
+            className="absolute inset-0 h-full w-full object-contain"
           />
 
           {/* The name is announced once, in full. */}

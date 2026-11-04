@@ -59,7 +59,7 @@ export default function SemHero() {
             </Link>
             <Link
               href={`#${semAnchors.process}`}
-              className="inline-flex items-center justify-center rounded-full border border-brand-blue-light/45 bg-brand-blue/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-brand-blue-light hover:bg-brand-blue/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-light"
+              className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-brand-orange-on-dark hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Explore Our Approach
             </Link>
@@ -125,10 +125,10 @@ export default function SemHero() {
                 <span className="rounded-full border border-brand-orange/30 bg-brand-orange/10 px-2.5 py-1 text-[10px] font-medium text-brand-orange-light">
                   Transactional
                 </span>
-                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-white/60">
+                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-white">
                   Commercial
                 </span>
-                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-white/60">
+                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-white">
                   Informational
                 </span>
                 <span className="rounded-full border border-brand-blue/30 bg-brand-blue/10 px-2.5 py-1 text-[10px] font-medium text-brand-blue-light">

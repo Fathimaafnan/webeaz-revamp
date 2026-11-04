@@ -1,0 +1,206 @@
+// WebEaz CMS schema.
+//
+// Phase 1 introduced the Admin record used by the NextAuth credentials
+// provider. This revision adds the content models that back the admin
+// CMS modules. Every content model carries a ContentStatus so the
+// public site can filter to PUBLISHED rows only, and every relation is
+// owned server-side: the public pages read, only authenticated admins
+// write.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Publishing workflow shared by every content module.
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Admin {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("admin")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Homepage
+// ---------------------------------------------------------------------------
+
+/// Single-row record holding the hero and final-CTA copy.
+model HomepageContent {
+  id                 Int      @id @default(autoincrement())
+  heroEyebrow        String   @default("Technology • Growth • Automation • AI")
+  heroTitle          String   @default("Build. Transform. Automate. Grow.")
+  heroDescription    String   @default("Technology and digital solutions that help businesses build, transform, automate and grow.")
+  heroPrimaryLabel   String   @default("Let's Talk")
+  heroPrimaryHref    String   @default("/contact")
+  heroSecondaryLabel String   @default("Explore Our Services")
+  heroSecondaryHref  String   @default("/services")
+  heroImage          String?
+  ctaEyebrow         String   @default("Let's talk")
+  ctaTitle           String   @default("Let's Build What's Next.")
+  ctaDescription     String   @default("Have a business challenge, digital idea or transformation goal? Let's create the right technology solution for your business.")
+  ctaLabel           String   @default("Start a Conversation →")
+  ctaHref            String   @default("/contact")
+  updatedAt          DateTime @updatedAt
+}
+
+/// Eyebrow / title / description + visibility for each homepage section.
+model HomepageSection {
+  key         String   @id
+  eyebrow     String   @default("")
+  title       String
+  description String   @default("")
+  visible     Boolean  @default(true)
+  order       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
+
+/// Homepage statistics. `group` separates the TrustStats strip
+/// (value + unit + label) from the WhyWebEaz points (value + label).
+model HomepageStat {
+  id      Int      @id @default(autoincrement())
+  group   String   @default("trust")
+  value   String
+  unit    String   @default("")
+  label   String
+  order   Int      @default(0)
+  visible Boolean  @default(true)
+}
+
+// ---------------------------------------------------------------------------
+// Industries
+// ---------------------------------------------------------------------------
+
+model Industry {
+  id        Int           @id @default(autoincrement())
+  name      String        @unique
+  order     Int           @default(0)
+  status    ContentStatus @default(PUBLISHED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Services (drives /services/[area] and /services/[area]/[service])
+// ---------------------------------------------------------------------------
+
+model ServiceCategory {
+  id          Int           @id @default(autoincrement())
+  slug        String        @unique
+  name        String
+  num         String        @default("")
+  tagline     String        @default("")
+  description String        @default("")
+  icon        String        @default("software")
+  accent      String        @default("blue")
+  order       Int           @default(0)
+  status      ContentStatus @default(PUBLISHED)
+  updatedAt   DateTime      @updatedAt
+  services    Service[]
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())
+  categoryId   Int
+  category     ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  slug         String
+  name         String
+  summary      String        @default("")
+  icon         String        @default("software")
+  /// Optional artwork shown on the service detail hero when set.
+  image        String?
+  overview     String        @default("")
+  provides     String[]      @default([])
+  capabilities String[]      @default([])
+  benefits     String[]      @default([])
+  useCases     String[]      @default([])
+  technologies String[]      @default([])
+  order        Int           @default(0)
+  status       ContentStatus @default(PUBLISHED)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([categoryId, slug])
+}
+
+// ---------------------------------------------------------------------------
+// Blog (drives /insights and /insights/[slug])
+// ---------------------------------------------------------------------------
+
+model BlogPost {
+  id              Int           @id @default(autoincrement())
+  slug            String        @unique
+  title           String
+  excerpt         String        @default("")
+  /// Article body. Rendered as plain paragraphs; blank lines split blocks.
+  content         String        @default("")
+  category        String        @default("Insights")
+  coverImage      String?
+  author          String        @default("WebEaz Technologies")
+  publishedAt     DateTime?
+  seoTitle        String?
+  seoDescription  String?
+  status          ContentStatus @default(DRAFT)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Testimonials (drives the homepage "What Our Clients Say" grid)
+// ---------------------------------------------------------------------------
+
+model Testimonial {
+  id        Int           @id @default(autoincrement())
+  name      String
+  role      String        @default("")
+  company   String        @default("")
+  companyLogo String?
+  image     String        @default("")
+  quote     String
+  /// Only set when the rating was verified with the customer.
+  rating    Int?
+  order     Int           @default(0)
+  status    ContentStatus @default(PUBLISHED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Media library — metadata and object key only; file bytes live in object storage.
+// ---------------------------------------------------------------------------
+
+model MediaAsset {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  originalName String
+  url          String
+  storageKey   String?
+  mimeType     String
+  size         Int
+  width        Int?
+  height       Int?
+  alt          String   @default("")
+  createdAt    DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Site settings — key/value pairs rendered by the layout and footer.
+// ---------------------------------------------------------------------------
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

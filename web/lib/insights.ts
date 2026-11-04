@@ -6,6 +6,8 @@ export type Insight = {
   title: string;
   description: string;
   date: string;
+  /** Optional thumbnail image path. Falls back to a neutral placeholder when absent. */
+  image?: string;
 };
 
 export const insights: Insight[] = [

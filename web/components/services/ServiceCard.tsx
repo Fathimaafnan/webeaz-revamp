@@ -32,11 +32,11 @@ export default function ServiceCard({
       <div
         className={`svc-card-band relative flex h-28 items-center justify-center ${
           warm
-            ? "bg-[linear-gradient(140deg,#b45309,#f79522)]"
+            ? "bg-[linear-gradient(140deg,#9a3412,#b45309)]"
             : "bg-[linear-gradient(140deg,#0b4b7d,#1076bc)]"
         }`}
       >
-        <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/25 bg-white/15 backdrop-blur-sm transition-transform duration-300 group-hover:scale-105">
+        <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/25 bg-black/25 backdrop-blur-sm transition-transform duration-300 group-hover:scale-105">
           <ServiceIcon name={service.icon} className="h-6 w-6 text-white" />
         </span>
         <span
@@ -54,7 +54,7 @@ export default function ServiceCard({
           {service.summary}
         </p>
 
-        <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-orange-strong transition-colors duration-300 group-hover:text-brand-orange-deep">
+        <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-orange-strong transition-colors duration-300 group-hover:text-brand-orange-strong">
           <span
             aria-hidden="true"
             className="inline-block transition-transform duration-300 group-hover:translate-x-1"

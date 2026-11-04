@@ -135,7 +135,7 @@ export default function Products() {
                             {erpModules.map((m) => (
                               <span
                                 key={m}
-                                className="rounded-full border border-[rgba(16,118,188,0.2)] bg-[rgba(16,118,188,0.08)] px-2.5 py-1 text-[10px] font-medium text-[#1076bc]"
+                                className="rounded-full border border-[rgba(16,118,188,0.2)] bg-[rgba(16,118,188,0.08)] px-2.5 py-1 text-[10px] font-medium text-brand-blue-deep"
                               >
                                 {m}
                               </span>
@@ -161,7 +161,7 @@ export default function Products() {
                             href="https://erpeaz.com/"
                             variant="heroSecondary"
                             external
-                            className="!border-[#1076bc] !bg-[#1076bc] !text-white shadow-[0_10px_28px_rgba(16,118,188,0.35)] hover:!border-[#1a86d4] hover:!bg-[#1a86d4] hover:!text-white hover:shadow-[0_14px_34px_rgba(16,118,188,0.45)]"
+                            className="product-cta-light !border-[#1076bc] !bg-[#1076bc] !text-white shadow-[0_10px_28px_rgba(16,118,188,0.35)] hover:!border-brand-blue-deep hover:!bg-brand-blue-deep hover:!text-white hover:shadow-[0_14px_34px_rgba(16,118,188,0.45)]"
                           >
                             Explore ERPEaz{" "}
                             <span

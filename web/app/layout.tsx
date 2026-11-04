@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import IntroSplash from "@/components/home/IntroSplash";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,16 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {/* The brand reveal lives at the root so it can cover a route
-            change. Mounted in the page it would unmount the instant
-            the destination rendered, which is exactly the moment the
-            overlay has to still be there. */}
-        <IntroSplash />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

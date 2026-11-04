@@ -35,7 +35,7 @@ export function ServiceDetailTrail({
 }) {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-white/80">
+      <ol className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-white">
         <li>
           <Link
             href="/services"
@@ -44,7 +44,7 @@ export function ServiceDetailTrail({
             Services
           </Link>
         </li>
-        <li aria-hidden="true" className="text-white/50">
+        <li aria-hidden="true" className="text-white">
           /
         </li>
         <li>
@@ -55,7 +55,7 @@ export function ServiceDetailTrail({
             {category.name}
           </Link>
         </li>
-        <li aria-hidden="true" className="text-white/50">
+        <li aria-hidden="true" className="text-white">
           /
         </li>
         <li aria-current="page" className="font-semibold text-white">
@@ -93,7 +93,7 @@ export function ServiceDetailActions({
         </Link>
         <Link
           href={`/services/${category.slug}`}
-          className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors duration-200 hover:border-brand-orange-light hover:text-brand-orange-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-light"
+          className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors duration-200 hover:border-brand-orange-on-dark hover:text-brand-orange-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           ← {category.name}
         </Link>
@@ -105,48 +105,66 @@ export function ServiceDetailActions({
 /**
  * The illustration, in the column beside the headline panel.
  */
-export function ServiceDetailVisual() {
+export function ServiceDetailVisual({
+  image,
+  alt,
+}: {
+  image?: string;
+  alt: string;
+}) {
   return (
     <div className="svc-hero-visual relative flex aspect-[16/10] items-center justify-center">
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-10 -left-8 h-40 w-40 rounded-full bg-brand-orange/25 blur-3xl"
-      />
-      <svg
-        viewBox="0 0 240 160"
-        className="relative h-full w-full"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <rect
-          x="30"
-          y="24"
-          width="180"
-          height="112"
-          rx="12"
-          fill="rgba(255,255,255,0.05)"
-          stroke="rgba(255,255,255,0.2)"
+      {image ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={image}
+          alt={alt}
+          className="absolute inset-0 h-full w-full rounded-xl object-cover"
         />
-        <path d="M30 46h180" stroke="rgba(255,255,255,0.18)" />
-        <circle cx="44" cy="35" r="3" fill="rgba(255,255,255,0.32)" />
-        <circle cx="55" cy="35" r="3" fill="rgba(255,255,255,0.22)" />
-        <circle cx="66" cy="35" r="3" fill="rgba(255,255,255,0.14)" />
-        <g
-          transform="translate(88 62) scale(2.6)"
-          stroke="#8ecdf7"
-          fill="none"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <g transform="translate(-12 -12)">
-            <circle cx="12" cy="12" r="3" />
-            <path d="M5 21c0-4 3.2-6 7-6s7 2 7 6" />
-          </g>
-        </g>
-        <rect x="52" y="108" width="46" height="8" rx="4" fill="rgba(247,149,34,0.55)" />
-        <rect x="104" y="108" width="30" height="8" rx="4" fill="rgba(255,255,255,0.18)" />
-        <rect x="140" y="108" width="22" height="8" rx="4" fill="rgba(255,255,255,0.1)" />
-      </svg>
+      ) : null}
+      {image ? null : (
+        <>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-10 -left-8 h-40 w-40 rounded-full bg-brand-orange/25 blur-3xl"
+          />
+          <svg
+            viewBox="0 0 240 160"
+            className="relative h-full w-full"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <rect
+              x="30"
+              y="24"
+              width="180"
+              height="112"
+              rx="12"
+              fill="rgba(255,255,255,0.05)"
+              stroke="rgba(255,255,255,0.2)"
+            />
+            <path d="M30 46h180" stroke="rgba(255,255,255,0.18)" />
+            <circle cx="44" cy="35" r="3" fill="rgba(255,255,255,0.32)" />
+            <circle cx="55" cy="35" r="3" fill="rgba(255,255,255,0.22)" />
+            <circle cx="66" cy="35" r="3" fill="rgba(255,255,255,0.14)" />
+            <g
+              transform="translate(88 62) scale(2.6)"
+              stroke="#8ecdf7"
+              fill="none"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <g transform="translate(-12 -12)">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M5 21c0-4 3.2-6 7-6s7 2 7 6" />
+              </g>
+            </g>
+            <rect x="52" y="108" width="46" height="8" rx="4" fill="rgba(247,149,34,0.55)" />
+            <rect x="104" y="108" width="30" height="8" rx="4" fill="rgba(255,255,255,0.18)" />
+            <rect x="140" y="108" width="22" height="8" rx="4" fill="rgba(255,255,255,0.1)" />
+          </svg>
+        </>
+      )}
     </div>
   );
 }

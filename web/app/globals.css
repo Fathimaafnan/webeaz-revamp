@@ -1,14 +1,41 @@
 @import "tailwindcss";
 
+/* Brand color variables — verified from the official WebEaz logo
+   (the previous official artwork, `webeaz-color-logo.png`, 185×54px).
+   Orange: RGB(247, 149, 34) = #F79522
+   Blue:   RGB(16, 118, 188) = #1076BC
+   The current official artwork is `public/webeaz-logo.png` (1746×483);
+   these tokens were deliberately left untouched by the logo-only
+   swap, so no site colour changed with it. */
+:root {
+  --brand-blue: #1076bc;
+  --brand-orange: #f79522;
+
+  /* Global 8px spacing scale — reusable rhythm for section and
+     card spacing across the site. */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --section-padding: 80px;
+}
+
 @theme {
   --color-brand-blue: #1076bc;
-  --color-brand-blue-deep: #0b5a96;
+  --color-brand-blue-deep: #084a7b;
   --color-brand-blue-bright: #1a86d4;
   --color-brand-blue-soft: #e8f3fb;
   --color-brand-orange: #f79522;
   --color-brand-orange-deep: #e07f0f;
-  --color-brand-orange-strong: #b45309;
+  --color-brand-orange-strong: #8f2f10;
   --color-brand-orange-soft: #fdf1e4;
+  /* Near-white warm/cool tints stay on-brand while keeping normal
+     text above 4.5:1 on the lightest solid brand-blue fill. */
+  --color-brand-orange-on-dark: #fff9f2;
+  --color-brand-blue-on-dark: #f5fbff;
+  --color-control-border: #7b8794;
   /* Light brand tints for use on dark section backgrounds,
      where the base brand colours lose contrast */
   --color-brand-blue-light: #5cb3ee;
@@ -25,7 +52,7 @@
   /* Body copy sits in a light cool grey â€” softer than a neutral
      slate, which is what keeps long paragraphs readable across a
      whole page rather than only in isolation. */
-  --color-muted: #667085;
+  --color-muted: #414b58;
   /* Borders carry a faint blue cast so panels read as one system
      with the brand rather than as untinted grey boxes. */
   --color-line: #e2e8f2;
@@ -151,6 +178,11 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
+a.bg-brand-orange,
+button.bg-brand-orange {
+  border: 1px solid var(--color-brand-orange-strong);
+}
+
 /* ============================================================
    TYPE SCALE â€” SMALLEST STEPS
 
@@ -234,6 +266,7 @@
    heroes and the site chrome all sit in one blue. */
 .marketing-hero {
   background:
+    linear-gradient(rgba(6, 24, 39, 0.3), rgba(6, 24, 39, 0.3)),
     radial-gradient(
       ellipse 68% 55% at 84% 6%,
       rgba(26, 134, 212, 0.5),
@@ -249,13 +282,23 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 4.75rem;
 }
 
 body {
   background: #ffffff;
   color: #101418;
   font-family: var(--font-sans);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Long-form paragraph readability — max 75ch for comfortable reading.
+   Only applies to paragraphs inside <main> that don't already have an
+   explicit max-width utility (Tailwind's max-w-* classes). Short labels,
+   badges, and card text remain unaffected. */
+main p:not([class*="max-w-"]) {
+  max-width: 75ch;
 }
 
 /* Scroll reveal */
@@ -478,6 +521,31 @@ body {
   animation-delay: 0.3s;
 }
 
+/* Hero visual animations — gentle floating and pulsing for the
+   abstract tech illustration on the right of the hero. Respect
+   prefers-reduced-motion so motion-sensitive visitors get a
+   static (but still styled) composition. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    33% { transform: translateY(-8px) translateX(4px); }
+    66% { transform: translateY(4px) translateX(-4px); }
+  }
+
+  @keyframes hero-pulse {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.08); }
+  }
+
+  .animate-hero-float {
+    animation: hero-float 4s ease-in-out infinite;
+  }
+
+  .animate-hero-pulse {
+    animation: hero-pulse 6s ease-in-out infinite;
+  }
+}
+
 /* ============================================================
    HERO â€” animated blue field
    Replaces the previous canvas (colour fields, flowing trails and a
@@ -602,12 +670,28 @@ body {
 }
 
 /* The wordmark orange sits on the hero's blue field, where #f79522
-   only reaches 2.5:1. The existing light brand token is the same
-   hue one step up and clears the 3:1 that large display text needs,
-   so the headline keeps its orange punctuation without a new
-   colour being invented. */
+   only reaches 2.5:1. The warm near-white brand tint measures 4.63:1
+   against the lightest solid brand blue while keeping the orange
+   accent visible in the headline. */
 .hero-base .text-brand-orange {
-  color: var(--color-brand-orange-light);
+  color: var(--color-brand-orange-on-dark);
+}
+
+.hero-button:focus-visible {
+  outline-color: #ffffff;
+}
+
+.sec-ember .hero-button:focus-visible {
+  outline-color: var(--color-ink);
+}
+
+.product-cta-light.hero-button:focus-visible {
+  outline-color: var(--color-brand-blue-deep);
+}
+
+.floating-contact-button:focus-visible {
+  outline-color: #ffffff;
+  box-shadow: 0 0 0 5px var(--color-brand-blue-deep);
 }
 
 .hero-field {
@@ -1285,6 +1369,24 @@ body {
   .hero-network {
     transform: none;
   }
+
+  /* The sphere's orbit ring and its data-point dots are continuous
+     motion as well, and were missed when the rest of the hero was
+     brought under the reduced-motion switch - the ring kept rotating
+     and the dots kept pulsing for visitors who ask for no motion. The
+     base styles hold them still and nothing is hidden; the globe just
+     stops moving. */
+  .hero-globe-band,
+  .hero-globe-dot {
+    animation: none;
+  }
+
+  /* The pointer parallax eases toward the pointer through a transition
+     on the hero's custom properties, so for visitors who ask for no
+     motion the field holds still rather than easing. */
+  .hero-field {
+    transition: none;
+  }
 }
 
 
@@ -1309,6 +1411,289 @@ body {
   }
   .hero-net-edge {
     animation-duration: 16s;
+  }
+}
+
+.hero-atmosphere {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  width: min(58vw, 46rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(92, 179, 238, 0.16),
+    transparent 68%
+  );
+  transform: translateY(-50%);
+}
+
+.hero-title {
+  max-width: 16ch;
+  font-size: clamp(2rem, 4.2vw, 4.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.hero-dashboard {
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 32px 72px -36px rgba(2, 20, 42, 0.72);
+  color: #0f172a;
+}
+
+.hero-dashboard__topbar {
+  display: flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid #e8edf3;
+  padding: 0.75rem 1rem;
+}
+
+.hero-dashboard__appmark {
+  position: relative;
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border-radius: 0.55rem;
+  background: #1076bc;
+}
+
+.hero-dashboard__appmark::before,
+.hero-dashboard__appmark::after,
+.hero-dashboard__appmark span {
+  position: absolute;
+  display: block;
+  width: 0.3rem;
+  border-radius: 9999px;
+  background: #fff;
+  content: "";
+}
+
+.hero-dashboard__appmark::before {
+  height: 0.65rem;
+  transform: translateX(-0.3rem);
+}
+
+.hero-dashboard__appmark span {
+  height: 0.9rem;
+}
+
+.hero-dashboard__appmark::after {
+  height: 0.5rem;
+  transform: translateX(0.3rem);
+}
+
+.hero-dashboard__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid #d9f0e2;
+  border-radius: 9999px;
+  background: #f0fbf4;
+  padding: 0.25rem 0.55rem;
+  color: #287449;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.hero-dashboard__live span,
+.hero-dashboard__workflow span {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #39a66a;
+}
+
+.hero-dashboard__content {
+  padding: 1.1rem;
+}
+
+.hero-dashboard__period {
+  flex: 0 0 auto;
+  border: 1px solid #e5eaf0;
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.4rem 0.55rem;
+  color: #64748b;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.hero-dashboard__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.hero-dashboard__metric {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid #e8edf3;
+  border-radius: 0.75rem;
+  padding: 0.65rem;
+}
+
+.hero-dashboard__metric > span {
+  overflow: hidden;
+  color: #64748b;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero-dashboard__metric strong {
+  color: #0f172a;
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+
+.hero-dashboard__metric small {
+  color: #25804c;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.hero-dashboard__lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(7rem, 0.8fr);
+  gap: 0.65rem;
+  margin-top: 0.65rem;
+}
+
+.hero-dashboard__chart,
+.hero-dashboard__insight {
+  min-width: 0;
+  border: 1px solid #e8edf3;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+
+.hero-dashboard__chart-change {
+  border-radius: 9999px;
+  background: #eff8ff;
+  padding: 0.25rem 0.4rem;
+  color: #0b5a96;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.hero-dashboard__bars {
+  display: flex;
+  height: 4.25rem;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  border-bottom: 1px solid #e8edf3;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 1.25rem,
+    #edf1f5 1.25rem,
+    #edf1f5 calc(1.25rem + 1px)
+  );
+}
+
+.hero-dashboard__bars span {
+  width: 10%;
+  min-height: 0.35rem;
+  border-radius: 0.2rem 0.2rem 0 0;
+  background: #1076bc;
+}
+
+.hero-dashboard__bars span:nth-child(2n) {
+  background: var(--color-brand-blue-bright);
+}
+
+.hero-dashboard__bars span:last-child {
+  background: var(--color-brand-orange-strong);
+}
+
+.hero-dashboard__days {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  color: #64748b;
+  font-size: 0.55rem;
+}
+
+.hero-dashboard__insight {
+  border-color: #f5dfc6;
+  background: #fff8f0;
+}
+
+.hero-dashboard__insight-icon {
+  display: grid;
+  width: 1.45rem;
+  height: 1.45rem;
+  place-items: center;
+  border-radius: 0.45rem;
+  background: #f79522;
+  color: var(--color-ink);
+  font-size: 0.8rem;
+}
+
+.hero-dashboard__workflow {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  color: #475569;
+  font-size: 0.58rem;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .hero-dashboard__lower {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-dashboard__insight {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 0.6rem;
+  }
+
+  .hero-dashboard__insight-icon {
+    grid-row: span 2;
+  }
+
+  .hero-dashboard__insight > p:last-of-type {
+    margin-top: 0.15rem;
+  }
+
+  .hero-dashboard__workflow {
+    grid-column: 2;
+    margin-top: 0.35rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-dashboard__content {
+    padding: 0.85rem;
+  }
+
+  .hero-dashboard__topbar {
+    padding-inline: 0.85rem;
+  }
+
+  .hero-dashboard__metric {
+    padding: 0.55rem 0.45rem;
   }
 }
 
@@ -1826,6 +2211,7 @@ body {
    not for the 12px eyebrow labels these sections carry. */
 .brand-surface-brand {
   background:
+    linear-gradient(rgba(6, 24, 39, 0.3), rgba(6, 24, 39, 0.3)),
     radial-gradient(
       ellipse 70% 55% at 88% -10%,
       rgba(26, 134, 212, 0.5),
@@ -1844,23 +2230,65 @@ body {
    the body whites lose their transparency. Scoped to the class, so
    the identical utilities on every other route are untouched. */
 .brand-surface-brand .text-brand-orange-light {
-  color: #ffd9a3;
+  color: var(--color-brand-orange-on-dark);
 }
 .brand-surface-brand .text-brand-blue-light {
-  color: #cfe8fb;
+  color: var(--color-brand-blue-on-dark);
 }
 .brand-surface-brand .text-brand-orange {
-  color: #ffd9a3;
+  color: var(--color-brand-orange-on-dark);
+}
+.brand-surface-brand .text-brand-orange-strong {
+  color: var(--color-brand-orange-on-dark);
 }
 .brand-surface-brand .group-hover\:text-brand-orange,
 .brand-surface-brand .group-hover\:text-brand-orange-light {
-  color: #ffe6c2;
+  color: var(--color-brand-orange-on-dark);
 }
-.brand-surface-brand .text-white\/65 {
+.brand-surface-brand :focus-visible {
+  outline-color: var(--color-brand-orange-on-dark);
+}
+.brand-surface-brand :is(
+  [class~="text-white/35"],
+  [class~="text-white/45"],
+  [class~="text-white/50"],
+  [class~="text-white/55"],
+  [class~="text-white/60"],
+  [class~="text-white/65"],
+  [class~="text-white/70"],
+  [class~="text-white/75"],
+  [class~="text-white/80"],
+  [class~="text-white/85"],
+  [class~="text-white/90"]
+) {
   color: rgba(255, 255, 255, 0.9);
 }
-.brand-surface-brand .text-white\/70 {
-  color: rgba(255, 255, 255, 0.92);
+
+.marketing-hero .text-brand-orange,
+.marketing-hero .text-brand-orange-light,
+.marketing-hero .text-brand-orange-strong {
+  color: var(--color-brand-orange-on-dark);
+}
+.marketing-hero .text-brand-blue-light {
+  color: var(--color-brand-blue-on-dark);
+}
+.marketing-hero :focus-visible {
+  outline-color: #ffffff;
+}
+.marketing-hero :is(
+  [class~="text-white/35"],
+  [class~="text-white/45"],
+  [class~="text-white/50"],
+  [class~="text-white/55"],
+  [class~="text-white/60"],
+  [class~="text-white/65"],
+  [class~="text-white/70"],
+  [class~="text-white/75"],
+  [class~="text-white/80"],
+  [class~="text-white/85"],
+  [class~="text-white/90"]
+) {
+  color: rgba(255, 255, 255, 0.9);
 }
 /* The pale panels keep the dark ink they were designed with. */
 .brand-surface-brand
@@ -2075,12 +2503,9 @@ body {
 /* ============================================================
    AUTH CHECKBOX
 
-   The Login form's "Remember me" box was drawn for the old dark
-   card: an outlined square that filled solid with the brand orange
-   and carried no tick, so a checked box and a filled one were the
-   same picture. On the light card it is a hairline square that
-   fills with the orange AND shows a white tick, which is the only
-   state a checkbox has to be readable in.
+   The Login form's "Remember me" box uses a contrasting outline and
+   an ink check mark so both its unchecked and checked states remain
+   distinguishable against the light form surface.
    ============================================================ */
 .auth-check {
   -webkit-appearance: none;
@@ -2090,7 +2515,7 @@ body {
   flex-shrink: 0;
   cursor: pointer;
   border-radius: 0.3rem;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-control-border);
   background-color: #ffffff;
   background-image: none;
   background-position: center;
@@ -2101,12 +2526,12 @@ body {
     border-color 0.2s ease;
 }
 .auth-check:hover {
-  border-color: rgba(16, 118, 188, 0.45);
+  border-color: var(--color-brand-blue);
 }
 .auth-check:checked {
-  border-color: var(--color-brand-orange);
+  border-color: var(--color-brand-orange-strong);
   background-color: var(--color-brand-orange);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 10.5l4 4 8-8'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23101418' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 10.5l4 4 8-8'/%3E%3C/svg%3E");
 }
 
 /* ============================================================
@@ -2144,7 +2569,7 @@ body {
    It now sits on the white working section rather than the blue
    field, so the old #7b8595 â€” which was tuned for a dark ground â€”
    dropped to 3.73:1. The project's muted token clears AA here at
-   4.97:1 and still reads one step back from the body copy. */
+   5.53:1 and still reads one step back from the body copy. */
 .svc-surface .text-white\/45 {
   color: var(--color-muted);
 }
@@ -2160,14 +2585,14 @@ body {
   color: var(--color-brand-orange-strong);
 }
 .svc-surface .text-brand-orange {
-  color: var(--color-brand-orange-deep);
+  color: var(--color-brand-orange-strong);
 }
 .svc-surface .hover\:text-brand-orange:hover,
 .svc-surface .group-hover\:text-brand-orange {
   color: var(--color-brand-blue);
 }
 .svc-surface .group-hover\:text-brand-orange-light {
-  color: var(--color-brand-orange-deep);
+  color: var(--color-brand-orange-strong);
 }
 .svc-surface .group-hover\:text-brand-blue-light {
   color: var(--color-brand-blue-deep);
@@ -2207,15 +2632,13 @@ body {
 .svc-surface .svc-card-band .text-white\/90 {
   color: #fff;
 }
-/* The same rule for the body copy inside a band. The opacity it was
-   authored with is kept, because the band beneath it is a saturated
-   blue or orange and a flat white would read louder than the type
-   hierarchy wants. */
+/* Text inside a saturated band stays fully opaque so its contrast is
+   independent of the exact gradient stop behind it. */
 .svc-surface .svc-card-band .text-white\/80 {
-  color: rgba(255, 255, 255, 0.8);
+  color: #fff;
 }
 .svc-surface .svc-card-band .text-white\/75 {
-  color: rgba(255, 255, 255, 0.75);
+  color: #fff;
 }
 
 /* Hover lift and shadow were tuned against the dark card. */
@@ -2809,7 +3232,12 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(247, 149, 34, 0.7) 0%, rgba(247, 149, 34, 0.25) 44%, rgba(247, 149, 34, 0) 76%);
+  background: linear-gradient(
+    to top,
+    rgba(6, 24, 39, 0.78) 0%,
+    rgba(11, 90, 150, 0.4) 44%,
+    rgba(247, 149, 34, 0.12) 76%
+  );
   opacity: 0;
   transition: opacity 0.45s ease-in-out;
   pointer-events: none;
@@ -2985,21 +3413,27 @@ body {
    Partners section, so the brighter treatment is layered on top here
    rather than changing the shared rule.
 
-   These files are mostly logos sitting on white tiles, so the mono
-   pass (full grayscale at half opacity) was washing the marks into a
-   white background. Lifting the opacity does most of the work;
-   keeping a trace of grayscale leaves the row cohesive rather than
-   turning it into a row of unrelated colour patches. The images
-   themselves are untouched â€” no recolouring, no cropping. */
+   These files are logos on varied backgrounds (white tiles, transparent
+   PNGs, coloured tiles). To make every logo read with equal visual
+   prominence, each sits inside a consistent square container with a
+   subtle border and soft background, and a light grayscale pass keeps
+   the row cohesive. On hover the original colours return and the mark
+   lifts slightly. The images themselves are untouched â€” no
+   recolouring, no cropping, no replacement. */
 .clients-logo img {
-  filter: grayscale(0.15);
-  opacity: 0.92;
+  filter: grayscale(1);
+  opacity: 0.85;
+  transition:
+    filter 0.45s ease,
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .clients-logo:hover img,
 .clients-logo:focus-within img {
   filter: grayscale(0);
   opacity: 1;
+  transform: scale(1.08);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3019,6 +3453,12 @@ body {
   .card-accent-dark {
     transition: none;
     transform: none;
+  }
+
+  /* Service card links — disable hover lift when motion is reduced */
+  .card-orb.group:hover {
+    transform: none;
+    transition: none;
   }
 
   .card-orb:hover .card-orb-disc,
@@ -3056,10 +3496,12 @@ body {
    colour and the one that reads hardest against the blue.
 
    The orange is not a guess. It was read straight out of the
-   logo asset in this repo: sampling `public/webeaz-logo-brand.png`
-   gives 1089 orange pixels and every one of them is exactly
+   logo set this repo shipped with: sampling the former
+   `public/webeaz-logo-brand.png` (since superseded by the new
+   official `public/webeaz-logo.png`) gives 1089 orange pixels and
+   every one of them is exactly
    rgb(247, 149, 34) - #f79522, no anti-aliasing variants, and
-   the same value in all three logo files. That is the middle
+   the same value in all three of those logo files. That is the middle
    stop below and it is already `--color-brand-orange`. The two
    shades it is blended with are the two tokens that already sit
    either side of it, so this introduces no new colour at all:
@@ -3202,12 +3644,10 @@ body {
      white on the CTA .............  5.2:1 (unchanged)
 
    Two notes on why those two text colours are not the obvious
-   ones. `--color-brand-orange-strong` (#b45309) reaches only
-   4.1:1 on this ground, which is under AA at 14px, so the
-   tagline steps down to #9a3412 - a colour already present in
-   this component's own hover state. And `--color-muted`
-   (#667085) is 4.0:1 here, so the description uses
-   `--color-grey-600` instead.
+   ones. `--color-brand-orange-strong` (#9a3412) reaches 5.9:1 on
+   this ground. The muted token now clears AA across the pale section
+   surfaces; this card keeps `--color-grey-600` for its existing
+   hierarchy, not as a contrast workaround.
 
    The light layers are silver rather than white: on a light
    frame a white glow is invisible. The travelling silver is
@@ -3335,8 +3775,9 @@ body {
   isolation: isolate;
   /* The cards are the brand's own blue now.
      #1076bc is the exact blue of WebEaz's mark â€” the same value as
-     `--color-brand-blue`, and the same pixel the official dark-bar
-     lockup `webeaz-logo-brand.png` carries â€” running down through
+     `--color-brand-blue`, and the same pixel the previous official
+     dark-bar lockup `webeaz-logo-brand.png` carried (that asset was
+     replaced by `public/webeaz-logo.png` in the logo swap) â€” running down through
      the brand's own deeper shades. The wash that used to sit here
      was a 6-10% tint of the same blue over a light section, which
      left the cards milky and the white copy on them unreadable.
@@ -3841,20 +4282,6 @@ body {
     background-size: 100% 100%, 100% 100%, 100% 100%;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

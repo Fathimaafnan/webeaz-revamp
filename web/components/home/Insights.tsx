@@ -3,6 +3,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import CardIcon from "@/components/ui/CardIcon";
 import Reveal from "@/components/ui/Reveal";
 import { insights } from "@/lib/insights";
+import Image from "next/image";
 
 /**
  * Abstract editorial cover art. The articles are placeholders
@@ -10,7 +11,7 @@ import { insights } from "@/lib/insights";
  * brand-tinted cover keyed to its category rather than invented
  * stock imagery. Decorative only.
  */
-function InsightCover({ index, category }: { index: number; category: string }) {
+function InsightCover({ index, category, image }: { index: number; category: string; image?: string }) {
   const shapes = [
     <circle key="c" cx="210" cy="58" r="46" fill="none" stroke="rgba(16,118,188,0.4)" strokeWidth="2" />,
     <circle key="c2" cx="210" cy="58" r="28" fill="rgba(247,149,34,0.16)" />,
@@ -29,14 +30,24 @@ function InsightCover({ index, category }: { index: number; category: string }) 
         aria-hidden="true"
         className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full bg-brand-orange/10 blur-3xl"
       />
-      <svg
-        viewBox="0 0 280 160"
-        className="relative h-full w-full"
-        preserveAspectRatio="xMidYMid slice"
-        aria-hidden="true"
-      >
-        {shapes}
-      </svg>
+      {image ? (
+        <Image
+          src={image}
+          alt=""
+          fill
+          sizes="(min-width: 640px) 560px, 100vw"
+          className="object-cover"
+        />
+      ) : (
+        <svg
+          viewBox="0 0 280 160"
+          className="relative h-full w-full"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+        >
+          {shapes}
+        </svg>
+      )}
       <span className="absolute bottom-4 left-5 flex items-center gap-2">
         <CardIcon name="insight" className="h-4 w-4 text-brand-blue/70" />
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
@@ -96,7 +107,7 @@ export default function Insights() {
               key={a.title}
               className="card-editorial group flex h-full flex-col"
             >
-              <InsightCover index={i} category={a.category} />
+              <InsightCover index={i} category={a.category} image={a.image} />
               <div className="flex flex-1 flex-col p-7 sm:p-8">
                 <div className="flex items-center justify-between gap-4 text-xs">
                   <span className="rounded-full bg-brand-blue-soft px-3 py-1 font-semibold uppercase tracking-wider text-brand-blue-deep">
@@ -113,7 +124,7 @@ export default function Insights() {
                 </p>
                 <Link
                   href="/insights"
-                  className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-orange-strong transition-colors hover:text-brand-orange-deep hover:underline"
+                  className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-orange-strong transition-colors hover:text-brand-orange-strong hover:underline"
                 >
                   Read article →
                 </Link>

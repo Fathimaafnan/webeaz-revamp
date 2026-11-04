@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Carousel from "@/components/ui/Carousel";
 import Reveal from "@/components/ui/Reveal";
+import type { HomeSection } from "@/lib/defaults";
 
 const clients = [
   "/clients/all-logo_17.jpg",
@@ -48,11 +49,11 @@ const clients = [
  * Hovering pauses the movement; users who prefer reduced
  * motion get a static single-row view (no scrolling animation).
  */
-export default function FeaturedClients() {
+export default function FeaturedClients({ section }: { section: HomeSection }) {
   return (
     <section
       aria-label="Our featured clients"
-      className="sec-sky theme-light relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24"
+      className="sec-sky theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]"
     >
       {/* Subtle WebEaz blue + orange light */}
       <div
@@ -67,7 +68,7 @@ export default function FeaturedClients() {
       <div className="relative mx-auto max-w-6xl">
           <Reveal>
             <h2 className="text-h2 text-center font-bold text-ink">
-              Our Featured Clients
+              {section.title}
             </h2>
           </Reveal>
 
@@ -101,14 +102,15 @@ export default function FeaturedClients() {
               {clients.map((src) => (
                 <div
                   key={src}
-                  className="card-logo-mono clients-logo flex h-28 w-[15rem] items-center justify-center sm:w-[17rem]"
+                  className="card-logo-mono clients-logo flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center p-2 sm:p-3 rounded-lg border border-white/40 bg-white/5 backdrop-blur-sm"
                 >
                   <div className="relative h-full w-full">
                     <Image
                       src={src}
                       alt=""
                       fill
-                      sizes="(min-width: 640px) 272px, 240px"
+                      unoptimized
+                      sizes="(min-width: 640px) 96px, 72px"
                       className="object-contain"
                     />
                   </div>

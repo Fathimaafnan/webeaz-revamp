@@ -1,38 +1,6 @@
-import Image from "next/image";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
-
-/**
- * Client testimonials published on www.webeaz.com under
- * "What Our Clients Say". Text, names, roles and portraits are
- * reproduced verbatim — nothing added or reworded.
- */
-const testimonials = [
-  {
-    name: "CA. Ashker",
-    role: "Founder & CEO OF",
-    company: "Fin Prime Consulting",
-    image: "/clients/testimonials/ashker.jpg",
-    quote:
-      "I am thrilled with Webeaz Technologies' service. Our challenges were thoroughly understood by them when we approached them. The biggest challenge was the lack of integration between departments, resulting in inefficiencies. Webeaz Technologies implemented a comprehensive ERP system. This integration facilitated real-time data sharing and streamlined workflows, resulting in increased efficiency.",
-  },
-  {
-    name: "Nisar Muhammed",
-    role: "Founder & CEO OF",
-    company: "Cromwell UK",
-    image: "/clients/testimonials/nisar.jpg",
-    quote:
-      "Webeaz had played a significant role in digital lead generation for improving our campus admissions. Their digital marketing services helped us to increase target audience, and generate quality leads through SEM, Google ads, and SEO services brought us better rankings for organic search. With their commitment to delivering high-quality services, they're the perfect partner for us.",
-  },
-  {
-    name: "Shamsudheen Sulaiman",
-    role: "CEO OF",
-    company: "MEDISOUQ",
-    image: "/clients/testimonials/shamsudheen.jpg",
-    quote:
-      "I would highly recommend Webeaz to anyone looking to develop an e-commerce platform. They helped us develop a successful online store using Magento for website also developed a mobile apps for IOS and Android using native mobile app development. They worked closely with us to understand our specific requirements and implement it within the budget. Our team is extremely satisfied with their valuable insights and guidance throughout the entire process. Thank you Webeaz!",
-  },
-];
+import type { HomeSection, TestimonialItem } from "@/lib/defaults";
 
 /**
  * "What Our Clients Say" — three client testimonials, side by side.
@@ -55,9 +23,17 @@ const testimonials = [
  * unchanged, the cards keep the `.card-quote` treatment they always
  * had, and there are no arrows to add or remove.
  */
-export default function Testimonials() {
+export default function Testimonials({
+  testimonials,
+  section,
+}: {
+  testimonials: TestimonialItem[];
+  section: HomeSection;
+}) {
+  if (testimonials.length === 0) return null;
+
   return (
-    <section className="sec-sky theme-light relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24">
+    <section className="sec-sky theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       <div
         aria-hidden="true"
         className="ambient-glow ambient-glow-orange animate-glow-drift absolute -left-[12%] top-[10%] h-[28rem] w-[28rem]"
@@ -70,8 +46,9 @@ export default function Testimonials() {
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <SectionHeading
-            eyebrow="Testimonials"
-            title="What Our Clients Say"
+            eyebrow={section.eyebrow}
+            title={section.title}
+            description={section.description}
             align="center"
           />
         </Reveal>
@@ -84,20 +61,29 @@ export default function Testimonials() {
             >
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute right-6 top-5 select-none font-serif text-6xl leading-none text-brand-orange/15"
+                className="pointer-events-none absolute right-6 top-5 select-none font-serif text-6xl leading-none text-brand-orange-strong/65"
               >
                 &rdquo;
               </span>
 
               <div className="relative flex items-center gap-4">
                 <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-md shadow-brand-blue/10">
-                  <Image
-                    src={t.image}
-                    alt={t.name}
-                    fill
-                    sizes="56px"
-                    className="object-cover"
-                  />
+                  {t.image ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={t.image}
+                      alt={t.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="flex h-full w-full items-center justify-center bg-brand-blue-soft text-lg font-bold text-brand-blue-deep"
+                    >
+                      {t.name.slice(0, 1).toUpperCase()}
+                    </span>
+                  )}
                 </span>
                 <div className="min-w-0">
                   <p className="text-base font-bold tracking-tight text-ink">
@@ -107,6 +93,15 @@ export default function Testimonials() {
                     {t.role}
                   </p>
                   <p className="mt-1 truncate text-xs text-muted">{t.company}</p>
+                  {t.companyLogo ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={t.companyLogo}
+                      alt={`${t.company || "Customer"} logo`}
+                      loading="lazy"
+                      className="mt-2 h-6 max-w-24 object-contain object-left"
+                    />
+                  ) : null}
                 </div>
               </div>
 

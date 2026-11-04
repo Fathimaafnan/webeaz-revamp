@@ -39,7 +39,7 @@ export default function SmpAiVisual() {
             className={`rounded-xl border p-3 ${c.tone} flex items-center gap-2.5`}
           >
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-current" />
-            <span className="text-[11px] font-medium leading-4 text-white/70">
+            <span className="text-[11px] font-medium leading-4 text-white">
               {c.label}
             </span>
           </div>
@@ -79,7 +79,7 @@ export default function SmpAiVisual() {
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[9px] font-semibold ${
                   i === 2
                     ? "bg-brand-orange text-ink"
-                    : "border border-white/12 bg-white/[0.06] text-white/65"
+                    : "border border-white/12 bg-white/[0.06] text-white"
                 }`}
               >
                 {i + 1}

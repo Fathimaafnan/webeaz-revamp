@@ -11,7 +11,7 @@ export default function PageShell({ eyebrow, title, description, children }: Pro
   return (
     <section className="bg-white px-5 pb-20 pt-28 sm:px-8 sm:pb-28 sm:pt-32">
       <div className="mx-auto max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-orange-strong">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-orange-strong">
           {eyebrow}
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">

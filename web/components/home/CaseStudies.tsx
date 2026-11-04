@@ -3,6 +3,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import CardIcon from "@/components/ui/CardIcon";
 import Reveal from "@/components/ui/Reveal";
 import { caseStudies, type CaseStudy } from "@/lib/case-studies";
+import type { HomeSection } from "@/lib/defaults";
 
 /**
  * Abstract, brand-tinted media panels. The case studies are
@@ -119,19 +120,19 @@ function ProjectCard({ c, i }: { c: CaseStudy; i: number }) {
       <div className="card-media card-media-grid card-project-media h-56">
         <ProjectVisual index={i} industry={c.industry} />
         <span className="absolute bottom-4 left-5 z-10 flex items-center gap-2">
-          <CardIcon name="work" className="h-4 w-4 text-white/90" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/90">
+          <CardIcon name="work" className="h-4 w-4 text-brand-blue-deep" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-brand-blue-deep">
             {c.industry}
           </span>
         </span>
-        <p className="card-project-meta absolute bottom-4 right-5 z-10 font-mono text-[11px] tracking-wide text-white/85">
+        <p className="card-project-meta absolute bottom-4 right-5 z-10 font-mono text-[11px] tracking-wide text-white">
           {c.technology}
         </p>
       </div>
 
       <div className="flex flex-1 flex-col p-6 sm:p-7">
         <h3 className="text-xl font-bold tracking-tight text-ink">
-          {c.client}
+          {c.industry}
         </h3>
 
         <dl className="mt-5 flex-1 space-y-3.5">
@@ -147,12 +148,8 @@ function ProjectCard({ c, i }: { c: CaseStudy; i: number }) {
             </dt>
             <dd className="mt-1.5 text-sm leading-6 text-muted">{c.solution}</dd>
           </div>
-          <div>
-            <dt className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-orange-strong">
-              Result
-            </dt>
-            <dd className="mt-1.5 text-sm leading-6 text-muted">{c.result}</dd>
-          </div>
+          {/* Result field hidden — placeholder text ("Outcome summary to be
+              confirmed with the client.") is not ready for public display. */}
         </dl>
       </div>
     </article>
@@ -164,9 +161,9 @@ function ProjectCard({ c, i }: { c: CaseStudy; i: number }) {
  * project cards. Challenge, solution, result, technology and
  * client name are unchanged; the "View All Work" link is kept.
  */
-export default function CaseStudies() {
+export default function CaseStudies({ section }: { section: HomeSection }) {
   return (
-    <section className="sec-sky-deep theme-light relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24">
+    <section className="sec-sky-deep theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       {/* Orange radial with blue atmospheric lighting */}
       <div
         aria-hidden="true"
@@ -179,9 +176,9 @@ export default function CaseStudies() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <SectionHeading
-            eyebrow="Our work"
-            title="What we've built."
-            description="Explore selected digital products, platforms and transformation projects delivered by WebEaz."
+            eyebrow={section.eyebrow}
+            title={section.title}
+            description={section.description}
       />
         </Reveal>
 
@@ -196,7 +193,7 @@ export default function CaseStudies() {
         <Reveal delay={120}>
           <Link
             href="/our-work"
-            className="mt-12 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue-deep hover:text-brand-blue"
+            className="mt-12 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue-deep hover:text-brand-blue-deep hover:underline"
           >
             View All Work →
           </Link>

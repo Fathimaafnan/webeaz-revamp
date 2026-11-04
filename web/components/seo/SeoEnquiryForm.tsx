@@ -102,8 +102,8 @@ export default function SeoEnquiryForm() {
           required={required}
           aria-invalid={errors[key] ? true : undefined}
           aria-describedby={errors[key] ? errId : undefined}
-          className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink transition-colors duration-200 outline-none placeholder:text-muted/70 focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue/25 ${
-            errors[key] ? "border-red-500" : "border-line"
+          className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink transition-colors duration-200 outline-none placeholder:text-muted focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue-deep ${
+            errors[key] ? "border-red-500" : "border-control"
           }`}
         />
         {errors[key] ? (
@@ -155,8 +155,8 @@ export default function SeoEnquiryForm() {
             required
             aria-invalid={errors.goal ? true : undefined}
             aria-describedby={errors.goal ? `${uid}-goal-err` : undefined}
-            className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink transition-colors duration-200 outline-none focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue/25 ${
-              errors.goal ? "border-red-500" : "border-line"
+            className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-ink transition-colors duration-200 outline-none focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue-deep ${
+              errors.goal ? "border-red-500" : "border-control"
             }`}
           >
             <option value="">Select a goal</option>
@@ -191,8 +191,8 @@ export default function SeoEnquiryForm() {
           required
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? `${uid}-message-err` : undefined}
-          className={`mt-2 w-full resize-y rounded-xl border bg-white px-4 py-3 text-sm leading-6 text-ink transition-colors duration-200 outline-none placeholder:text-muted/70 focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue/25 ${
-            errors.message ? "border-red-500" : "border-line"
+          className={`mt-2 w-full resize-y rounded-xl border bg-white px-4 py-3 text-sm leading-6 text-ink transition-colors duration-200 outline-none placeholder:text-muted focus-visible:border-brand-blue focus-visible:ring-2 focus-visible:ring-brand-blue-deep ${
+            errors.message ? "border-red-500" : "border-control"
           }`}
         />
         {errors.message ? (

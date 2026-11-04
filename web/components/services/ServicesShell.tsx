@@ -94,7 +94,7 @@ export default function ServicesShell({
                 belongs to the field behind it instead of sitting on it
                 as a pasted-on rectangle. */}
             <div className={aside ? "svc-hero-panel" : "svc-hero-panel max-w-3xl"}>
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md sm:px-4 sm:text-xs sm:tracking-[0.2em]">
+              <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-brand-blue-deep/30 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md sm:px-4 sm:text-xs sm:tracking-[0.2em]">
                 <span
                   aria-hidden="true"
                   className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-orange shadow-[0_0_10px_rgba(247,149,34,0.9)]"
@@ -104,7 +104,7 @@ export default function ServicesShell({
               <h1 className="mt-6 text-[2.35rem] font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.75rem]">
                 {title}
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-white/90 sm:text-lg">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-white sm:text-lg">
                 {description}
               </p>
               {actions ? <div className="mt-7">{actions}</div> : null}

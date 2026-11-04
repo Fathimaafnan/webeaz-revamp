@@ -2,7 +2,7 @@ import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CardIcon from "@/components/ui/CardIcon";
 import Reveal from "@/components/ui/Reveal";
-import { industries } from "@/lib/industries";
+import type { HomeSection } from "@/lib/defaults";
 
 /**
  * "Industries" — the same nine industries as cards. Compositions
@@ -10,9 +10,15 @@ import { industries } from "@/lib/industries";
  * media) so the grid has rhythm, while every card shares the
  * same panel, seam and icon language.
  */
-export default function Industries() {
+export default function Industries({
+  industries,
+  section,
+}: {
+  industries: string[];
+  section: HomeSection;
+}) {
   return (
-    <section className="sec-white theme-light relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24">
+    <section className="sec-white theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       {/* Subtle blue/orange blended gradient */}
       <div
         aria-hidden="true"
@@ -25,8 +31,9 @@ export default function Industries() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <SectionHeading
-            eyebrow="Industries"
-            title="Built for real-world business."
+            eyebrow={section.eyebrow}
+            title={section.title}
+            description={section.description}
       />
         </Reveal>
 
@@ -54,7 +61,7 @@ export default function Industries() {
                         name="industry"
                         className={`h-6 w-6 transition-colors duration-300 ${
                           warm
-                            ? "text-brand-orange-strong group-hover:text-brand-orange-deep"
+                            ? "text-brand-orange-strong group-hover:text-brand-orange-strong"
                             : "text-brand-blue group-hover:text-brand-orange-strong"
                         }`}
                       />

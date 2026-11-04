@@ -63,7 +63,7 @@ export default function SmpHero() {
             </Link>
             <Link
               href={`#${smpAnchors.strategy}`}
-              className="inline-flex items-center justify-center rounded-full border border-brand-blue-light/45 bg-brand-blue/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-brand-blue-light hover:bg-brand-blue/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-light"
+              className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-brand-orange-on-dark hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Explore Our Strategy
             </Link>
@@ -99,7 +99,7 @@ export default function SmpHero() {
             </div>
 
             {/* creative */}
-            <div className="relative mt-4 flex h-40 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#0b4b7d_0%,#1076bc_52%,#f79522_100%)]">
+            <div className="relative mt-4 flex h-40 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#0b4b7d_0%,#1076bc_52%,#b45309_100%)]">
               <ServiceIcon name="content" className="relative h-10 w-10 text-white/90" />
               <span className="absolute inset-x-4 bottom-4 flex gap-1.5">
                 <span className="h-1 flex-1 rounded-full bg-white/45" />
@@ -128,7 +128,7 @@ export default function SmpHero() {
 
           {/* Bottom-left card — story */}
           <div className="absolute -left-3 bottom-4 hidden w-40 -rotate-6 rounded-2xl border border-white/12 bg-brand-blue-deep/90 p-3 shadow-2xl backdrop-blur-xl sm:block lg:-left-8">
-            <div className="flex h-16 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#b45309,#f79522)]">
+            <div className="flex h-16 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#9a3412,#b45309)]">
               <ServiceIcon name="ads" className="h-6 w-6 text-white/85" />
             </div>
             <p className="mt-2.5 text-[10px] font-medium uppercase tracking-[0.14em] text-white/55">

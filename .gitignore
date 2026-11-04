@@ -48,3 +48,11 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Project backup/copy directories — never commit (contains a full copy
+# of web/, including its own .env and .next trees)
+web - backup/
+
+# Editor / backup artefacts and debug scratch files
+*.bak
+*.tmp
+

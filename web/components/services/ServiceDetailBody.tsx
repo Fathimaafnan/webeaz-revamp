@@ -23,7 +23,7 @@ function PanelBand({
     <div
       className={`svc-card-band flex h-16 items-center gap-3 px-6 ${
         accent === "orange"
-          ? "bg-[linear-gradient(140deg,#b45309,#f79522)]"
+          ? "bg-[linear-gradient(140deg,#9a3412,#b45309)]"
           : "bg-[linear-gradient(140deg,#0b4b7d,#1076bc)]"
       }`}
     >
@@ -195,7 +195,7 @@ export default function ServiceDetailBody({
           </Link>
           <Link
             href={`/services/${category.slug}`}
-            className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-brand-orange hover:text-brand-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-light"
+            className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-brand-orange-on-dark hover:text-brand-orange-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             ← All {category.name} services
           </Link>

@@ -34,18 +34,18 @@ export default function CategoryCard({
       <div
         className={`svc-card-band relative flex h-32 items-center justify-center ${
           warm
-            ? "bg-[linear-gradient(140deg,#b45309,#f79522)]"
+            ? "bg-[linear-gradient(140deg,#9a3412,#b45309)]"
             : "bg-[linear-gradient(140deg,#0b4b7d,#1076bc)]"
         }`}
       >
-        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/25 bg-white/15 backdrop-blur-sm transition-transform duration-300 group-hover:scale-105">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/25 bg-black/25 backdrop-blur-sm transition-transform duration-300 group-hover:scale-105">
           <ServiceIcon name={category.icon} className="h-7 w-7 text-white" />
         </span>
         <span
           aria-hidden="true"
           className="pointer-events-none absolute -bottom-12 h-24 w-40 rounded-full bg-black/10 blur-2xl"
         />
-        <span className="absolute right-4 top-4 rounded-full border border-white/25 bg-white/15 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
+        <span className="absolute right-4 top-4 rounded-full border border-white/25 bg-black/55 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
           {category.num}
         </span>
       </div>
@@ -62,7 +62,7 @@ export default function CategoryCard({
         </p>
 
         <div className="mt-6 flex items-center justify-between gap-4">
-          <span className="inline-flex items-center gap-2 text-sm font-semibold text-brand-orange-strong transition-colors duration-300 group-hover:text-brand-orange-deep">
+          <span className="inline-flex items-center gap-2 text-sm font-semibold text-brand-orange-strong transition-colors duration-300 group-hover:text-brand-orange-strong">
             {category.services.length} services
             <span
               aria-hidden="true"

@@ -14,22 +14,22 @@ const styles: Record<Variant, string> = {
   primary:
     "bg-brand-orange text-ink hover:bg-brand-orange-deep shadow-sm shadow-brand-orange/30",
   secondary:
-    "border border-line text-ink hover:border-brand-blue hover:text-brand-blue bg-white",
+    "border border-control text-ink hover:border-brand-blue hover:text-brand-blue bg-white",
   ghost: "text-brand-blue hover:text-brand-blue-deep",
   onDark:
     "bg-white text-ink hover:bg-brand-orange-soft",
   // Hero primary — WebEaz blue button with a soft blue
   // glow that gently increases on hover.
   heroPrimary:
-    "bg-brand-blue text-white shadow-lg shadow-brand-blue/25 hover:bg-brand-blue-bright hover:shadow-glow-blue",
+    "hero-button border border-white/80 bg-brand-blue text-white shadow-lg shadow-brand-blue/25 hover:bg-brand-blue-deep hover:shadow-glow-blue",
   // Hero secondary — minimal dark outline treatment,
   // transitioning toward WebEaz orange on hover.
   heroSecondary:
-    "border border-white/25 bg-white/5 text-white backdrop-blur-sm hover:border-brand-orange hover:text-brand-orange hover:bg-white/10",
+    "hero-button border border-white/70 bg-transparent text-white backdrop-blur-sm hover:border-brand-orange-on-dark hover:bg-black/10",
   // Hero orange — WebEaz orange button with a soft orange
   // glow that gently increases on hover.
   heroOrange:
-    "bg-brand-orange text-ink shadow-lg shadow-brand-orange/25 hover:bg-brand-orange-deep hover:shadow-glow-orange",
+    "hero-button bg-brand-orange text-ink shadow-lg shadow-brand-orange/25 hover:bg-brand-orange-deep hover:shadow-glow-orange",
 };
 
 type Props = {

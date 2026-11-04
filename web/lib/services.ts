@@ -18,6 +18,9 @@ export type Service = {
   /** Card summary — the existing published positioning. */
   summary: string;
   icon: ServiceIconName;
+  /** Optional artwork. Set through the CMS; rendered on the detail
+      hero only when present, so services without one are unchanged. */
+  image?: string;
   /** What the service is. */
   overview: string;
   /** What WebEaz provides. */

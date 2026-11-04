@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
+import type { HomeSection } from "@/lib/defaults";
 
 /**
  * Partner and recognition information published on
@@ -59,13 +60,13 @@ const partnerLogos = [
   },
 ];
 
-export default function PartnersStrip() {
+export default function PartnersStrip({ section }: { section: HomeSection }) {
   return (
-    <div className="sec-mist theme-light px-6 sm:px-10 pt-8 sm:pt-10 pb-0 sm:pb-0">
+    <div className="sec-mist theme-light px-6 pt-[var(--space-5)] pb-[var(--space-5)] sm:px-10 sm:pt-[var(--space-6)] sm:pb-[var(--space-6)] lg:pt-[var(--section-padding)] lg:pb-[var(--section-padding)]">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col items-start gap-y-6 sm:gap-y-8">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-orange-strong">
-            Certified Partner / Associate Partner / Recognition
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-orange-strong">
+            {section.title}
           </h2>
           <div className="flex flex-nowrap items-center gap-x-6 sm:gap-x-8 lg:gap-x-10 overflow-x-auto pb-2">
             {partnerLogos.map((l) => (
@@ -76,6 +77,7 @@ export default function PartnersStrip() {
                     alt={l.alt}
                     width={l.width}
                     height={l.height}
+                    unoptimized
                     sizes="260px"
                     className="block h-14 w-auto object-contain sm:h-16"
                   />

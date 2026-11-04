@@ -1,9 +1,16 @@
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
+import type { HomeContent, HomeSection } from "@/lib/defaults";
 
-export default function FinalCTA() {
+export default function FinalCTA({
+  content,
+  section,
+}: {
+  content: HomeContent;
+  section: HomeSection;
+}) {
   return (
-    <section className="sec-ember relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32">
+    <section className="sec-ember relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       <div
         aria-hidden="true"
         className="ambient-glow ambient-glow-blue animate-glow-drift -top-44 left-[8%] h-[34rem] w-[34rem]"
@@ -36,25 +43,24 @@ export default function FinalCTA() {
             later, the button last. Three steps of 120ms is enough to
             read as a sequence without making the visitor wait for it. */}
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/85">
-            Let&apos;s talk
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/85">
+            {content.ctaEyebrow || section.eyebrow}
           </p>
           <h2 className="mt-5 text-h1 font-bold tracking-tight text-ink">
-            Let&apos;s Build What&apos;s Next.
+            {section.title || content.ctaTitle}
           </h2>
         </Reveal>
 
         <Reveal delay={120}>
           <p className="mx-auto mt-6 max-w-xl text-lead text-ink/85">
-            Have a business challenge, digital idea or transformation goal?
-            Let&apos;s create the right technology solution for your business.
+            {section.description || content.ctaDescription}
           </p>
         </Reveal>
 
         <Reveal delay={240}>
           <div className="mt-10">
-            <Button href="/contact" variant="heroPrimary">
-              Start a Conversation →
+            <Button href={content.ctaHref} variant="heroPrimary">
+              {content.ctaLabel}
             </Button>
           </div>
         </Reveal>

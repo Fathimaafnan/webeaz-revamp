@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getSiteSettings } from "@/lib/content";
 
 const nav = [
-  { label: "Solutions", href: "/solutions" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Industries", href: "/industries" },
   { label: "Our Work", href: "/our-work" },
-  { label: "Company", href: "/company" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
 ];
@@ -28,26 +28,27 @@ const socials = [
   { label: "YouTube", href: "https://www.youtube.com/" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await getSiteSettings();
+
   return (
     <footer className="bg-brand-blue-chrome text-zinc-200">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Image
-              src="/webeaz-logo-white.png"
+              src="/webeaz-logo.png"
               alt="WebEaz"
-              width={185}
-              height={53}
+              width={1746}
+              height={483}
               unoptimized
               className="h-8 w-auto"
             />
             <p className="mt-4 text-sm font-medium text-zinc-100">
-              Technology • Digital Growth • Automation • AI
+              {settings.footerTagline}
             </p>
             <p className="mt-3 max-w-xs text-sm leading-6">
-              Technology and digital solutions that help businesses build,
-              transform, automate and grow.
+              {settings.footerBlurb}
             </p>
           </div>
 
@@ -56,7 +57,10 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               {nav.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-zinc-200 transition-colors hover:text-brand-orange">
+                  <Link
+                    href={l.href}
+                    className="text-zinc-200 transition-colors hover:text-brand-orange-on-dark hover:underline focus-visible:text-brand-orange-on-dark focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange-on-dark"
+                  >
                     {l.label}
                   </Link>
                 </li>
@@ -69,7 +73,12 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               {products.map((p) => (
                 <li key={p.href}>
-                  <a href={p.href} target="_blank" rel="noopener noreferrer" className="text-zinc-200 transition-colors hover:text-brand-orange">
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-200 transition-colors hover:text-brand-orange-on-dark hover:underline focus-visible:text-brand-orange-on-dark focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange-on-dark"
+                  >
                     {p.label}
                   </a>
                 </li>
@@ -79,7 +88,10 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               {legal.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-zinc-200 transition-colors hover:text-brand-orange">
+                  <Link
+                    href={l.href}
+                    className="text-zinc-200 transition-colors hover:text-brand-orange-on-dark hover:underline focus-visible:text-brand-orange-on-dark focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange-on-dark"
+                  >
                     {l.label}
                   </Link>
                 </li>
@@ -92,7 +104,12 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               {socials.map((s) => (
                 <li key={s.label}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-brand-blue">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-brand-orange-on-dark hover:underline focus-visible:text-brand-orange-on-dark focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange-on-dark"
+                  >
                     {s.label}
                   </a>
                 </li>
@@ -102,8 +119,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col justify-between gap-3 border-t border-white/15 pt-6 text-xs text-zinc-200 sm:flex-row">
-          <p>© WebEaz Technologies Pvt. Ltd.</p>
-          <p>Built for the future of business technology.</p>
+          <p>© {settings.siteName}</p>
+          <p>{settings.footerNote}</p>
         </div>
       </div>
     </footer>
