@@ -55,4 +55,4 @@ web - backup/
 # Editor / backup artefacts and debug scratch files
 *.bak
 *.tmp
-
+/web/scripts/diag-prisma-tmp.ts
