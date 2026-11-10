@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   description:
     "WebEaz helps businesses build, transform, automate and grow through technology, digital growth, automation and AI.",
   alternates: { canonical: "/" },
+  icons: {
+    // Apple Touch Icon (180x180) served from /public. The favicon is
+    // provided by the app/favicon.ico file convention — declared here
+    // only once to avoid duplicate icon links.
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "WebEaz Technologies | Technology, Digital Growth, Automation & AI",
     description:
@@ -31,6 +37,12 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: true, follow: true },
+};
+
+// Next.js 14+/16: theme color belongs in the viewport export (not
+// metadata) and renders <meta name="theme-color" content="#1769D2">.
+export const viewport: Viewport = {
+  themeColor: "#1769D2",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

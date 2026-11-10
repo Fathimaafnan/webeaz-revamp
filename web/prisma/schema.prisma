@@ -23,14 +23,28 @@ enum ContentStatus {
   ARCHIVED
 }
 
+/// Blog submission workflow. `status` (ContentStatus) remains the
+/// single public-visibility axis; `reviewStage` tracks the editorial
+/// approval state and is never used directly for public filtering.
+enum BlogReviewStage {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  APPROVED
+}
+
 model Admin {
   id            Int      @id @default(autoincrement())
   name          String
   email         String   @unique
   passwordHash  String
   role          String   @default("admin")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  reviewedPosts     BlogPost[]         @relation("BlogReviewer")
+  reviewedRevisions BlogPostRevision[] @relation("BlogRevisionReviewer")
+  reviewedApplications ContributorApplication[] @relation("ApplicationReviewer")
+  auditEvents       BlogPostAudit[]    @relation("BlogPostAudit")
 }
 
 // ---------------------------------------------------------------------------
@@ -103,6 +117,7 @@ model ServiceCategory {
   num         String        @default("")
   tagline     String        @default("")
   description String        @default("")
+  image       String?
   icon        String        @default("software")
   accent      String        @default("blue")
   order       Int           @default(0)
@@ -121,6 +136,8 @@ model Service {
   icon         String        @default("software")
   /// Optional artwork shown on the service detail hero when set.
   image        String?
+  seoTitle     String?
+  seoDescription String?
   overview     String        @default("")
   provides     String[]      @default([])
   capabilities String[]      @default([])
@@ -139,6 +156,22 @@ model Service {
 // Blog (drives /insights and /insights/[slug])
 // ---------------------------------------------------------------------------
 
+model BlogUser {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  posts        BlogPost[] @relation("BlogOwner")
+  /// Approved contributor application this account was created from
+  /// (null for admin-created accounts and legacy rows).
+  applicationId Int?      @unique
+  application   ContributorApplication? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  invitations   ContributorInvitation[]
+}
+
 model BlogPost {
   id              Int           @id @default(autoincrement())
   slug            String        @unique
@@ -153,13 +186,141 @@ model BlogPost {
   seoTitle        String?
   seoDescription  String?
   status          ContentStatus @default(DRAFT)
+  ownerId         Int?
+  owner           BlogUser?     @relation("BlogOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  reviewStage     BlogReviewStage @default(DRAFT)
+  rejectionReason String?
+  reviewedBy      Int?
+  reviewer        Admin?        @relation("BlogReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  reviewedAt      DateTime?
+  submittedAt     DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+  revisions       BlogPostRevision[] @relation("BlogPostRevision")
+  slugRedirects   BlogSlugRedirect[] @relation("BlogSlugRedirect")
+  audits          BlogPostAudit[]    @relation("BlogPostAudit")
+
+  @@index([ownerId, status])
+  @@index([reviewStage, status])
+}
+
+/// Admin review audit actions (mirrors the review workflow so ownership
+/// and review decisions stay auditable).
+enum BlogAuditAction {
+  ASSIGNED
+  APPROVED
+  RETURNED
+  SLUG_CHANGED
+}
+
+model BlogPostRevision {
+  id              Int             @id @default(autoincrement())
+  blogPostId      Int
+  blogPost        BlogPost        @relation("BlogPostRevision", fields: [blogPostId], references: [id], onDelete: Cascade)
+  title           String
+  slug            String
+  excerpt         String          @default("")
+  content         String          @default("")
+  category        String          @default("Insights")
+  coverImage      String?
+  author          String          @default("WebEaz Technologies")
+  seoTitle        String?
+  seoDescription  String?
+  reviewStage     BlogReviewStage @default(DRAFT)
+  rejectionReason String?
+  reviewedBy      Int?
+  reviewer        Admin?          @relation("BlogRevisionReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  reviewedAt      DateTime?
+  submittedAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([blogPostId, reviewStage])
+  @@index([reviewStage, submittedAt])
+}
+
+model BlogSlugRedirect {
+  oldSlug    String   @id
+  blogPostId Int
+  blogPost   BlogPost @relation("BlogSlugRedirect", fields: [blogPostId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
+
+model BlogPostAudit {
+  id         Int            @id @default(autoincrement())
+  blogPostId Int
+  blogPost   BlogPost       @relation("BlogPostAudit", fields: [blogPostId], references: [id], onDelete: Cascade)
+  adminId    Int?
+  admin      Admin?         @relation("BlogPostAudit", fields: [adminId], references: [id], onDelete: SetNull)
+  action     BlogAuditAction
+  detail     String?
+  createdAt  DateTime       @default(now())
+
+  @@index([blogPostId, createdAt])
 }
 
 // ---------------------------------------------------------------------------
 // Testimonials (drives the homepage "What Our Clients Say" grid)
 // ---------------------------------------------------------------------------
+
+enum ContributorApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum EmailDeliveryStatus {
+  PENDING
+  ACCEPTED
+  FAILED
+}
+
+model ContributorApplication {
+  id                  Int                         @id @default(autoincrement())
+  fullName            String
+  email               String
+  professionalRole    String
+  company             String?
+  bio                 String
+  linkedInUrl         String?
+  portfolioUrl        String?
+  contributionReason  String
+  status              ContributorApplicationStatus @default(PENDING)
+  reviewedBy          Int?
+  reviewer            Admin?                      @relation("ApplicationReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  reviewedAt          DateTime?
+  rejectionReason     String?
+  /// BlogUser created when this application was approved (once).
+  approvedBlogUserId  Int?        @unique
+  approvedBlogUser    BlogUser?
+  invitation          ContributorInvitation?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email, status])
+}
+
+model ContributorInvitation {
+  id            Int                  @id @default(autoincrement())
+  applicationId Int                  @unique
+  application   ContributorApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  blogUserId    Int                  @unique
+  blogUser      BlogUser             @relation(fields: [blogUserId], references: [id], onDelete: Cascade)
+  /// sha256 hex of the single-use token. The plaintext token only ever
+  /// exists in the invitation email URL — never in the database.
+  tokenHash     String               @unique
+  expiresAt     DateTime
+  usedAt        DateTime?
+  revokedAt     DateTime?
+  sentStatus    EmailDeliveryStatus  @default(PENDING)
+  sentAt        DateTime?
+  providerId    String?
+  deliveryError String?
+  createdAt     DateTime             @default(now())
+
+  @@index([expiresAt])
+}
 
 model Testimonial {
   id        Int           @id @default(autoincrement())

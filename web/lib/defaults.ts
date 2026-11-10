@@ -151,6 +151,15 @@ export const DEFAULT_SECTIONS: HomeSection[] = [
     order: 70,
   },
   {
+    key: "blogs",
+    eyebrow: "Blogs",
+    title: "Blogs",
+    description:
+      "Perspectives on technology, AI, digital growth and automation from the WebEaz team.",
+    visible: true,
+    order: 75,
+  },
+  {
     key: "final-cta",
     eyebrow: "Let's talk",
     title: "Let's Build What's Next.",
@@ -226,3 +235,38 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     "Technology and digital solutions that help businesses build, transform, automate and grow.",
   footerNote: "Built for the future of business technology.",
 };
+
+export type HomepageBlogSettings = {
+  exploreLabel: string;
+  exploreHref: string;
+  /** Ordered BlogPost IDs. null = not customized yet → use 3 most recent eligible. */
+  featuredIds: number[] | null;
+  ctaVisible: boolean;
+  ctaHeading: string;
+  ctaDescription: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
+
+export const DEFAULT_HOMEPAGE_BLOG_SETTINGS: HomepageBlogSettings = {
+  exploreLabel: "Explore More Blogs",
+  exploreHref: "/blog",
+  featuredIds: null,
+  ctaVisible: true,
+  ctaHeading: "Have Insights Worth Sharing?",
+  ctaDescription:
+    "Become a WebEaz Contributor. Share your knowledge, experiences, and ideas with our community.",
+  ctaLabel: "Become a Contributor",
+  ctaHref: "/blog/become-a-contributor",
+};
+
+export const HOMEPAGE_BLOG_SETTING_KEYS = {
+  exploreLabel: "homepage.blogs.exploreLabel",
+  exploreHref: "homepage.blogs.exploreHref",
+  featuredIds: "homepage.blogs.featuredIds",
+  ctaVisible: "homepage.blogs.ctaVisible",
+  ctaHeading: "homepage.blogs.ctaHeading",
+  ctaDescription: "homepage.blogs.ctaDescription",
+  ctaLabel: "homepage.blogs.ctaLabel",
+  ctaHref: "homepage.blogs.ctaHref",
+} as const;

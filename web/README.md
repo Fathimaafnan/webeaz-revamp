@@ -95,13 +95,41 @@ Images referenced by CMS content cannot be deleted from the media library.
 
 ## CMS behavior
 
-- `/admin`, `/admin/homepage`, `/admin/services`, `/admin/blog`,
-  `/admin/testimonials`, `/admin/media`, and `/admin/settings` are protected
-  by a server-side administrator check.
+- `/admin` and `/admin/homepage` are protected by a server-side administrator
+  check. The Homepage CMS manages the existing hero, final CTA, homepage
+  sections, both statistics groups, and industries.
+- `/admin/services` manages service categories and services. Categories and
+  services are created as drafts; publish a category and its services for them
+  to appear publicly. Archived or draft categories hide their services even
+  when an individual service is marked published. Existing static service
+  content is not imported or replaced by the editor.
+- In the Services CMS, use **Categories** to edit category copy, artwork,
+  icon/accent, order and status; use **Services** to search/filter, select a
+  category, edit content and SEO fields, set order/status, or delete after
+  confirmation. A category can only be deleted after its services have been
+  moved or deleted. Changing a slug changes that route.
+- Homepage and industry updates use authenticated, same-origin Route Handler
+  mutations. Industry records are draft by default; only published records are
+  shown on public pages.
+- Services CMS APIs are authenticated Route Handlers:
+  `/api/admin/services/categories` and
+  `/api/admin/services/categories/[id]` manage categories;
+  `/api/admin/services` and `/api/admin/services/[id]` manage individual
+  services. Every mutation validates its input, checks same-origin requests,
+  and revalidates the affected service pages and sitemap.
+- Service images accept a site path or HTTPS URL. Category presentation fields
+  include its number, tagline, icon, accent and optional image; service editing
+  preserves all existing content lists and includes optional SEO title and
+  description. To expose those new category-image and SEO fields in an
+  environment, deploy the checked-in additive Services CMS migration with
+  `npx prisma migrate deploy` after reviewing the target database. The
+  migration is not applied automatically by the CMS.
 - Draft and archived services, testimonials, and blog posts are excluded from
   public pages. Published blog articles appear at `/insights` and
   `/insights/[slug]`.
-- Publishing or editing content revalidates the affected public routes.
+- Homepage changes revalidate `/`; industry changes revalidate `/` and
+  `/industries`; service changes revalidate the catalog, affected category
+  and detail paths, `/`, and `sitemap.xml`.
 - If PostgreSQL is unavailable or not initialized, public pages retain their
   existing static content. No migration, seed, login, or persistent CRUD
   operation should be considered verified until tested against a configured

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ServiceIcon from "@/components/services/ServiceIcon";
-import { getSiblings, type Service, type ServiceCategory } from "@/lib/services";
+import type { Service, ServiceCategory } from "@/lib/services";
 
 /**
  * The gradient band a Services panel carries at its head.
@@ -83,7 +83,7 @@ export default function ServiceDetailBody({
   category: ServiceCategory;
   service: Service;
 }) {
-  const siblings = getSiblings(category.slug, service.slug);
+  const siblings = category.services.filter((item) => item.slug !== service.slug);
 
   return (
     <>

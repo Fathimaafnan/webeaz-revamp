@@ -100,9 +100,16 @@ function ProjectVisual({ index, industry }: { index: number; industry: string })
         )}
       </svg>
 
+      {/* This label sits UNDER the hover wash (a translucent dark
+          gradient), so whitening it would be neutralised by the wash
+          sitting on top of it. It darkens instead — darker text keeps
+          its contrast against the lightened background. */}
       <span className="absolute bottom-4 left-5 flex items-center gap-2">
-        <CardIcon name="work" className="h-4 w-4 text-muted" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+        <CardIcon
+          name="work"
+          className="h-4 w-4 text-muted transition-colors duration-[450ms] ease-in-out group-hover:text-ink group-focus-within:text-ink"
+        />
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted transition-colors duration-[450ms] ease-in-out group-hover:text-ink group-focus-within:text-ink">
           {industry}
         </span>
       </span>
@@ -119,9 +126,15 @@ function ProjectCard({ c, i }: { c: CaseStudy; i: number }) {
           tree and is readable without hover. */}
       <div className="card-media card-media-grid card-project-media h-56">
         <ProjectVisual index={i} industry={c.industry} />
+        {/* This twin sits ON TOP of the hover wash (z-10 over the dark
+            gradient), so it inverts to white to stay readable against it —
+            same treatment as the technology line next to it. */}
         <span className="absolute bottom-4 left-5 z-10 flex items-center gap-2">
-          <CardIcon name="work" className="h-4 w-4 text-brand-blue-deep" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-brand-blue-deep">
+          <CardIcon
+            name="work"
+            className="h-4 w-4 text-brand-blue-deep transition-colors duration-[450ms] ease-in-out group-hover:text-white group-focus-within:text-white"
+          />
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-brand-blue-deep transition-colors duration-[450ms] ease-in-out group-hover:text-white group-focus-within:text-white">
             {c.industry}
           </span>
         </span>

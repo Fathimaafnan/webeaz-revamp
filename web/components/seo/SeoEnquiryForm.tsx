@@ -52,13 +52,19 @@ export default function SeoEnquiryForm() {
   const set = (key: keyof Values) => (value: string) => {
     setValues((v) => ({ ...v, [key]: value }));
     setRouted(false);
+    setErrors((current) => {
+      if (!current[key]) return current;
+      const rest: Errors = { ...current };
+      delete rest[key];
+      return rest;
+    });
   };
 
   const validate = (): Errors => {
     const next: Errors = {};
-    if (!values.name.trim()) next.name = "Please enter your name.";
-    if (!values.email.trim()) next.email = "Please enter your work email.";
-    else if (!emailRe.test(values.email.trim())) next.email = "Enter a valid email address.";
+    if (!values.name.trim()) next.name = "Please enter your full name.";
+    if (!values.email.trim()) next.email = "Please enter a valid email address.";
+    else if (!emailRe.test(values.email.trim())) next.email = "Please enter a valid email address.";
     if (!values.company.trim()) next.company = "Please enter your company name.";
     if (values.website.trim() && !urlRe.test(values.website.trim()))
       next.website = "Enter a valid website address, e.g. example.com";

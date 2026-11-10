@@ -28,11 +28,11 @@ export default function TrustStats({
         className="ambient-glow ambient-glow-orange animate-glow-drift-slow absolute -bottom-24 left-[-8rem] h-64 w-64"
       />
       <div className="mx-auto max-w-4xl text-center">
-        <Reveal>
+        <Reveal className="mx-auto w-full max-w-3xl text-center">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-orange-strong">
             {section.eyebrow}
           </p>
-          <h2 className="mt-4 text-h2 font-bold text-ink">
+          <h2 className="mx-auto mt-4 w-full text-balance text-center text-h2 font-bold text-ink">
             {section.title}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-muted">

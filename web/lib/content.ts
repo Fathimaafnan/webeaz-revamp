@@ -1,15 +1,19 @@
 import "server-only";
 
+import { permanentRedirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
   DEFAULT_HOME,
+  DEFAULT_HOMEPAGE_BLOG_SETTINGS,
   DEFAULT_SECTIONS,
   DEFAULT_SETTINGS,
   DEFAULT_STATS,
   DEFAULT_TESTIMONIALS,
+  HOMEPAGE_BLOG_SETTING_KEYS,
   type HomeContent,
   type HomeSection,
   type HomeStat,
+  type HomepageBlogSettings,
   type SiteSettings,
   type TestimonialItem,
 } from "@/lib/defaults";
@@ -90,11 +94,14 @@ export async function getHomeSections(): Promise<HomeSection[]> {
 
 export async function getHomeStats(group?: "trust" | "why"): Promise<HomeStat[]> {
   try {
-    const rows = await prisma.homepageStat.findMany({
-      where: group ? { group } : undefined,
-      orderBy: { order: "asc" },
-    });
-    if (rows.length > 0) {
+    const [rows, total] = await Promise.all([
+      prisma.homepageStat.findMany({
+        where: group ? { group } : undefined,
+        orderBy: { order: "asc" },
+      }),
+      prisma.homepageStat.count(),
+    ]);
+    if (total > 0) {
       return rows.map((r) => ({
         id: r.id,
         group: r.group as "trust" | "why",
@@ -206,8 +213,25 @@ export async function getPublishedPostBySlug(
   try {
     const row = await prisma.blogPost.findUnique({ where: { slug } });
     if (row && row.status === "PUBLISHED") return toPublishedPost(row);
+
+    // Admin-authorized slug moves keep the old URL resolving forever:
+    // follow the permanent redirect to the post's current slug.
+    if (!row) {
+      const redirect = await prisma.blogSlugRedirect.findUnique({
+        where: { oldSlug: slug },
+        include: { blogPost: true },
+      });
+      if (redirect && redirect.blogPost.status === "PUBLISHED") {
+        permanentRedirect(`/insights/${redirect.blogPost.slug}`);
+      }
+    }
     return null;
-  } catch {
+  } catch (error) {
+    // permanentRedirect throws a control-flow error that must
+    // propagate; everything else falls through to the not-found page.
+    if (error && typeof error === "object" && "digest" in error) {
+      throw error;
+    }
     return null;
   }
 }
@@ -215,16 +239,107 @@ export async function getPublishedPostBySlug(
 /** Fallback shape so /insights can keep rendering when the DB is down. */
 export type InsightFallback = Insight;
 
+/**
+ * Homepage Blogs settings (Explore More + contributor CTA + featured IDs).
+ * Stored as SiteSetting key/value rows so no migration is required;
+ * heading/subtitle/visibility live on the HomepageSection row (key "blogs").
+ */
+export async function getHomepageBlogSettings(): Promise<HomepageBlogSettings> {
+  const fallback = DEFAULT_HOMEPAGE_BLOG_SETTINGS;
+  try {
+    const rows = await prisma.siteSetting.findMany({
+      where: {
+        key: {
+          in: [
+            HOMEPAGE_BLOG_SETTING_KEYS.exploreLabel,
+            HOMEPAGE_BLOG_SETTING_KEYS.exploreHref,
+            HOMEPAGE_BLOG_SETTING_KEYS.featuredIds,
+            HOMEPAGE_BLOG_SETTING_KEYS.ctaVisible,
+            HOMEPAGE_BLOG_SETTING_KEYS.ctaHeading,
+            HOMEPAGE_BLOG_SETTING_KEYS.ctaDescription,
+            HOMEPAGE_BLOG_SETTING_KEYS.ctaLabel,
+            HOMEPAGE_BLOG_SETTING_KEYS.ctaHref,
+          ],
+        },
+      },
+    });
+    const map = new Map(rows.map((r) => [r.key, r.value]));
+    const get = (key: string) => map.get(key);
+    let featuredIds: number[] | null = null;
+    const rawIds = get(HOMEPAGE_BLOG_SETTING_KEYS.featuredIds);
+    if (rawIds !== undefined) {
+      try {
+        const parsed: unknown = JSON.parse(rawIds);
+        if (
+          Array.isArray(parsed) &&
+          parsed.every((v) => Number.isInteger(v) && typeof v === "number" && v > 0)
+        ) {
+          featuredIds = [...new Set(parsed as number[])].slice(0, 3);
+        } else {
+          featuredIds = [];
+        }
+      } catch {
+        featuredIds = [];
+      }
+    }
+    return {
+      exploreLabel: get(HOMEPAGE_BLOG_SETTING_KEYS.exploreLabel) ?? fallback.exploreLabel,
+      exploreHref: get(HOMEPAGE_BLOG_SETTING_KEYS.exploreHref) ?? fallback.exploreHref,
+      featuredIds,
+      ctaVisible: (get(HOMEPAGE_BLOG_SETTING_KEYS.ctaVisible) ?? "true") !== "false",
+      ctaHeading: get(HOMEPAGE_BLOG_SETTING_KEYS.ctaHeading) ?? fallback.ctaHeading,
+      ctaDescription: get(HOMEPAGE_BLOG_SETTING_KEYS.ctaDescription) ?? fallback.ctaDescription,
+      ctaLabel: get(HOMEPAGE_BLOG_SETTING_KEYS.ctaLabel) ?? fallback.ctaLabel,
+      ctaHref: get(HOMEPAGE_BLOG_SETTING_KEYS.ctaHref) ?? fallback.ctaHref,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
+/** Eligible for homepage featuring: published AND editorially approved. */
+export async function getEligibleBlogOptions(): Promise<PublishedBlogPost[]> {
+  try {
+    const rows = await prisma.blogPost.findMany({
+      where: { status: "PUBLISHED", reviewStage: "APPROVED" },
+      orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
+    });
+    return rows.map(toPublishedPost);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Up to 3 featured posts for the homepage Blogs section.
+ * - Explicit selection: only those IDs, in selected order, filtered to
+ *   still-eligible posts (unpublished/deleted drop out automatically).
+ * - No selection yet (null): 3 most recent eligible posts.
+ */
+export async function getHomepageFeaturedPosts(): Promise<PublishedBlogPost[]> {
+  const settings = await getHomepageBlogSettings();
+  const eligible = await getEligibleBlogOptions();
+  const byId = new Map(eligible.map((p) => [p.id, p]));
+  if (settings.featuredIds !== null) {
+    return settings.featuredIds
+      .map((id) => byId.get(id))
+      .filter((p): p is PublishedBlogPost => Boolean(p))
+      .slice(0, 3);
+  }
+  return eligible.slice(0, 3);
+}
+
 export async function getIndustries(): Promise<string[]> {
   try {
-    const [rows, total] = await Promise.all([
-      prisma.industry.findMany({
-        where: { status: "PUBLISHED" },
-        orderBy: { order: "asc" },
-      }),
-      prisma.industry.count(),
-    ]);
-    if (total > 0) return rows.map((r) => r.name);
+    // Published rows only. Counting all rows would switch the site to a
+    // database-only view the moment any industry is created, hiding the
+    // built-in list even when nothing is published.
+    const published = await prisma.industry.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+      select: { name: true },
+    });
+    if (published.length > 0) return published.map((row) => row.name);
   } catch {
     // fall through
   }
@@ -242,6 +357,7 @@ function mapCategory(row: {
   num: string;
   tagline: string;
   description: string;
+  image: string | null;
   icon: string;
   accent: string;
   order: number;
@@ -257,6 +373,8 @@ function mapCategory(row: {
     benefits: string[];
     useCases: string[];
     technologies: string[];
+    seoTitle: string | null;
+    seoDescription: string | null;
     order: number;
   }>;
 }): ServiceCategory {
@@ -266,6 +384,7 @@ function mapCategory(row: {
     num: row.num,
     tagline: row.tagline,
     description: row.description,
+    image: row.image,
     icon: row.icon as ServiceCategory["icon"],
     accent: row.accent as ServiceCategory["accent"],
     services: row.services.map((s) => ({
@@ -280,6 +399,8 @@ function mapCategory(row: {
       useCases: s.useCases,
       technologies: s.technologies.length > 0 ? s.technologies : undefined,
       image: s.image ?? undefined,
+      seoTitle: s.seoTitle,
+      seoDescription: s.seoDescription,
     })),
   };
 }
@@ -291,20 +412,25 @@ function mapCategory(row: {
  */
 export async function getServiceTree(): Promise<ServiceTree> {
   try {
-    const [rows, total] = await Promise.all([
+    const [rows, publishedServiceCount] = await Promise.all([
       prisma.serviceCategory.findMany({
         where: { status: "PUBLISHED" },
-        orderBy: { order: "asc" },
+        orderBy: [{ order: "asc" }, { id: "asc" }],
         include: {
           services: {
             where: { status: "PUBLISHED" },
-            orderBy: { order: "asc" },
+            orderBy: [{ order: "asc" }, { id: "asc" }],
           },
         },
       }),
-      prisma.serviceCategory.count(),
+      prisma.service.count({
+        where: {
+          status: "PUBLISHED",
+          category: { is: { status: "PUBLISHED" } },
+        },
+      }),
     ]);
-    if (total > 0) {
+    if (publishedServiceCount > 0) {
       const categories = rows.map(mapCategory);
       return {
         categories,

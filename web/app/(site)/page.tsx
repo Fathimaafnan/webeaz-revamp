@@ -1,4 +1,5 @@
 import Hero from "@/components/home/Hero";
+import { Fragment } from "react";
 import Capabilities from "@/components/home/Capabilities";
 import CaseStudies from "@/components/home/CaseStudies";
 import TrustStats from "@/components/home/TrustStats";
@@ -7,11 +8,14 @@ import FeaturedClients from "@/components/home/FeaturedClients";
 import Partners from "@/components/home/Partners";
 import Testimonials from "@/components/home/Testimonials";
 import FinalCTA from "@/components/home/FinalCTA";
+import Insights from "@/components/home/Insights";
 import Industries from "@/components/home/Industries";
 import {
   getHomeContent,
   getHomeSections,
   getHomeStats,
+  getHomepageBlogSettings,
+  getHomepageFeaturedPosts,
   getIndustries,
   getTestimonials,
 } from "@/lib/content";
@@ -31,7 +35,7 @@ const jsonLd = {
 };
 
 export default async function Home() {
-  const [content, sections, trustStats, whyStats, testimonials, industries] =
+  const [content, sections, trustStats, whyStats, testimonials, industries, featuredPosts, blogSettings] =
     await Promise.all([
       getHomeContent(),
       getHomeSections(),
@@ -39,6 +43,8 @@ export default async function Home() {
       getHomeStats("why"),
       getTestimonials(),
       getIndustries(),
+      getHomepageFeaturedPosts(),
+      getHomepageBlogSettings(),
     ]);
   const sectionByKey = new Map(sections.map((section) => [section.key, section]));
   const section = (key: string) => sectionByKey.get(key);
@@ -50,7 +56,47 @@ export default async function Home() {
   const featuredClientsSection = section("featured-clients");
   const partnersSection = section("partners");
   const testimonialsSection = section("testimonials");
+  const blogsSection = section("blogs");
   const finalCtaSection = section("final-cta");
+
+  // Render sections in the exact order saved in the CMS. Hero stays on
+  // top; each content section is emitted under its Fragment so nothing
+  // is wrapped or moved in the DOM. Keys not in this map are ignored.
+  const sectionNodes: Record<string, React.ReactNode> = {
+    capabilities: capabilitiesSection?.visible ? (
+      <Capabilities section={capabilitiesSection} />
+    ) : null,
+    "case-studies": caseStudiesSection?.visible ? (
+      <CaseStudies section={caseStudiesSection} />
+    ) : null,
+    industries: industriesSection?.visible ? (
+      <Industries industries={industries} section={industriesSection} />
+    ) : null,
+    "trust-stats": trustStatsSection?.visible ? (
+      <TrustStats section={trustStatsSection} stats={trustStats} />
+    ) : null,
+    "why-web-eaz": whyWebEazSection?.visible ? (
+      <WhyWebEaz section={whyWebEazSection} stats={whyStats} />
+    ) : null,
+    "featured-clients": featuredClientsSection?.visible ? (
+      <FeaturedClients section={featuredClientsSection} />
+    ) : null,
+    partners: partnersSection?.visible ? (
+      <Partners section={partnersSection} />
+    ) : null,
+    testimonials: testimonialsSection?.visible ? (
+      <Testimonials
+        testimonials={testimonials}
+        section={testimonialsSection}
+      />
+    ) : null,
+    blogs: blogsSection?.visible ? (
+      <Insights posts={featuredPosts} section={blogsSection} settings={blogSettings} />
+    ) : null,
+    "final-cta": finalCtaSection?.visible ? (
+      <FinalCTA content={content} section={finalCtaSection} />
+    ) : null,
+  };
 
   return (
     <>
@@ -65,46 +111,14 @@ export default async function Home() {
         {/* 1. Hero — value proposition + primary contact CTA */}
         <Hero content={content} />
 
-        {/* 2. Services Overview — compact service categories */}
-        {capabilitiesSection?.visible ? (
-          <Capabilities section={capabilitiesSection} />
-        ) : null}
-
-        {/* 3. Selected Work / Portfolio — compact case studies */}
-        {caseStudiesSection?.visible ? (
-          <CaseStudies section={caseStudiesSection} />
-        ) : null}
-
-        {industriesSection?.visible ? (
-          <Industries industries={industries} section={industriesSection} />
-        ) : null}
-
-        {/* 4. Why Choose WebEaz — credibility & differentiators (merged TrustStats + WhyWebEaz) */}
-        {trustStatsSection?.visible ? (
-          <TrustStats section={trustStatsSection} stats={trustStats} />
-        ) : null}
-        {whyWebEazSection?.visible ? (
-          <WhyWebEaz section={whyWebEazSection} stats={whyStats} />
-        ) : null}
-
-        {/* 5. Trust / Social Proof — client logos, partners, testimonials (merged) */}
-        {featuredClientsSection?.visible ? (
-          <FeaturedClients section={featuredClientsSection} />
-        ) : null}
-        {partnersSection?.visible ? (
-          <Partners section={partnersSection} />
-        ) : null}
-        {testimonialsSection?.visible ? (
-          <Testimonials
-            testimonials={testimonials}
-            section={testimonialsSection}
-          />
-        ) : null}
-
-        {/* 6. Contact CTA — moved up significantly for conversion */}
-        {finalCtaSection?.visible ? (
-          <FinalCTA content={content} section={finalCtaSection} />
-        ) : null}
+        {/* 2. Content sections — rendered in the order saved in the CMS.
+            Blogs is section key "blogs" (CMS-managed heading, featured
+            selection, Explore More and contributor CTA). */}
+        {sections.map((s) => {
+          const node = sectionNodes[s.key];
+          if (!node) return null;
+          return <Fragment key={s.key}>{node}</Fragment>;
+        })}
       </div>
     </>
   );

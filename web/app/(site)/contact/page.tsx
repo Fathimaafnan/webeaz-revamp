@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/ui/PageShell";
 import Button from "@/components/ui/Button";
+import ContactForm from "@/components/contact/ContactForm";
 
 const channels = [
   { label: "LinkedIn", href: "https://www.linkedin.com/" },
@@ -21,11 +22,12 @@ export default function ContactPage() {
     <PageShell
       eyebrow="Contact"
       title="Let's Build What's Next."
-      description="Have a business challenge, digital idea or transformation goal? Reach out through any of our channels and we'll start a conversation."
+      description="Have a business challenge, digital idea or transformation goal? Send an enquiry below, and we'll start a conversation."
     >
       <div className="mt-10 rounded-2xl border border-line bg-surface p-7">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-blue">
-          Reach us on
+        <h2 className="text-lg font-semibold text-ink">Send an enquiry</h2>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          You can also reach us through our social channels in the meantime:
         </p>
         <ul className="mt-5 flex flex-wrap gap-3">
           {channels.map((c) => (
@@ -41,10 +43,9 @@ export default function ContactPage() {
             </li>
           ))}
         </ul>
-        <p className="mt-6 text-sm text-muted">
-          A direct contact form is being added to this page. In the meantime, any
-          channel above reaches the WebEaz team.
-        </p>
+        <div className="mt-8">
+          <ContactForm />
+        </div>
       </div>
       <div className="mt-10">
         <Button href="/" variant="secondary">

@@ -282,7 +282,40 @@ button.bg-brand-orange {
 
 html {
   scroll-behavior: smooth;
+  /* Expanded pill: 64px nav + 12px top gap = 76px; compact needs less,
+     so the expanded value keeps headings clear in both states. */
   scroll-padding-top: 4.75rem;
+}
+
+[id] {
+  scroll-margin-top: 5.25rem;
+}
+
+/* Keyboard focus: one visible orange ring everywhere (keyboard only,
+   so mouse clicks keep their current appearance). !important so the
+   brand ring wins over per-component blue focus utilities. */
+:focus-visible {
+  outline: 3px solid #F47721 !important;
+  outline-offset: 3px !important;
+}
+
+/* Skip to content: visually hidden until keyboard focus. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #101418;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(9, 40, 72, 0.18);
+}
+.skip-link:focus-visible {
+  top: 0.75rem;
 }
 
 body {
@@ -3919,27 +3952,28 @@ main p:not([class*="max-w-"]) {
   );
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   backdrop-filter: blur(18px) saturate(150%);
-  border-bottom: 1px solid rgba(16, 118, 188, 0.16);
+  border: 1px solid rgba(16, 118, 188, 0.16);
+  border-radius: 999px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset,
-    0 12px 32px -18px rgba(9, 40, 72, 0.26);
+    0 1px 2px rgba(9, 40, 72, 0.04),
+    0 8px 24px rgba(9, 40, 72, 0.06);
 }
 
-/* Scrolled state: a shade more opaque, but deliberately NOT solid.
-   This bar only comes into play once page content is passing
-   underneath, and going fully opaque here is what would have
-   stopped the section colours from showing through â€” the exact
-   effect the bar exists for. 93/88 keeps the links readable against
-   moving content while still letting each section tint the bar as
-   it passes. */
+/* Navbar glass is deliberately CONSTANT at every scroll position
+   (top, over the Hero, and scrolled): a white semi-transparent fill
+   with backdrop blur so the blue Hero stays slightly visible through
+   it. `.navbar-glass-solid` is retained for compatibility but is no
+   longer applied — there is no scroll-based background switch. */
 .navbar-glass-solid {
   background-image: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.93) 0%,
     rgba(245, 249, 252, 0.88) 100%
   );
-  border-bottom-color: rgba(16, 118, 188, 0.22);
+  border-color: rgba(16, 118, 188, 0.22);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset,
-    0 12px 30px -18px rgba(9, 40, 72, 0.3);
+    0 1px 2px rgba(9, 40, 72, 0.05),
+    0 12px 30px rgba(9, 40, 72, 0.08);
 }
 
 /* The dropdown and the mobile panel are direct children of a bar that

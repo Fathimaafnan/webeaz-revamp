@@ -8,6 +8,25 @@ import {
   recordFailedAttempt,
 } from "@/lib/login-rate-limit";
 
+export const ADMIN_ROLE = "admin";
+export const BLOG_USER_ROLE = "blog_user";
+
+/** Prisma error code for "table does not exist" — the ONLY condition
+ *  under which a missing BlogUser is treated as "no such user" (the
+ *  pre-migration state, where Admin login must keep working). Every
+ *  other database error is surfaced by re-throwing so an outage can
+ *  never masquerade as an absent account. */
+const PRISMA_TABLE_MISSING_CODE = "P2021";
+
+function isMissingTableError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    (error as { code?: unknown }).code === PRISMA_TABLE_MISSING_CODE
+  );
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
@@ -20,11 +39,19 @@ export const authOptions: NextAuthOptions = {
        * Credentials validation lives server-side only. Unknown emails and
        * wrong passwords return the same "invalid credentials" outcome so the
        * endpoint never discloses whether an account exists.
+       *
+       * Two account types share this provider:
+       *   1. Existing Admin rows (`role` must be exactly "admin").
+       *   2. New BlogUser rows (active only).
+       * An email that exists in BOTH tables is ambiguous and is denied.
+       * The returned `role` ("admin" | "blog_user") is carried in the JWT
+       * and session so route guards can re-fetch the correct table —
+       * never trust the role alone (see lib/admin-auth.ts).
        */
       async authorize(credentials) {
         const email = credentials?.email?.trim().toLowerCase();
         const password = credentials?.password ?? "";
-        const rateKey = `admin-login:${email ?? "unknown"}`;
+        const rateKey = `login:${email ?? "unknown"}`;
 
         if (isRateLimited(rateKey)) {
           return null;
@@ -34,30 +61,89 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const admin = await prisma.admin.findUnique({ where: { email } });
+        let admin: { id: number; name: string; email: string; role: string; passwordHash: string } | null = null;
+        let blogUser: { id: number; name: string; email: string; isActive: boolean; passwordHash: string } | null = null;
 
-        if (!admin || admin.role !== "admin") {
+        try {
+          [admin, blogUser] = await Promise.all([
+            prisma.admin.findUnique({ where: { email } }),
+            // Tolerate ONLY a pre-migration database (BlogUser table
+            // missing): fall back to admin-only login so existing Admin
+            // sessions are not broken before the migration lands.
+            prisma.blogUser.findUnique({ where: { email } }).catch((error) => {
+              if (isMissingTableError(error)) {
+                console.error("blog user table not yet migrated; skipping lookup:", error);
+                return null;
+              }
+              throw error;
+            }),
+          ]);
+        } catch (error) {
+          console.error("login lookup failed:", error);
+          // The lookup itself failed (outage, permissions, …): fail
+          // closed without pretending the account is absent. Throwing
+          // surfaces a 500 instead of a misleading "invalid credentials".
+          throw error;
+        }
+
+        // Ambiguous identity: never guess which account was meant.
+        if (admin && blogUser) {
           recordFailedAttempt(rateKey);
           return null;
         }
 
-        const passwordMatches = await bcrypt.compare(password, admin.passwordHash);
+        if (admin) {
+          if (admin.role !== ADMIN_ROLE) {
+            recordFailedAttempt(rateKey);
+            return null;
+          }
 
-        if (!passwordMatches) {
-          recordFailedAttempt(rateKey);
-          return null;
+          const passwordMatches = await bcrypt.compare(password, admin.passwordHash);
+
+          if (!passwordMatches) {
+            recordFailedAttempt(rateKey);
+            return null;
+          }
+
+          clearAttempts(rateKey);
+
+          const signedInUser = {
+            id: admin.id.toString(),
+            name: admin.name,
+            email: admin.email,
+            role: ADMIN_ROLE,
+          } as User;
+
+          return signedInUser;
         }
 
-        clearAttempts(rateKey);
+        if (blogUser) {
+          if (!blogUser.isActive) {
+            recordFailedAttempt(rateKey);
+            return null;
+          }
 
-        const signedInUser = {
-          id: admin.id.toString(),
-          name: admin.name,
-          email: admin.email,
-          role: admin.role,
-        } as User;
+          const passwordMatches = await bcrypt.compare(password, blogUser.passwordHash);
 
-        return signedInUser;
+          if (!passwordMatches) {
+            recordFailedAttempt(rateKey);
+            return null;
+          }
+
+          clearAttempts(rateKey);
+
+          const signedInUser = {
+            id: blogUser.id.toString(),
+            name: blogUser.name,
+            email: blogUser.email,
+            role: BLOG_USER_ROLE,
+          } as User;
+
+          return signedInUser;
+        }
+
+        recordFailedAttempt(rateKey);
+        return null;
       },
     }),
   ],

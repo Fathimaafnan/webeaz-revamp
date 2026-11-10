@@ -34,8 +34,7 @@ export default async function InsightsPage() {
     >
       {posts.length > 0 ? (
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          {posts.map((post, index) => {
-            const card = (
+          {posts.map((post, index) => {            const card = (
               <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-blue/40 hover:shadow-lg hover:shadow-brand-blue/5">
                 {post.coverImage ? (
                   <div className="relative h-52 overflow-hidden">
@@ -94,6 +93,24 @@ export default async function InsightsPage() {
           No articles are currently published.
         </p>
       )}
+
+      <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-2xl border border-brand-blue/20 bg-brand-blue-soft p-6 sm:flex-row sm:items-center sm:p-8">
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight text-ink">
+            Write for WebEaz
+          </h2>
+          <p className="mt-1 max-w-xl text-sm leading-6 text-muted">
+            Are you a developer, technology professional, or industry
+            enthusiast? Share your expertise with our community.
+          </p>
+        </div>
+        <Link
+          href="/blog/become-a-contributor"
+          className="inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-orange px-5 py-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-orange-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-deep"
+        >
+          Apply to Become a Contributor
+        </Link>
+      </div>
     </PageShell>
   );
 }

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getSession, signIn } from "next-auth/react";
 import AuthCard from "@/components/ui/AuthCard";
 import PasswordField from "@/components/ui/PasswordField";
 import TextField from "@/components/ui/TextField";
@@ -11,40 +13,71 @@ type Errors = { email?: string; password?: string; form?: string };
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /**
- * Login — frontend only. No backend auth is configured, so
- * a valid submit surfaces a clear inline notice instead of
- * pretending to authenticate.
+ * Unified homepage sign-in for Admins and BlogUsers.
+ *
+ * Uses the shared NextAuth credentials provider; the role comes from
+ * the server-issued session (JWT minted only after the database check
+ * in lib/auth.ts) — never from the form. After sign-in the role
+ * decides the destination: admin → /admin, blog_user → /user/dashboard.
  */
-export default function LoginForm() {
+export default function UnifiedLoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [pending, setPending] = useState(false);
 
   const validate = (): Errors => {
     const next: Errors = {};
-    if (!email.trim()) next.email = "Email is required.";
-    else if (!emailRe.test(email.trim())) next.email = "Enter a valid email address.";
+    if (!email.trim()) next.email = "Please enter a valid email address.";
+    else if (!emailRe.test(email.trim())) next.email = "Please enter a valid email address.";
     if (!password) next.password = "Password is required.";
     else if (password.length < 8) next.password = "Password must be at least 8 characters.";
     return next;
   };
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
     const next = validate();
     setErrors(next);
-    if (Object.keys(next).length === 0) {
-      setSubmitted(true);
+    if (Object.keys(next).length > 0) return;
+
+    setPending(true);
+    try {
+      const result = await signIn("credentials", {
+        email: email.trim().toLowerCase(),
+        password,
+        redirect: false,
+      });
+      if (!result?.ok) {
+        setErrors({ form: "Invalid email or password. Please try again." });
+        return;
+      }
+      const session = await getSession();
+      const role = (session?.user as { role?: string } | undefined)?.role;
+      if (role === "admin") {
+        router.push("/admin");
+      } else if (role === "blog_user") {
+        router.push("/user/dashboard");
+      } else {
+        // Session minted but role unknown — send to user dashboard guard
+        // which re-checks the database server-side.
+        router.push("/user/dashboard");
+      }
+      router.refresh();
+    } catch {
+      setErrors({ form: "Unable to sign in right now. Please try again." });
+    } finally {
+      setPending(false);
     }
-  };
+  }
 
   return (
     <AuthCard
       eyebrow="Login"
       title="Welcome Back"
-      description="Login to continue to your account."
+      description="Sign in to your WebEaz account."
       footer={
         <>
           Don&apos;t have an account?{" "}
@@ -67,7 +100,7 @@ export default function LoginForm() {
           value={email}
           onChange={(v) => {
             setEmail(v);
-            setSubmitted(false);
+            setErrors((p) => ({ ...p, form: undefined }));
           }}
           onBlur={() => setErrors((p) => ({ ...p, email: validate().email }))}
           error={errors.email}
@@ -81,7 +114,7 @@ export default function LoginForm() {
             value={password}
             onChange={(v) => {
               setPassword(v);
-              setSubmitted(false);
+              setErrors((p) => ({ ...p, form: undefined }));
             }}
             onBlur={() => setErrors((p) => ({ ...p, password: validate().password }))}
             error={errors.password}
@@ -105,22 +138,19 @@ export default function LoginForm() {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="mt-1 w-full rounded-xl bg-brand-orange px-6 py-3.5 text-sm font-semibold text-ink shadow-lg shadow-brand-orange/30 transition-all duration-200 hover:bg-brand-orange-deep hover:shadow-glow-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
-        >
-          Login
-        </button>
-
-        {submitted ? (
-          <p
-            role="status"
-            className="rounded-xl border border-brand-blue/25 bg-brand-blue-soft px-4 py-3 text-xs leading-5 text-brand-blue-deep"
-          >
-            Form validated successfully. Account sign-in is not connected yet
-            &mdash; authentication will be enabled once a backend is configured.
+        {errors.form ? (
+          <p role="alert" className="rounded-xl border border-red-500/30 bg-red-50 px-4 py-3 text-xs leading-5 text-red-700">
+            {errors.form}
           </p>
         ) : null}
+
+        <button
+          type="submit"
+          disabled={pending}
+          className="mt-1 w-full rounded-xl bg-brand-orange px-6 py-3.5 text-sm font-semibold text-ink shadow-lg shadow-brand-orange/30 transition-all duration-200 hover:bg-brand-orange-deep hover:shadow-glow-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {pending ? "Signing in…" : "Login"}
+        </button>
       </form>
     </AuthCard>
   );

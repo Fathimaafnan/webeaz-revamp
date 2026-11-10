@@ -42,11 +42,11 @@ export default function FinalCTA({
             the statement arrives first, the supporting line a beat
             later, the button last. Three steps of 120ms is enough to
             read as a sequence without making the visitor wait for it. */}
-        <Reveal>
+        <Reveal className="w-full text-center">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/85">
             {content.ctaEyebrow || section.eyebrow}
           </p>
-          <h2 className="mt-5 text-h1 font-bold tracking-tight text-ink">
+          <h2 className="mx-auto mt-5 w-full text-balance text-center text-h1 font-bold tracking-tight text-ink">
             {section.title || content.ctaTitle}
           </h2>
         </Reveal>

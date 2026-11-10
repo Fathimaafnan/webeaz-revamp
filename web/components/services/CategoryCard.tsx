@@ -38,6 +38,21 @@ export default function CategoryCard({
             : "bg-[linear-gradient(140deg,#0b4b7d,#1076bc)]"
         }`}
       >
+        {category.image ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={category.image}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-brand-blue-deep/45"
+            />
+          </>
+        ) : null}
         <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/25 bg-black/25 backdrop-blur-sm transition-transform duration-300 group-hover:scale-105">
           <ServiceIcon name={category.icon} className="h-7 w-7 text-white" />
         </span>

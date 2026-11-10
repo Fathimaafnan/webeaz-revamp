@@ -194,7 +194,7 @@ function NavigationDropdown({
                   ? "mt-1 grid-rows-[1fr] opacity-100"
                   : "pointer-events-none grid-rows-[0fr] opacity-0"
               }`
-            : `absolute left-0 top-full z-50 w-[min(22rem,calc(100vw-2rem))] origin-top-left overflow-hidden rounded-xl border border-line shadow-xl shadow-[#09283f]/15 transition-[visibility,transform,opacity] duration-200 ${
+            : `absolute left-0 top-full z-50 w-[min(22rem,calc(100vw-2rem))] origin-top-left overflow-hidden rounded-2xl border border-line shadow-xl shadow-[#09283f]/15 transition-[visibility,transform,opacity] duration-200 ${
                 open
                   ? "visible scale-100 opacity-100"
                   : "invisible pointer-events-none scale-[0.98] opacity-0"
@@ -394,14 +394,24 @@ export default function Navbar({
   const renderedLinks = navLinks();
   const renderedMobileLinks = navLinks(true);
 
+  // Consistent white glass at all scroll positions (top, over the Hero,
+  // and scrolled): the pill is always `.navbar-glass` — there is
+  // deliberately no scroll-based background switch. The homepage bar
+  // stays fixed over the Hero canvas so its blue shows through the
+  // glass; other pages keep the in-flow sticky bar. Scrolling only
+  // compacts the pill (64px → 48px) and restores it at the top.
+  const isHome = pathname === "/";
+
   return (
     <header
-      className={`sticky inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? "navbar-glass navbar-glass-solid" : "navbar-glass"
+      className={`top-3 z-50 px-3 transition-all duration-300 sm:px-4 lg:px-6 ${
+        isHome ? "fixed inset-x-0" : "sticky inset-x-0"
       }`}
     >
       <nav
-        className="mx-auto flex h-[4.75rem] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+        className={`navbar-glass mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full px-4 transition-all duration-300 sm:px-5 ${
+          scrolled ? "h-12" : "h-16"
+        }`}
         aria-label="Main navigation"
       >
         <Link
@@ -448,7 +458,7 @@ export default function Navbar({
         <button
           ref={mobileMenuButton}
           type="button"
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-brand-blue-deep transition-colors hover:bg-brand-blue-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-deep lg:hidden"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-brand-blue-deep transition-colors hover:bg-brand-blue-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue-deep lg:hidden"
           aria-label={
             mobileOpen ? "Close navigation menu" : "Open navigation menu"
           }
@@ -480,10 +490,9 @@ export default function Navbar({
         aria-label="Mobile navigation"
         aria-hidden={!mobileOpen}
         inert={!mobileOpen}
-        className={`navbar-panel overflow-y-auto overscroll-contain border-t border-brand-blue/15 transition-[max-height,opacity] duration-300 lg:hidden ${
-          mobileOpen
-            ? "max-h-[calc(100dvh-4.75rem)] opacity-100 shadow-lg shadow-[#09283f]/10"
-            : "pointer-events-none max-h-0 opacity-0"
+        style={{ maxHeight: mobileOpen ? "85dvh" : "0px", opacity: mobileOpen ? 1 : 0 }}
+        className={`navbar-panel mx-auto mt-2 w-full max-w-7xl overflow-y-auto overscroll-contain rounded-3xl border border-brand-blue/15 shadow-lg shadow-[#09283f]/10 lg:hidden ${
+          mobileOpen ? "" : "pointer-events-none"
         }`}
       >
         <div className="flex min-h-14 items-center justify-between border-b border-line px-5">

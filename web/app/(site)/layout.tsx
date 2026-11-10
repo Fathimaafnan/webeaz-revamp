@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import IntroSplash from "@/components/home/IntroSplash";
 import FloatingContactButtons from "@/components/contact/FloatingContactButtons";
+import CookieConsent from "@/components/privacy/CookieConsent";
 import { getServiceTree } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -34,11 +35,15 @@ export default async function PublicSiteLayout({
 
   return (
     <>
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       <IntroSplash />
       <Navbar serviceItems={serviceItems} />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1" id="main-content" tabIndex={-1}>{children}</main>
       <Footer />
       <FloatingContactButtons />
+      <CookieConsent />
     </>
   );
 }

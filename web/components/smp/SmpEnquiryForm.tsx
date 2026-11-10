@@ -54,6 +54,12 @@ export default function SmpEnquiryForm() {
   const set = <K extends keyof Values>(key: K, value: Values[K]) => {
     setValues((v) => ({ ...v, [key]: value }));
     setRouted(false);
+    setErrors((current) => {
+      if (!current[key]) return current;
+      const rest: Errors = { ...current };
+      delete rest[key];
+      return rest;
+    });
   };
 
   const toggleGoal = (g: string) => {
@@ -66,11 +72,11 @@ export default function SmpEnquiryForm() {
 
   const validate = (): Errors => {
     const next: Errors = {};
-    if (!values.name.trim()) next.name = "Please enter your name.";
-    if (!values.email.trim()) next.email = "Please enter your email.";
-    else if (!emailRe.test(values.email.trim())) next.email = "Enter a valid email address.";
+    if (!values.name.trim()) next.name = "Please enter your full name.";
+    if (!values.email.trim()) next.email = "Please enter a valid email address.";
+    else if (!emailRe.test(values.email.trim())) next.email = "Please enter a valid email address.";
     if (values.phone.trim() && !phoneRe.test(values.phone.trim()))
-      next.phone = "Enter a valid phone number or leave blank.";
+      next.phone = "Please enter a valid phone number.";
     if (!values.company.trim()) next.company = "Please enter your company or brand name.";
     if (values.website.trim() && !urlRe.test(values.website.trim()))
       next.website = "Enter a valid website address, e.g. example.com";

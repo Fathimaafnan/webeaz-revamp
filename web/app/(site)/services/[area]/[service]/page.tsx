@@ -28,8 +28,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
   if (!found) return { title: "Not Found" };
   return {
-    title: `${found.service.name} — ${found.category.name}`,
-    description: found.service.summary,
+    title:
+      found.service.seoTitle?.trim() ||
+      `${found.service.name} — ${found.category.name}`,
+    description:
+      found.service.seoDescription?.trim() || found.service.summary,
     alternates: { canonical: `/services/${found.category.slug}/${found.service.slug}` },
   };
 }

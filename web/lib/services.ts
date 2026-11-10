@@ -21,6 +21,8 @@ export type Service = {
   /** Optional artwork. Set through the CMS; rendered on the detail
       hero only when present, so services without one are unchanged. */
   image?: string;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   /** What the service is. */
   overview: string;
   /** What WebEaz provides. */
@@ -41,36 +43,40 @@ export type ServiceCategory = {
   num: string;
   tagline: string;
   description: string;
+  image?: string | null;
   icon: ServiceIconName;
   accent: "blue" | "orange";
   services: Service[];
 };
 
-export type ServiceIconName =
-  | "website"
-  | "mobile"
-  | "ecommerce"
-  | "software"
-  | "product"
-  | "cloud"
-  | "marketing"
-  | "seo"
-  | "ads"
-  | "meta"
-  | "social"
-  | "funnel"
-  | "content"
-  | "crm"
-  | "marketing-automation"
-  | "sales-automation"
-  | "whatsapp"
-  | "workflow"
-  | "process"
-  | "ai-consulting"
-  | "ai-integration"
-  | "ai-automation"
-  | "ai-agents"
-  | "ai-apps";
+export const SERVICE_ICON_NAMES = [
+  "website",
+  "mobile",
+  "ecommerce",
+  "software",
+  "product",
+  "cloud",
+  "marketing",
+  "seo",
+  "ads",
+  "meta",
+  "social",
+  "funnel",
+  "content",
+  "crm",
+  "marketing-automation",
+  "sales-automation",
+  "whatsapp",
+  "workflow",
+  "process",
+  "ai-consulting",
+  "ai-integration",
+  "ai-automation",
+  "ai-agents",
+  "ai-apps",
+] as const;
+
+export type ServiceIconName = (typeof SERVICE_ICON_NAMES)[number];
 
 export const serviceCategories: ServiceCategory[] = [
   {
