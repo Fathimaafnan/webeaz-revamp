@@ -89,6 +89,34 @@ neither when the deployment uses an IAM role. The configured public base URL
 must serve bucket objects over HTTPS in production. Keep access credentials
 server-side and never prefix them with `NEXT_PUBLIC_`.
 
+## Transactional email (contributor invitations)
+
+Contributor invitation and activation emails use the provider selected by
+`EMAIL_PROVIDER`:
+
+- `""` or `"resend"` — Resend (alternative provider). Requires
+  `RESEND_API_KEY`, `EMAIL_FROM`, and `APP_BASE_URL`.
+- `"gmail"` — Gmail SMTP (`smtp.gmail.com:465`). Supported in development
+  and production when explicitly configured. Requires `GMAIL_SMTP_USER`,
+  `GMAIL_SMTP_APP_PASSWORD`, `EMAIL_FROM`, and `APP_BASE_URL`.
+
+### Production setup (Gmail SMTP)
+
+1. Enable 2-Step Verification on the sending Gmail account.
+2. Create a Google App Password (Security → 2-Step Verification → App
+   passwords). Use this App Password — never your normal Gmail password.
+3. In your production environment variables (names only), set:
+   - `EMAIL_PROVIDER=gmail`
+   - `GMAIL_SMTP_USER` (the full Gmail address)
+   - `GMAIL_SMTP_APP_PASSWORD` (the 16-character App Password; spaces are
+     ignored)
+   - `EMAIL_FROM` (must match the authenticated Gmail account, e.g.
+     `"WebEaz <your-sending-address@gmail.com>"`)
+   - `APP_BASE_URL` (your production domain, used to build invitation links)
+4. Only one provider is used at a time. If Gmail is misconfigured, sends fail
+   honestly (no silent fallback to another provider). Keep credentials
+   server-side only; never commit them to source control.
+
 The CMS accepts JPEG, PNG, WebP, and GIF files up to 5 MB. It stores file
 metadata and an object key in PostgreSQL; image bytes stay in object storage.
 Images referenced by CMS content cannot be deleted from the media library.

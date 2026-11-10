@@ -36,27 +36,16 @@ export type ContributorEmailStatus = {
 
 type MailProvider = "resend" | "gmail" | "unsupported";
 
-let productionProviderWarningShown = false;
-
 /**
  * Resolves the active mail provider from EMAIL_PROVIDER.
  *
- * Production ALWAYS resolves to Resend: whatever EMAIL_PROVIDER says
- * (a stray "gmail" or a typo), the production build keeps using the
- * official Resend provider and Gmail SMTP stays out of the picture.
- * Gmail is therefore only reachable when NODE_ENV !== "production".
+ * If EMAIL_PROVIDER is set to "gmail", Gmail SMTP is used when configured
+ * (supported in both development and production). If unset or set to
+ * "resend", Resend is used. Any other value is treated as unsupported and
+ * reported as unconfigured (no silent fallback to another provider).
  */
 function resolveMailProvider(): MailProvider {
   const wanted = (process.env.EMAIL_PROVIDER ?? "").trim().toLowerCase();
-  if (process.env.NODE_ENV === "production") {
-    if (wanted && wanted !== "resend" && !productionProviderWarningShown) {
-      productionProviderWarningShown = true;
-      console.warn(
-        `[email] EMAIL_PROVIDER="${wanted}" is ignored in production; using Resend.`,
-      );
-    }
-    return "resend";
-  }
   if (wanted === "" || wanted === "resend") return "resend";
   if (wanted === "gmail") return "gmail";
   return "unsupported";
@@ -153,28 +142,20 @@ async function sendViaResend(payload: MailPayload): Promise<ProviderEnvelope> {
 }
 
 /**
- * Gmail SMTP for LOCAL DEVELOPMENT ONLY (EMAIL_PROVIDER=gmail).
+ * Gmail SMTP (EMAIL_PROVIDER=gmail).
  *
  * Uses the Google App Password from GMAIL_SMTP_APP_PASSWORD — never the
- * account password. `logger` stays off so no SMTP traffic (which
- * includes the AUTH exchange) is ever written to the dev server output.
- * Acceptance is reported only when SMTP accepts the recipient and the
- * message; the returned messageId is recorded exactly like a Resend id.
+ * normal account password. `logger` stays off so no SMTP traffic (which
+ * includes the AUTH exchange) is ever written to logs. Acceptance is
+ * reported only when SMTP accepts the recipient and the message; the
+ * returned messageId is recorded exactly like a Resend id. Supported in
+ * development and production when explicitly configured.
  */
 async function sendViaGmail(payload: MailPayload): Promise<ProviderEnvelope> {
-  // Hard guard: even if the environment were misconfigured, a
-  // production build must never transmit over Gmail SMTP.
-  if (process.env.NODE_ENV === "production") {
-    return {
-      data: null,
-      error: { message: "Gmail SMTP is development-only and is disabled in production." },
-    };
-  }
   const user = process.env.GMAIL_SMTP_USER?.trim();
-  // Google app passwords are 16 characters without spaces (the account
+  // Google App Passwords are 16 characters without spaces (the account
   // UI displays them in groups of four). Strip whitespace so the send
-  // path authenticates exactly like the pre-send verification
-  // handshake does.
+  // path authenticates exactly like the verification handshake.
   const pass = process.env.GMAIL_SMTP_APP_PASSWORD?.replace(/\s+/g, "");
   const from = process.env.EMAIL_FROM?.trim();
   if (!user || !pass || !from) {
