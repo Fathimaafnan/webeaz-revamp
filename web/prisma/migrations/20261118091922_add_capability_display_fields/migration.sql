@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "CapabilityCard" ADD COLUMN     "num" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "slug" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "tags" TEXT[] DEFAULT ARRAY[]::TEXT[];

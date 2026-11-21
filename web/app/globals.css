@@ -339,14 +339,28 @@ main p:not([class*="max-w-"]) {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 0.6s ease-out,
-    transform 0.6s ease-out;
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Scroll-linked parallax for decorative glows only. `translate` is a
+   separate property from `transform`, so the existing glow-drift
+   keyframes keep running while this adds a gentle depth offset. */
+.ambient-glow {
+  translate: 0 var(--scroll-shift, 0px);
+  will-change: translate;
+}
+
+@media (max-width: 767px) {
+  .ambient-glow {
+    translate: none;
+  }
 }
 
 /* Directional and scale entrances, driven by Reveal's `from` prop.
@@ -380,6 +394,10 @@ main p:not([class*="max-w-"]) {
     scroll-behavior: auto;
   }
 
+  .ambient-glow {
+    translate: none;
+  }
+
   .reveal,
   .reveal-from-left,
   .reveal-from-right,
@@ -407,6 +425,19 @@ main p:not([class*="max-w-"]) {
   .fade-rise,
   .marquee-track {
     animation: none !important;
+  }
+
+  /* Hero background orbs \u2014 no drift for reduced-motion visitors */
+  .hero-orb {
+    animation: none !important;
+  }
+
+  /* OUR PRODUCTS heading reveal \u2014 no motion for reduced-motion visitors */
+  .products-title .products-title-word > span,
+  .products-title .products-title-rule {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .animate-flow,
@@ -600,6 +631,42 @@ main p:not([class*="max-w-"]) {
    enough to hold them â€” the brand blue clears that comfortably at
    its deep end and still clears AA at the medium end.
    ============================================================ */
+/* ============================================================
+   HERO BACKGROUND \u2014 ORB DRIFT
+
+   Three soft light fields sit behind the hero. Each drifts on its
+   own slow cycle \u2014 the far field barely moves, the near one
+   clearly does \u2014 and because they travel by different amounts
+   the result reads as depth rather than as one glow sliding about.
+
+   The easing and the travel are the same on every field, so the
+   three read as a single motion system rather than three loops.
+   ============================================================ */
+@keyframes hero-orb-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, -30px) scale(1.1);
+  }
+  100% {
+    transform: translate(-30px, 50px) scale(0.9);
+  }
+}
+
+.hero-orb {
+  animation: hero-orb-drift 8s ease-in-out infinite;
+}
+
+.hero-orb--mid {
+  animation-duration: 10s;
+  animation-direction: reverse;
+}
+
+.hero-orb--inner {
+  animation-duration: 12s;
+}
+
 /* ============================================================
    THE BLUE CANVAS - one definition, two consumers.
 
@@ -2910,6 +2977,54 @@ main p:not([class*="max-w-"]) {
 }
 
 /* ============================================================
+   OUR PRODUCTS — masked word reveal
+   The heading inside the curved rectangle reveals word by word.
+   Each word sits in an overflow-hidden mask and slides up into
+   place while fading in. The per-word delay is set inline from
+   the component, so the stagger stays next to the markup that
+   owns it. Scoped to `.products-title` so nothing else on the
+   site inherits the motion.
+   ============================================================ */
+@keyframes products-word-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes products-rule-reveal {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.products-title .products-title-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+}
+
+.products-title .products-title-word > span {
+  display: inline-block;
+  animation: products-word-reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.products-title .products-title-rule {
+  animation: products-rule-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: center;
+}
+
+/* ============================================================
    CONTINUOUS CARD RAIL
    Cards drift sideways on their own in an unbroken loop. Motion
    is a transform, so there is no scroll position to snap back
@@ -3454,17 +3569,15 @@ main p:not([class*="max-w-"]) {
    lifts slightly. The images themselves are untouched â€” no
    recolouring, no cropping, no replacement. */
 .clients-logo img {
-  filter: grayscale(1);
-  opacity: 0.85;
+  filter: none;
+  opacity: 1;
   transition:
-    filter 0.45s ease,
-    opacity 0.45s ease,
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .clients-logo:hover img,
 .clients-logo:focus-within img {
-  filter: grayscale(0);
+  filter: none;
   opacity: 1;
   transform: scale(1.08);
 }
@@ -3764,131 +3877,17 @@ main p:not([class*="max-w-"]) {
 }
 
 /* ============================================================
-   WHY WEBEAZ CARD LIGHTS
-
-   Scope note, because this section is easy to misread: the
-   cards were never filled with an explicit blue. They are the
-   shared translucent wash `.card-accent-dark` - a white film at
-   6.2% down to 1.8% - sitting on the page's blue canvas, which
-   is what made them read blue. That class has no other user in
-   the project and its original definition is untouched; these
-   rules add motion on top of it and change nothing else.
-
-   Only `::after` is used here, and that is deliberate. The class
-   already spends `::before` on a 3px brand seam that scales in
-   from the left on hover, and that hover is part of the card's
-   behaviour. `::after` is the only pseudo-element on this class
-   that nothing else claims, so the light goes there and the seam
-   keeps working.
-
-   The light is one element carrying both tones rather than two,
-   and its alpha is set by contrast, not by taste. White on the
-   plain card is about 4.6:1, and a light layer can only lighten
-   the card further, so the bright core is held low (0.14) and
-   the outer stop is the DEEP brand blue - it darkens the card as
-   it travels, which keeps the white figure and label at or above
-   4.56:1 instead of pushing them under AA at the peak of the
-   sweep:
-
-     plain card ............ 4.56:1
-     light at its core .... 4.56:1
-     light at its edge .... 5.22:1
-
-   Motion is `translate3d` on the element, so it runs on the
-   compositor rather than repainting the card every frame.
-
-   This section already had its own slow motion before any of
-   this - the two `animate-glow-drift` washes at the top of the
-   component - and those are untouched.
-
-   Scoped to `.why-cards` so the shared card classes used by the
-   Services and enquiry-form components are never reached.
-   ============================================================ */
-.why-cards .card-accent-dark {
-  isolation: isolate;
-  /* The cards are the brand's own blue now.
-     #1076bc is the exact blue of WebEaz's mark â€” the same value as
-     `--color-brand-blue`, and the same pixel the previous official
-     dark-bar lockup `webeaz-logo-brand.png` carried (that asset was
-     replaced by `public/webeaz-logo.png` in the logo swap) â€” running down through
-     the brand's own deeper shades. The wash that used to sit here
-     was a 6-10% tint of the same blue over a light section, which
-     left the cards milky and the white copy on them unreadable.
-     The gradient is larger than the card and drifts slowly across
-     it, so the blue is never quite still. */
-  background-image: linear-gradient(
-    152deg,
-    #1076bc 0%,
-    #0f6aab 30%,
-    #0b5a96 64%,
-    #093f66 100%
-  );
-  background-size: 180% 180%;
-  background-position: 0% 50%;
-  animation: why-card-blue 30s ease-in-out infinite alternate;
-}
-
-/* The cards' own gradient drifts. The same shape as the section
-   surfaces' slow breathe, only quicker, and it moves the
-   background rather than the card, so it never competes with the
-   hover lift. */
-@keyframes why-card-blue {
-  from {
-    background-position: 0% 50%;
-  }
-  to {
-    background-position: 100% 50%;
-  }
-}
-
-.why-cards .card-accent-dark::after {
-  content: "";
-  position: absolute;
-  inset: -45% -30%;
-  pointer-events: none;
-  z-index: -1;
-  background: radial-gradient(
-    closest-side,
-    rgba(92, 179, 238, 0.14) 0%,
-    rgba(11, 90, 150, 0.3) 62%,
-    transparent 78%
-  );
-  animation: eco-flow-light 26s ease-in-out infinite alternate;
-}
-
-/* Motion is the whole point of this layer, so honour a request
-   for none of it: the cards keep their wash and their light, it
-   simply holds still. */
-@media (prefers-reduced-motion: reduce) {
-  .why-cards .card-accent-dark::after {
-    animation: none;
-  }
-  .why-cards .card-accent-dark {
-    animation: none;
-  }
-}
-
-/* WhyWebEaz cards: blue-gradient hover instead of orange/black */
-.why-cards .card-accent-dark:hover,
-.why-cards .card-accent-dark:focus-within {
-  transform: translateY(-4px);
-  border-color: rgba(16, 118, 188, 0.45);
-  box-shadow: 0 26px 48px -26px rgba(16, 118, 188, 0.35);
-}
-
-
 /* ============================================================
-/* ============================================================
-   NAVBAR â€” TRANSLUCENT WHITE GLASS
+   NAVBAR — TRANSLUCENT WHITE GLASS
 
    One surface, no per-section colours and no JavaScript. The bar
    is a single translucent white wash; whatever is behind it shows
    through, and the `backdrop-filter` does the blending. That is the
    whole mechanism, and it is deliberately not a per-section switch:
 
-     over the blue Hero        composes to rgb(216,229,240) â€” a
+     over the blue Hero        composes to rgb(216,229,240) — a
                                 gentle blue tint, not a blue bar
-     over the orange close     composes to rgb(254,236,215) â€” the
+     over the orange close     composes to rgb(254,236,215) — the
                                 same wash reads faintly warm
      over white/grey sections  composes to effectively white
 
@@ -3897,9 +3896,9 @@ main p:not([class*="max-w-"]) {
 
      1. A flat 78% would put more of a dark Hero behind the logo
         than it needs to carry.
-     2. The falloff puts the more opaque stop where the logo is â€”
+     2. The falloff puts the more opaque stop where the logo is —
         the lockup is vertically centred, so it sits in the upper
-        half â€” and lets the bar open up toward the bottom edge,
+        half — and lets the bar open up toward the bottom edge,
         which is where only the nav labels live. Those carry 5.3:1
         at their worst, so they can afford the extra transparency
         that makes the bar read as glass.
@@ -3931,7 +3930,7 @@ main p:not([class*="max-w-"]) {
      border-bottom  rgba(16,118,188,0.16)   brand-tinted hairline
      box-shadow     0 1px 0 rgba(255,255,255,0.7) inset   the lit
                    top edge that makes it feel like glass rather
-                   than paper
+                   than as paper
                  0 12px 32px -18px rgba(9,40,72,0.26)        the
                    shadow that separates it from a light section
 
@@ -4062,15 +4061,9 @@ main p:not([class*="max-w-"]) {
      FinalCTA          ember      the close
 
    No section uses `brand-surface-brand` or any other solid dark
-   blue. The only saturated ground on the page is `ember`, and it is
-   the brand orange â€” the brightest colour in the palette, not a dark
-   one. Ink on it measures 8.34:1.
-
-   `sec-ember` also retunes the ambient glows. They are blue and
-   orange washes tuned for pale grounds; at their normal strength on
-   an orange field the blue one muddies, so it is pulled right down
-   and the orange one â€” invisible against its own ground anyway â€” is
-   switched off, leaving the field itself to carry the motion.
+   blue. `ember` is the one warm close: the wave artwork is painted by
+   the section itself and covers the panel, so the page still ends
+   warm and light rather than on a solid fill.
    ============================================================ */
 
 /* The drifting layer. Registered so the browser can interpolate it:
@@ -4109,16 +4102,6 @@ main p:not([class*="max-w-"]) {
     100% 100%;
   background-repeat: no-repeat;
   animation: sec-breathe 48s ease-in-out infinite alternate;
-}
-
-@keyframes sec-ember-breathe {
-  0%,
-  100% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
 }
 
 /* Clean white â€” the breathing sections. A single cool radial keeps
@@ -4276,29 +4259,10 @@ main p:not([class*="max-w-"]) {
   animation: sec-breathe 48s ease-in-out infinite alternate;
 }
 
-/* The close. The one saturated ground on the page, and it is the
-   brand orange rather than a dark blue, so the page still ends
-   light. Ink measures 8.34:1 on it and the deep-blue CTA on top
-   clears 3:1 for its edge and 7.20:1 for its label. */
+/* The close. The wave artwork is a transparent cut-out painted by the
+   section's own markup and sized to cover it, so this warm ground is
+   what shows through around and beneath the waves. */
 .sec-ember {
-  background-color: #f79522;
-  background-image:
-    radial-gradient(
-      ellipse 70% 60% at 50% -10%,
-      rgba(255, 233, 204, 0.55),
-      transparent 64%
-    ),
-    linear-gradient(168deg, #f9a23c 0%, #f79522 46%, #e07f0f 100%);
-  background-size: 100% 100%, 100% 200%;
-  background-repeat: no-repeat;
-  animation: sec-ember-breathe 56s ease-in-out infinite;
-}
-
-.sec-ember .ambient-glow-blue {
-  opacity: 0.22;
-}
-.sec-ember .ambient-glow-orange {
-  opacity: 0;
 }
 
 /* Motion is the whole point of this layer, so honour a request for

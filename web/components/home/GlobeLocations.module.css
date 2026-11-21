@@ -1,0 +1,309 @@
+/* ============================================================
+   GLOBAL PRESENCE — exact EQSoft reference styles
+   Scoped to the Earth location section only.
+   ============================================================ */
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  /* Match the site's existing "mist" section surface so this section
+     blends with the light sections before and after it. Same gradients,
+     no new colour and no added background animation. */
+  background-color: transparent;
+  background-image:
+    radial-gradient(
+      ellipse 56% 50% at 4% -2%,
+      rgba(16, 118, 188, 0.1),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 54% 48% at 96% 104%,
+      rgba(247, 149, 34, 0.07),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #fcfdfe 0%, #f1f5fa 100%);
+  background-size: 150% 150%, 150% 150%, 100% 100%;
+  background-repeat: no-repeat;
+  color: #1a1a1a;
+  font-family: inherit;
+  z-index: 99;
+}
+
+.watermark {
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(80px, 18vw, 200px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -4px;
+  color: #1a1a1a;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  line-height: 1;
+  z-index: 1;
+  user-select: none;
+  transition: opacity 0.4s ease;
+}
+
+.leftPanel {
+  position: relative;
+  z-index: 10;
+  padding: 0 32px 0 clamp(20px, 5vw, 80px);
+  min-height: 280px;
+  min-width: 0;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: clamp(20px, 5vw, 80px);
+  right: 32px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.5s ease, transform 0.52s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+
+.slideActive {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
+.countryCode {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  opacity: 0.35;
+  margin-bottom: 12px;
+}
+
+.activeRegionRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.regionLine {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.2;
+}
+
+.activeRegionLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.45;
+}
+
+.countryNameLarge {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+}
+
+.countryNameLarge h2 {
+  margin: 0;
+  font: inherit;
+}
+
+.countryFlagLg {
+  width: 36px;
+  height: auto;
+  border-radius: 3px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.countryDot {
+  opacity: 0.2;
+  font-weight: 900;
+}
+
+.locationHub {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.55;
+  margin-bottom: 10px;
+}
+
+.countryDesc {
+  font-size: 13px;
+  line-height: 1.7;
+  opacity: 0.5;
+  max-width: 320px;
+}
+
+.countryDesc p {
+  margin: 0;
+}
+
+.rightPanel {
+  position: relative;
+  height: 100vh;
+  z-index: 5;
+  min-width: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  cursor: grab;
+}
+
+/* Three.js writes an inline pixel width on the canvas; force it to fill
+   the panel so it can never widen the grid track it lives inside. */
+.container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.container:active {
+  cursor: grabbing;
+}
+
+.bottomBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px clamp(20px, 5vw, 48px);
+  pointer-events: none;
+}
+
+.progressArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.progressDots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  appearance: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  height: 3px;
+  width: 10px;
+  background: rgba(0, 0, 0, 0.18);
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1), background 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dotActive {
+  background: #1a1a1a;
+  width: 36px;
+}
+
+.dot:hover:not(.dotActive) {
+  background: rgba(0, 0, 0, 0.35);
+  width: 14px;
+}
+
+.counter {
+  font-family: monospace;
+  font-size: 11px;
+  opacity: 0.4;
+  letter-spacing: 1px;
+}
+
+/* Compact map preview shown when a red location marker is hovered.
+   The image is cropped from the exact map on the Contact Us page. */
+.mapPreview {
+  position: absolute;
+  display: block;
+  width: 220px;
+  height: 150px;
+  z-index: 30;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(10, 46, 74, 0.22),
+    0 0 0 1px rgba(16, 118, 188, 0.14);
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+}
+
+.mapPreviewOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.mapPreviewImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .leftPanel {
+    padding: 76px 20px 12px;
+    min-height: unset;
+  }
+
+  .slide {
+    left: 20px;
+    right: 20px;
+  }
+
+  .rightPanel {
+    height: 100%;
+    min-height: 250px;
+    position: relative;
+  }
+
+  .watermark {
+    font-size: 80px;
+  }
+}

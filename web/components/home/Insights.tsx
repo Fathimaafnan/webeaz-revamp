@@ -13,19 +13,9 @@ import Image from "next/image";
  * stock imagery. Decorative only.
  */
 function InsightCover({ index, category, image }: { index: number; category: string; image?: string }) {
-  const shapes = [
-    <circle key="c" cx="210" cy="58" r="46" fill="none" stroke="rgba(16,118,188,0.4)" strokeWidth="2" />,
-    <circle key="c2" cx="210" cy="58" r="28" fill="rgba(247,149,34,0.16)" />,
-    <path key="p" d="M60 120l34-34 26 26 44-50" fill="none" stroke="rgba(16,118,188,0.3)" strokeWidth="2.5" strokeLinecap="round" />,
-    <rect key="r" x="52" y="34" width="112" height="12" rx="6" fill="rgba(16,118,188,0.16)" />,
-    <rect key="r2" x="52" y="58" width="72" height="12" rx="6" fill="rgba(16,20,24,0.08)" />,
-  ];
-
   return (
     <div
-      className={`card-media card-media-grid card-editorial-media relative h-52 sm:h-60 ${
-        index % 2 === 1 ? "card-media-warm" : ""
-      }`}
+      className={`card-media card-media-grid card-editorial-media relative h-[180px] overflow-hidden rounded-2xl bg-gray-50/50 ${index % 2 === 1 ? "card-media-warm" : ""}`}
     >
       <span
         aria-hidden="true"
@@ -36,9 +26,10 @@ function InsightCover({ index, category, image }: { index: number; category: str
           <Image
             src={image}
             alt=""
+            className="relative block w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-103"
             fill
             sizes="(min-width: 640px) 560px, 100vw"
-            className="object-cover"
+            aspect-ratio="4/3"
           />
           {/* Readability scrim: the category label below is dark
               (#414b58), so photo covers need a light fade — not a
@@ -47,18 +38,22 @@ function InsightCover({ index, category, image }: { index: number; category: str
               card link interactive. */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white/95 via-white/75 to-transparent"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/95 via-white/75 to-transparent transition-colors duration-300 hover:from-white/100 hover:via-white/80 hover:to-transparent"
           />
         </>
       ) : (
-        <svg
-          viewBox="0 0 280 160"
-          className="relative h-full w-full"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
+        <div
+          className="relative h-[180px] flex items-center justify-center border-2 border-dashed border-gray-300/50 
+rounded-2xl flex items-center justify-center text-muted/30"
         >
-          {shapes}
-        </svg>
+          <svg
+            viewBox="0 0 280 160"
+            className="relative h-full w-full opacity-50"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          >
+          </svg>
+        </div>
       )}
       <span className="absolute bottom-4 left-5 flex items-center gap-2">
         <CardIcon name="insight" className="h-4 w-4 text-brand-blue/70" />
@@ -90,8 +85,6 @@ export default function Insights({
   section: HomeSection;
   settings: HomepageBlogSettings;
 }) {
-  const featured = posts.filter((post) => post.id > 0).slice(0, 3);
-
   return (
     <section className="sec-mist theme-light relative overflow-hidden px-5 py-20 sm:px-8 sm:py-24">
       {/* Orange radial with blue atmospheric lighting */}
@@ -113,67 +106,66 @@ export default function Insights({
           />
         </Reveal>
 
-        {featured.length > 0 ? (
-          <div className="mt-14 grid gap-6 sm:mt-16 sm:gap-7 md:grid-cols-2 lg:grid-cols-3">
-            {featured.map((post, i) => {
-              const date = post.publishedAt
-                ? new Intl.DateTimeFormat("en", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }).format(post.publishedAt)
-                : "Coming soon";
-              const card = (
-                <article
-                  key={post.id}
-                  className="card-editorial group flex h-full flex-col"
-                >
-                  <InsightCover index={i} category={post.category} image={post.coverImage ?? undefined} />
-                  <div className="flex flex-1 flex-col p-7 sm:p-8">
-                    <div className="flex items-center justify-between gap-4 text-xs">
-                      <span className="rounded-full bg-brand-blue-soft px-3 py-1 font-semibold uppercase tracking-wider text-brand-blue-deep">
-                        {post.category}
-                      </span>
-                      <span className="shrink-0 text-muted">{date}</span>
-                    </div>
-                    <h3 className="mt-4 text-xl font-bold tracking-tight text-ink sm:text-2xl">
-                      {post.title}
-                    </h3>
-                    <span aria-hidden="true" className="card-editorial-rule" />
-                    <p className="mt-3.5 flex-1 text-[15px] leading-7 text-muted sm:text-base sm:leading-7">
-                      {post.excerpt}
-                    </p>
-                    {post.slug && post.content.trim() ? (
-                      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-orange-strong">
-                        Read article →
-                      </span>
-                    ) : null}
+        <div className="mt-14 grid gap-6 sm:mt-16 sm:gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, i) => {
+            const date = post.publishedAt
+              ? new Intl.DateTimeFormat("en", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                }).format(post.publishedAt)
+              : "Coming soon";
+            const card = (
+              <article
+                key={post.id}
+                className="card-editorial group relative overflow-hidden rounded-2xl transition-all hover:shadow-2xl hover:-translate-y-1 duration-300"
+              >
+                <InsightCover index={i} category={post.category} image={post.coverImage ?? undefined} />
+                <div className="flex flex-1 flex-col p-8 sm:p-9">
+                  <div className="flex items-center justify-between gap-4 text-xs">
+                    <span className="rounded-full bg-brand-blue-soft/30 px-3.5 py-1 font-medium uppercase tracking-wider text-brand-blue-600 border border-brand-blue-soft/20">
+                      {post.category}
+                    </span>
+                    <span className="shrink-0 text-muted/70 text-xs font-medium tracking-wider">
+                      {date}
+                    </span>
                   </div>
-                </article>
-              );
-
-              return (
-                <Reveal key={post.id} delay={i * 60}>
+                  <h3 className="mt-3 text-lg font-semibold tracking-tight text-ink sm:text-xl line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <span aria-hidden="true" className="card-editorial-rule" />
+                  <p className="mt-3 text-sm leading-relaxed text-muted/90 sm:text-base line-clamp-3">
+                    {post.excerpt}
+                  </p>
                   {post.slug && post.content.trim() ? (
-                    <Link
-                      href={`/insights/${post.slug}`}
-                      className="block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-                      aria-label={`Read ${post.title}`}
-                    >
-                      {card}
-                    </Link>
-                  ) : (
-                    card
-                  )}
-                </Reveal>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="mt-10 rounded-xl border border-line bg-white p-6 text-center text-sm text-muted">
-            New articles are on the way. Explore insights while you wait.
-          </p>
-        )}
+                    <span className="mt-4 flex items-center gap-2 text-sm font-medium text-brand-orange-600 transition-colors hover:text-brand-orange-400">
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                      Read article
+                    </span>
+                  ) : null}
+                </div>
+              </article>
+            );
+
+            return (
+              <Reveal key={post.id} delay={i * 60}>
+                {post.slug && post.content.trim() ? (
+                  <Link
+                    href={`/insights/${post.slug}`}
+                    className="block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+                    aria-label={`Read ${post.title}`}
+                  >
+                    {card}
+                  </Link>
+                ) : (
+                  card
+                )}
+              </Reveal>
+            );
+          })}
+        </div>
 
         <Reveal delay={150}>
           <div className="mt-12 flex justify-center">

@@ -17,6 +17,24 @@ import {
   type SiteSettings,
   type TestimonialItem,
 } from "@/lib/defaults";
+import {
+  DEFAULT_CAPABILITIES,
+  DEFAULT_CASE_STUDIES,
+  DEFAULT_CLIENT_LOGOS,
+  DEFAULT_FOOTER_LINKS,
+  DEFAULT_FAQS,
+  DEFAULT_FOOTER_SETTINGS,
+  DEFAULT_OFFICES,
+  DEFAULT_PARTNER_LOGOS,
+  DEFAULT_PRODUCTS,
+  type CapabilityData,
+  type CaseStudyData,
+  type FaqData,
+  type FooterLinkData,
+  type LogoData,
+  type OfficeLocationData,
+  type ProductData,
+} from "@/lib/fallback-content";
 import { insights, type Insight } from "@/lib/insights";
 import { industries as defaultIndustries } from "@/lib/industries";
 import {
@@ -311,10 +329,13 @@ export async function getEligibleBlogOptions(): Promise<PublishedBlogPost[]> {
 }
 
 /**
- * Up to 3 featured posts for the homepage Blogs section.
- * - Explicit selection: only those IDs, in selected order, filtered to
- *   still-eligible posts (unpublished/deleted drop out automatically).
- * - No selection yet (null): 3 most recent eligible posts.
+ * All eligible published blog posts for the homepage Blogs section.
+ * - Posts are pre-filtered to PUBLISHED + APPROVED only.
+ * - No limit is applied — all eligible posts are returned so the homepage
+ *   can display the complete blog collection.
+ * - If featuredIds are configured on the homepage settings, only those
+ *   posts are returned (in the configured order), otherwise all eligible
+ *   posts are returned in reverse-chronological order.
  */
 export async function getHomepageFeaturedPosts(): Promise<PublishedBlogPost[]> {
   const settings = await getHomepageBlogSettings();
@@ -323,10 +344,9 @@ export async function getHomepageFeaturedPosts(): Promise<PublishedBlogPost[]> {
   if (settings.featuredIds !== null) {
     return settings.featuredIds
       .map((id) => byId.get(id))
-      .filter((p): p is PublishedBlogPost => Boolean(p))
-      .slice(0, 3);
+      .filter((p): p is PublishedBlogPost => Boolean(p));
   }
-  return eligible.slice(0, 3);
+  return eligible;
 }
 
 export async function getIndustries(): Promise<string[]> {
@@ -467,4 +487,129 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     // fall through
   }
   return DEFAULT_SETTINGS;
+}
+
+// ---------------------------------------------------------------------------
+// New homepage collections. Each accessor follows the established pattern:
+// published rows first, existing static content as the fallback.
+// ---------------------------------------------------------------------------
+
+export async function getOfficeLocations(): Promise<OfficeLocationData[]> {
+  try {
+    const rows = await prisma.officeLocation.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({
+        code: r.code, name: r.name, company: r.company, regionLabel: r.regionLabel,
+        flagAlt: r.flagAlt, watermark: r.watermark, addressLines: r.addressLines,
+        email: r.email, mobile: r.mobile, lat: r.lat, lng: r.lng,
+        flagUrl: r.flagUrl, mapImageUrl: r.mapImageUrl, mapEmbedUrl: r.mapEmbedUrl,
+        mapUrl: r.mapUrl, order: r.order,
+      }));
+    }
+  } catch { /* fall through to static content */ }
+  return DEFAULT_OFFICES;
+}
+
+export async function getProducts(): Promise<ProductData[]> {
+  try {
+    const rows = await prisma.product.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({
+        name: r.name, tag: r.tag, description: r.description, features: r.features,
+        href: r.href, imageUrl: r.imageUrl, imageAlt: r.imageAlt,
+        imageWidth: r.imageWidth, imageHeight: r.imageHeight, order: r.order,
+      }));
+    }
+  } catch { /* fall through */ }
+  return DEFAULT_PRODUCTS;
+}
+
+export async function getLogos(group: "PARTNER" | "CLIENT"): Promise<LogoData[]> {
+  try {
+    const rows = await prisma.homepageLogo.findMany({
+      where: { status: "PUBLISHED", group },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({
+        name: r.name, alt: r.alt, imageUrl: r.imageUrl, href: r.href, order: r.order,
+      }));
+    }
+  } catch { /* fall through */ }
+  return group === "PARTNER" ? DEFAULT_PARTNER_LOGOS : DEFAULT_CLIENT_LOGOS;
+}
+
+export async function getCapabilityCards(): Promise<CapabilityData[]> {
+  try {
+    const rows = await prisma.capabilityCard.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({
+        group: r.group, num: r.num, slug: r.slug, title: r.title, tag: r.tag,
+        tags: r.tags, description: r.description, href: r.href, order: r.order,
+      }));
+    }
+  } catch { /* fall through */ }
+  return DEFAULT_CAPABILITIES;
+}
+
+export async function getCaseStudies(): Promise<CaseStudyData[]> {
+  try {
+    const rows = await prisma.caseStudy.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({
+        industry: r.industry, challenge: r.challenge, solution: r.solution,
+        technology: r.technology, order: r.order,
+      }));
+    }
+  } catch { /* fall through */ }
+  return DEFAULT_CASE_STUDIES;
+}
+
+export async function getFaqs(): Promise<FaqData[]> {
+  try {
+    const rows = await prisma.faq.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({ question: r.question, answer: r.answer, order: r.order }));
+    }
+  } catch { /* fall through to the exact existing FAQ content */ }
+  return DEFAULT_FAQS;
+}
+
+export async function getFooterLinks(): Promise<FooterLinkData[]> {
+  try {
+    const rows = await prisma.footerLink.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    });
+    if (rows.length > 0) {
+      return rows.map((r) => ({
+        group: r.group, label: r.label, href: r.href, iconKey: r.iconKey, order: r.order,
+      }));
+    }
+  } catch { /* fall through */ }
+  return DEFAULT_FOOTER_LINKS;
+}
+
+export async function getFooterSettings(): Promise<{ settings: SiteSettings; logoUrl: string }> {
+  let logoUrl = DEFAULT_FOOTER_SETTINGS.footerLogoUrl;
+  try {
+    const row = await prisma.siteSetting.findUnique({ where: { key: "footerLogoUrl" } });
+    if (row?.value) logoUrl = row.value;
+  } catch { /* fall through */ }
+  return { settings: await getSiteSettings(), logoUrl };
 }

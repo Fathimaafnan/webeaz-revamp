@@ -50,6 +50,7 @@ const CEO_BIO =
 export default function FounderSpotlight() {
   return (
     <section
+      id="team"
       className="sec-white relative overflow-hidden px-5 pb-16 pt-12 sm:px-8 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20"
       aria-labelledby="founder-heading"
     >

@@ -77,7 +77,7 @@ export const DEFAULT_HOME: HomeContent = {
   ctaTitle: "Let's Build What's Next.",
   ctaDescription:
     "Have a business challenge, digital idea or transformation goal? Let's create the right technology solution for your business.",
-  ctaLabel: "Start a Conversation →",
+  ctaLabel: "",
   ctaHref: "/contact",
 };
 
@@ -90,6 +90,22 @@ export const DEFAULT_SECTIONS: HomeSection[] = [
       "WebEaz combines technology, digital growth, automation and AI to help businesses build, transform, automate and grow.",
     visible: true,
     order: 10,
+  },
+  {
+    key: "globe-locations",
+    eyebrow: "",
+    title: "",
+    description: "",
+    visible: true,
+    order: 65,
+  },
+  {
+    key: "curved-rectangle",
+    eyebrow: "",
+    title: "",
+    description: "",
+    visible: true,
+    order: 15,
   },
   {
     key: "case-studies",
@@ -158,6 +174,14 @@ export const DEFAULT_SECTIONS: HomeSection[] = [
       "Perspectives on technology, AI, digital growth and automation from the WebEaz team.",
     visible: true,
     order: 75,
+  },
+  {
+    key: "faq",
+    eyebrow: "FAQ",
+    title: "Frequently Asked Questions",
+    description: "",
+    visible: true,
+    order: 72,
   },
   {
     key: "final-cta",

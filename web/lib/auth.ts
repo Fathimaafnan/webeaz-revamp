@@ -179,7 +179,16 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/admin/login",
+    /**
+     * NextAuth's own sign-in page is the ordinary public login, not
+     * the CMS one. Any redirect NextAuth itself makes — an expired
+     * session, a callback that lands on a sign-in — therefore brings
+     * a visitor to /login, which is open to everyone. The CMS is
+     * reached only by an authenticated, server-verified admin session
+     * (the guard in app/admin/(dashboard)/layout.tsx and
+     * requireAdmin on every CMS API).
+     */
+    signIn: "/login",
   },
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV !== "production",

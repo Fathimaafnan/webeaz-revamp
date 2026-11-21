@@ -33,7 +33,7 @@ export default function Testimonials({
   if (testimonials.length === 0) return null;
 
   return (
-    <section className="sec-sky theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
+    <section id="testimonials" className="sec-sky theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       <div
         aria-hidden="true"
         className="ambient-glow ambient-glow-orange animate-glow-drift absolute -left-[12%] top-[10%] h-[28rem] w-[28rem]"
@@ -45,20 +45,26 @@ export default function Testimonials({
 
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
-          <SectionHeading
-            eyebrow={section.eyebrow}
-            title={section.title}
-            description={section.description}
-            align="center"
-          />
+          {/* The section opener is the page's largest heading treatment.
+              `size="lg"` selects the display scale, and the arbitrary
+              variant below turns the title to uppercase with a wider
+              tracking so "WHAT OUR CLIENTS SAY" reads as a display
+              line rather than a sentence heading. */}
+          <div className="[&_h2]:uppercase [&_h2]:tracking-[0.015em]">
+            <SectionHeading
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              align="center"
+              size="lg"
+            />
+          </div>
         </Reveal>
 
         <div className="mt-12 grid gap-6 sm:mt-14 sm:gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <article
-              key={t.name}
-              className="card-quote group relative flex h-full flex-col p-7 sm:p-8"
-            >
+          {testimonials.map((t, i) => (
+            <Reveal key={t.name} delay={i * 90}>
+              <article className="card-quote group relative flex h-full flex-col p-7 sm:p-8">
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute right-6 top-5 select-none font-serif text-6xl leading-none text-brand-orange-strong/65"
@@ -113,7 +119,8 @@ export default function Testimonials({
                 aria-hidden="true"
                 className="mt-6 block h-px w-14 rounded-full bg-gradient-to-r from-brand-orange to-brand-blue"
               />
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

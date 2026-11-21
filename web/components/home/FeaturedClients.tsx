@@ -2,42 +2,7 @@ import Image from "next/image";
 import Carousel from "@/components/ui/Carousel";
 import Reveal from "@/components/ui/Reveal";
 import type { HomeSection } from "@/lib/defaults";
-
-const clients = [
-  "/clients/all-logo_17.jpg",
-  "/clients/all-logo_13.jpg",
-  "/clients/all-logo_03.jpg",
-  "/clients/all-logo_08.jpg",
-  "/clients/all-logo_14.jpg",
-  "/clients/all-logo_10.jpg",
-  "/clients/all-logo_09.jpg",
-  "/clients/all-logo_02.jpg",
-  "/clients/ias.jpg",
-  "/clients/all-logo_05.jpg",
-  "/clients/all-logo_07.jpg",
-  "/clients/all-logo_15.jpg",
-  "/clients/all-logo_04.jpg",
-  "/clients/all-logo_01.jpg",
-  "/clients/all-logo_06.jpg",
-  "/clients/all-logo_11.jpg",
-  "/clients/Bazuki.webp",
-  "/clients/Feet_Match.webp",
-  "/clients/Freeline.webp",
-  "/clients/FutureA4.webp",
-  "/clients/Mage.webp",
-  "/clients/NTS.webp",
-  "/clients/Qamar_al_madina.webp",
-  "/clients/Confederate-Logo.png",
-  "/clients/Screenshot_from_2024-01-15_16-10-22.png",
-  "/clients/Screenshot_from_2024-01-15_16-17-44.png",
-  "/clients/Layer_2.webp",
-  "/clients/image_2_-removebg-preview-e1708586105666.png",
-  "/clients/GPT-logo.webp",
-  "/clients/Logo-e1691137142631-300x120-1.png",
-  "/clients/fh.webp",
-  "/clients/CGS.png",
-  "/clients/Malabar.png",
-];
+import { DEFAULT_CLIENT_LOGOS, type LogoData } from "@/lib/fallback-content";
 
 /**
  * "Our Featured Clients" — the same client logos shown on
@@ -49,7 +14,13 @@ const clients = [
  * Hovering pauses the movement; users who prefer reduced
  * motion get a static single-row view (no scrolling animation).
  */
-export default function FeaturedClients({ section }: { section: HomeSection }) {
+export default function FeaturedClients({
+  section,
+  logos = DEFAULT_CLIENT_LOGOS,
+}: {
+  section: HomeSection;
+  logos?: LogoData[];
+}) {
   return (
     <section
       aria-label="Our featured clients"
@@ -99,18 +70,18 @@ export default function FeaturedClients({ section }: { section: HomeSection }) {
               gap={0}
               slideClassName="shrink-0 px-6 sm:px-8"
             >
-              {clients.map((src) => (
+              {logos.map((logo) => (
                 <div
-                  key={src}
-                  className="card-logo-mono clients-logo flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center p-2 sm:p-3 rounded-lg border border-white/40 bg-white/5 backdrop-blur-sm"
+                  key={logo.imageUrl}
+                  className="card-logo-mono clients-logo flex h-32 w-32 sm:h-36 sm:w-36 lg:h-40 lg:w-40 items-center justify-center p-2 sm:p-3 rounded-lg border border-white/40 bg-white/5 backdrop-blur-sm"
                 >
                   <div className="relative h-full w-full">
                     <Image
-                      src={src}
-                      alt=""
+                      src={logo.imageUrl}
+                      alt={logo.alt}
                       fill
                       unoptimized
-                      sizes="(min-width: 640px) 96px, 72px"
+                      sizes="(min-width: 1024px) 160px, (min-width: 640px) 144px, 128px"
                       className="object-contain"
                     />
                   </div>

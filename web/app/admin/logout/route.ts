@@ -28,12 +28,12 @@ function sessionCookieNames(): string[] {
 /**
  * Secure admin logout endpoint.
  *
- * Clears the NextAuth session cookie(s) and redirects to the login page.
+ * Clears the NextAuth session cookie(s) and redirects to the public homepage.
  * With the JWT session strategy the session token itself is the credential,
  * so deleting it invalidates the session. POST-only: state-changing.
  */
 export async function POST(request: NextRequest) {
-  const response = NextResponse.redirect(new URL("/admin/login", request.url));
+  const response = NextResponse.redirect(new URL("/", request.url));
 
   for (const name of sessionCookieNames()) {
     response.cookies.set(name, "", {

@@ -116,6 +116,9 @@ export default async function BlogDetailPage({ params }: Props) {
           <div><dt className="text-white/45">Created</dt><dd>{formatDate(post.createdAt)}</dd></div>
           <div><dt className="text-white/45">Last updated</dt><dd>{formatDate(post.updatedAt)}</dd></div>
         </dl>
+        <p className="mt-3 text-xs text-white/50">
+          To submit for review, the blog must have a title and body content. Save your changes first if you just edited it.
+        </p>
         <div className="mt-5">
           <BlogWorkflowActions blogId={post.id} />
         </div>

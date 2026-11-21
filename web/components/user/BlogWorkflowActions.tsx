@@ -46,6 +46,9 @@ export default function BlogWorkflowActions({ blogId }: { blogId: number }) {
           Delete draft
         </button>
       </div>
+      <p className="mt-2 text-xs text-white/50">
+        Before submitting, make sure your blog has a title and body content. If submission fails, edit the blog to add content and try again.
+      </p>
       {feedback ? (
         <p role={feedbackError ? "alert" : "status"} className={`mt-3 rounded-lg border px-3 py-2 text-sm ${feedbackError ? "border-red-300/20 bg-red-500/10 text-red-100" : "border-emerald-300/20 bg-emerald-500/10 text-emerald-100"}`}>
           {feedback}

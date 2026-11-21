@@ -4,8 +4,10 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import IntroSplash from "@/components/home/IntroSplash";
 import FloatingContactButtons from "@/components/contact/FloatingContactButtons";
+import ScrollToTopButton from "@/components/layout/ScrollToTopButton";
+import ScrollMotion from "@/components/layout/ScrollMotion";
 import CookieConsent from "@/components/privacy/CookieConsent";
-import { getServiceTree } from "@/lib/content";
+import { getFooterLinks, getFooterSettings, getServiceTree } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -25,12 +27,17 @@ export default async function PublicSiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { categories } = await getServiceTree();
+  const [{ categories }, footerLinks, footerSettings] = await Promise.all([
+    getServiceTree(),
+    getFooterLinks(),
+    getFooterSettings(),
+  ]);
+  // The Services dropdown lists the four service categories only. Each
+  // one links straight to its own category page — the individual
+  // services underneath are not listed here.
   const serviceItems = categories.map((category) => ({
     label: category.name,
-    description: category.tagline,
     href: `/services/${category.slug}`,
-    tagList: category.tagline.split(" • "),
   }));
 
   return (
@@ -39,10 +46,17 @@ export default async function PublicSiteLayout({
         Skip to content
       </a>
       <IntroSplash />
+      <ScrollMotion />
       <Navbar serviceItems={serviceItems} />
       <main className="flex-1" id="main-content" tabIndex={-1}>{children}</main>
-      <Footer />
+      <Footer
+        links={footerLinks.filter((l) => l.group !== "SOCIAL")}
+        socials={footerLinks.filter((l) => l.group === "SOCIAL")}
+        settings={footerSettings.settings}
+        logoUrl={footerSettings.logoUrl}
+      />
       <FloatingContactButtons />
+      <ScrollToTopButton />
       <CookieConsent />
     </>
   );

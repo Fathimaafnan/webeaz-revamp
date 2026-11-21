@@ -35,7 +35,7 @@ export default function AboutPage() {
           <li>Search engine optimisation and digital marketing</li>
           <li>Custom software and product development</li>
         </ul>
-        <h3 className="mt-8 text-base font-semibold text-ink">Our Values</h3>
+        <h3 id="vision" className="mt-8 text-base font-semibold text-ink">Our Values</h3>
         <ul className="mt-2 space-y-3 text-sm text-muted pl-6 list-disc">
           <li>Customer-first approach to every project</li>
           <li>Pragmatic, business-aligned technology choices</li>

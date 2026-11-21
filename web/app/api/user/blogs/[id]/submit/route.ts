@@ -80,7 +80,12 @@ export async function POST(request: Request, context: RouteContext) {
       : post.reviewStage;
 
     if (stage === "SUBMITTED") {
-      return errorJson("This blog is already under review.", 422);
+      // If BlogPost.reviewStage is SUBMITTED but no pending revision exists (inconsistent state),
+      // create/fix a submitted revision so admins can see it.
+      if (pending) {
+        return errorJson("This blog is already under review.", 422);
+      }
+      // Fall through to create a revision below
     }
     if (stage === "APPROVED") {
       return errorJson("This blog is already approved. Edit it first to propose changes.", 422);
@@ -96,7 +101,7 @@ export async function POST(request: Request, context: RouteContext) {
     };
 
     if (!snapshot.title.trim() || !snapshot.content.trim()) {
-      return errorJson("Add a title and body content before submitting.", 422);
+      return errorJson("Add a title and body content before submitting. Edit the blog to add content, then try again.", 422);
     }
 
     const result = await withTransactionRetry(prisma, async (tx) => {

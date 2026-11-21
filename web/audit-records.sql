@@ -1,0 +1,1 @@
+SELECT id, slug, title, status, "publishedAt" FROM "BlogPost" ORDER BY "publishedAt" DESC;

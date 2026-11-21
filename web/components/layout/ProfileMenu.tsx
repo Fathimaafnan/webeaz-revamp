@@ -109,21 +109,6 @@ export default function ProfileMenu({ mobile = false }: Props) {
           </svg>
           Account
         </span>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          aria-hidden="true"
-          className={`transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
-        >
-          <path d="m5 7.5 5 5 5-5" />
-        </svg>
       </button>
 
       <div

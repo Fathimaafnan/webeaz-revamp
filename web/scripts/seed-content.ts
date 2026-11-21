@@ -10,6 +10,17 @@ import {
 import { insights } from "../lib/insights";
 import { industries } from "../lib/industries";
 import { serviceCategories } from "../lib/services";
+import {
+  DEFAULT_CAPABILITIES,
+  DEFAULT_CASE_STUDIES,
+  DEFAULT_CLIENT_LOGOS,
+  DEFAULT_FOOTER_LINKS,
+  DEFAULT_FAQS,
+  DEFAULT_FOOTER_SETTINGS,
+  DEFAULT_OFFICES,
+  DEFAULT_PARTNER_LOGOS,
+  DEFAULT_PRODUCTS,
+} from "../lib/fallback-content";
 
 loadEnvConfig(process.cwd());
 
@@ -157,6 +168,102 @@ async function main() {
       data: Object.entries(DEFAULT_SETTINGS).map(([key, value]) => ({ key, value })),
     }),
   );
+
+  // --- New homepage collections (additive; seeded only when empty) ---
+  await seedIfEmpty("office locations", prisma.officeLocation, () =>
+    prisma.officeLocation.createMany({
+      data: DEFAULT_OFFICES.map((o) => ({ ...o, status: "PUBLISHED" as const })),
+    }),
+  );
+
+  await seedIfEmpty("products", prisma.product, () =>
+    prisma.product.createMany({
+      data: DEFAULT_PRODUCTS.map((p) => ({ ...p, status: "PUBLISHED" as const })),
+    }),
+  );
+
+  await seedIfEmpty("partner logos", prisma.homepageLogo, () =>
+    prisma.homepageLogo.createMany({
+      data: DEFAULT_PARTNER_LOGOS.map((l) => ({
+        group: "PARTNER" as const,
+        name: l.name,
+        alt: l.alt,
+        imageUrl: l.imageUrl,
+        href: l.href ?? null,
+        order: l.order,
+        status: "PUBLISHED" as const,
+      })),
+    }),
+  );
+
+  // Logos are shared by two groups, so seed clients per group only.
+  const clientCount = await prisma.homepageLogo.count({ where: { group: "CLIENT" } });
+  if (clientCount === 0) {
+    await prisma.homepageLogo.createMany({
+      data: DEFAULT_CLIENT_LOGOS.map((l) => ({
+        group: "CLIENT" as const,
+        name: l.name,
+        alt: l.alt,
+        imageUrl: l.imageUrl,
+        href: l.href ?? null,
+        order: l.order,
+        status: "PUBLISHED" as const,
+      })),
+    });
+    console.log("seeded  client logos");
+  } else {
+    console.log(`skip    client logos (${clientCount} rows already present)`);
+  }
+
+  const capabilityCount = await prisma.capabilityCard.count();
+  if (capabilityCount === 0) {
+    await prisma.capabilityCard.createMany({
+      data: DEFAULT_CAPABILITIES.map((c) => ({
+        ...c,
+        iconKey: c.slug,
+        status: "PUBLISHED" as const,
+      })),
+    });
+    console.log("seeded  capability cards");
+  } else {
+    console.log(`skip    capability cards (${capabilityCount} rows already present)`);
+  }
+
+  await seedIfEmpty("case studies", prisma.caseStudy, () =>
+    prisma.caseStudy.createMany({
+      data: DEFAULT_CASE_STUDIES.map((c) => ({ ...c, status: "PUBLISHED" as const })),
+    }),
+  );
+
+  const footerLinkCount = await prisma.footerLink.count();
+  if (footerLinkCount === 0) {
+    await prisma.footerLink.createMany({
+      data: DEFAULT_FOOTER_LINKS.map((l) => ({ ...l, status: "PUBLISHED" as const })),
+    });
+    console.log("seeded  footer links");
+  } else {
+    console.log(`skip    footer links (${footerLinkCount} rows already present)`);
+  }
+
+  await seedIfEmpty("faq items", prisma.faq, () =>
+    prisma.faq.createMany({
+      data: DEFAULT_FAQS.map((f) => ({
+        question: f.question,
+        answer: f.answer,
+        order: f.order,
+        status: "PUBLISHED" as const,
+      })),
+    }),
+  );
+
+  // Footer settings: upsert only keys that are missing, never overwrite edits.
+  for (const [key, value] of Object.entries(DEFAULT_FOOTER_SETTINGS)) {
+    const existing = await prisma.siteSetting.findUnique({ where: { key } });
+    if (!existing) {
+      await prisma.siteSetting.create({ data: { key, value } });
+      console.log(`seeded  siteSetting ${key}`);
+    }
+  }
 
   console.log("Content seed complete.");
 }

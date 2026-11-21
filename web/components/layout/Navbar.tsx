@@ -20,18 +20,26 @@ import {
 } from "@/lib/intro";
 
 const links = [
-  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Industries", href: "/industries" },
-  { label: "Our Work", href: "/our-work" },
   { label: "Insights", href: "/insights" },
+  { label: "Contact", href: "/contact" },
+  { label: "Blog", href: "/blog" },
+];
+
+/** About dropdown — items point to the existing WebEaz pages/sections. */
+const aboutItems: DropdownItem[] = [
+  { label: "About Us", href: "/about-us" },
+  { label: "Our Vision", href: "/our-vision" },
+  { label: "Our Works", href: "/clients" },
+  { label: "Our Team", href: "/our-teams" },
+  { label: "Testimonials", href: "/#testimonials" },
 ];
 
 type DropdownItem = {
   label: string;
-  description: string;
+  description?: string;
   href: string;
-  tagList?: string[];
 };
 
 type NavigationDropdownProps = {
@@ -157,21 +165,6 @@ function NavigationDropdown({
         }`}
       >
         {label}
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          aria-hidden="true"
-          className={`shrink-0 transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
-        >
-          <path d="m5 7.5 5 5 5-5" />
-        </svg>
         {!mobile && (
           <span
             aria-hidden="true"
@@ -223,22 +216,11 @@ function NavigationDropdown({
                 <span className="block text-sm font-semibold text-grey-800">
                   {item.label}
                 </span>
-                {item.tagList ? (
-                  <div className="mt-0.5 flex flex-wrap gap-1">
-                    {item.tagList.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-blue-deep"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
+                {item.description ? (
                   <span className="mt-0.5 block text-xs leading-5 text-grey-600">
                     {item.description}
                   </span>
-                )}
+                ) : null}
               </Link>
             </li>
           ))}
@@ -273,7 +255,6 @@ export default function Navbar({
   serviceItems: DropdownItem[];
 }) {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileState, setMobileState] = useState({
     pathname,
     open: false,
@@ -284,13 +265,6 @@ export default function Navbar({
     [pathname],
   );
   const mobileMenuButton = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -323,6 +297,24 @@ export default function Navbar({
 
   const revealThenGo =
     (href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+      // Testimonials lives on the homepage. When already there, scroll to
+      // the existing section in place instead of reloading the page.
+      if (href === "/#testimonials" && pathname === "/") {
+        event.preventDefault();
+        const section = document.getElementById("testimonials");
+        if (section) {
+          // Respect the same sticky-header offset the browser applies to
+          // anchor targets, then scroll with window.scrollTo for reliability.
+          const margin = parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
+          const padding =
+            parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+          window.scrollTo({
+            top: section.getBoundingClientRect().top + window.scrollY - margin - padding,
+            behavior: reducedMotion() ? "auto" : "smooth",
+          });
+        }
+        return;
+      }
       // The intro splash plays once per browser session (on the initial
       // visit). Once it has been seen, internal navigation must not replay
       // it or artificially delay the click — let Next.js navigate normally.
@@ -410,7 +402,7 @@ export default function Navbar({
     >
       <nav
         className={`navbar-glass mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full px-4 transition-all duration-300 sm:px-5 ${
-          scrolled ? "h-12" : "h-16"
+          "h-16"
         }`}
         aria-label="Main navigation"
       >
@@ -432,8 +424,12 @@ export default function Navbar({
 
         <div className="hidden min-w-0 items-center gap-2 lg:flex xl:gap-3">
           <ul className="flex min-w-0 items-center gap-0.5 xl:gap-1">
-            {renderedLinks.slice(0, 1)}
-            {renderedLinks.slice(1, 2)}
+            <NavigationDropdown
+              label="About"
+              items={aboutItems}
+              active={isActive("/about")}
+              onNavigate={revealThenGo}
+            />
             <NavigationDropdown
               label="Services"
               items={serviceItems}
@@ -441,7 +437,7 @@ export default function Navbar({
               footerLink={{ label: "View all services", href: "/services" }}
               onNavigate={revealThenGo}
             />
-            {renderedLinks.slice(2)}
+            {renderedLinks.slice(1)}
             <li>
               <ProfileMenu key={pathname} />
             </li>
@@ -522,8 +518,13 @@ export default function Navbar({
         </div>
 
         <ul className="flex flex-col gap-1 px-4 py-3 sm:px-6">
-          {renderedMobileLinks.slice(0, 1)}
-          {renderedMobileLinks.slice(1, 2)}
+          <NavigationDropdown
+            label="About"
+            items={aboutItems}
+            active={isActive("/about")}
+            mobile
+            onNavigate={mobileRevealThenGo}
+          />
           <NavigationDropdown
             label="Services"
             items={serviceItems}
@@ -532,7 +533,7 @@ export default function Navbar({
             mobile
             onNavigate={mobileRevealThenGo}
           />
-          {renderedMobileLinks.slice(2)}
+          {renderedMobileLinks.slice(1)}
           <li className="border-t border-line pt-2">
             <ProfileMenu key={`mobile-${pathname}`} mobile />
           </li>

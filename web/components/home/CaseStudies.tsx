@@ -2,7 +2,7 @@ import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CardIcon from "@/components/ui/CardIcon";
 import Reveal from "@/components/ui/Reveal";
-import { caseStudies, type CaseStudy } from "@/lib/case-studies";
+import { DEFAULT_CASE_STUDIES, type CaseStudyData } from "@/lib/fallback-content";
 import type { HomeSection } from "@/lib/defaults";
 
 /**
@@ -117,7 +117,7 @@ function ProjectVisual({ index, industry }: { index: number; industry: string })
   );
 }
 
-function ProjectCard({ c, i }: { c: CaseStudy; i: number }) {
+function ProjectCard({ c, i }: { c: CaseStudyData; i: number }) {
   return (
     <article className="card-project group flex h-full flex-col">
       {/* Held slightly zoomed and settling on hover, as the reference's
@@ -174,7 +174,13 @@ function ProjectCard({ c, i }: { c: CaseStudy; i: number }) {
  * project cards. Challenge, solution, result, technology and
  * client name are unchanged; the "View All Work" link is kept.
  */
-export default function CaseStudies({ section }: { section: HomeSection }) {
+export default function CaseStudies({
+  section,
+  items = DEFAULT_CASE_STUDIES,
+}: {
+  section: HomeSection;
+  items?: CaseStudyData[];
+}) {
   return (
     <section className="sec-sky-deep theme-light relative overflow-hidden px-5 py-[var(--space-5)] sm:px-8 sm:py-[var(--space-6)] lg:py-[var(--section-padding)]">
       {/* Orange radial with blue atmospheric lighting */}
@@ -196,8 +202,8 @@ export default function CaseStudies({ section }: { section: HomeSection }) {
         </Reveal>
 
         <div className="mt-14 grid gap-6 sm:mt-16 lg:grid-cols-3">
-          {caseStudies.map((c, i) => (
-            <Reveal key={c.client} delay={i * 80}>
+          {items.map((c, i) => (
+            <Reveal key={c.industry} delay={i * 80}>
               <ProjectCard c={c} i={i} />
             </Reveal>
           ))}

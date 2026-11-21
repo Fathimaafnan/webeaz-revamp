@@ -5,7 +5,7 @@ import { useState } from "react";
 
 /**
  * Signs the administrator out by clearing the session cookies via the
- * server-side logout route, then returns to the login page.
+ * server-side logout route, then returns to the public homepage.
  */
 export default function AdminLogoutButton() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function AdminLogoutButton() {
       await fetch("/admin/logout", { method: "POST" });
     } finally {
       setPending(false);
-      router.push("/admin/login");
+      router.push("/");
       router.refresh();
     }
   }

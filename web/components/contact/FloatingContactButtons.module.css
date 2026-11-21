@@ -1,0 +1,86 @@
+/* Circular green glow around the existing WhatsApp floating button.
+   Inspired by the reference site's .float::before / ::after effect.
+   Only the two rings and their keyframes are added — the button itself,
+   its size, icon and behaviour are untouched. */
+
+/* Hidden while the homepage Hero is in view. Only opacity, visibility and
+   a tiny offset change — the button's design, glow and link are untouched. */
+.container {
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease,
+    visibility 0.32s ease;
+}
+
+.hiddenInHero {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease,
+    visibility 0.32s ease;
+}
+
+.pulse {
+  position: relative;
+}
+
+.pulse::before,
+.pulse::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.pulse::before {
+  width: 6.25rem;
+  height: 6.25rem;
+  border: 3px solid #25d366;
+  animation: wa-circle-anim 2.5s infinite ease-in-out;
+}
+
+.pulse::after {
+  width: 3.125rem;
+  height: 3.125rem;
+  border: 2px solid #25d366;
+  animation: wa-circle-fill-anim 2.3s infinite ease-in-out;
+}
+
+/* Keep the official white WhatsApp mark above the glow at all times. */
+.pulse svg {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes wa-circle-anim {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes wa-circle-fill-anim {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.2;
+  }
+}
