@@ -58,7 +58,7 @@ export default function PartnersStrip({
           <div className="relative z-10 grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-8 lg:grid-cols-5">
             {logos.map((logo, i) => (
               <Reveal key={logo.imageUrl} delay={120 + i * 130}>
-                <div className="flex h-full min-h-[100px] items-center justify-center rounded-[20px] border border-white/60 bg-white/95 p-3 shadow-sm backdrop-blur-[10px] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:min-h-[120px] sm:p-4">
+                <div className="flex h-full min-h-[100px] items-center justify-center p-3 shadow-sm backdrop-blur-[10px] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:min-h-[120px] sm:p-4">
                   <Image
                     src={logo.imageUrl}
                     alt={logo.alt}
