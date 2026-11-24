@@ -14,37 +14,36 @@ import { smpAnchors } from "@/lib/smp-page-content";
 export default function SmpHero() {
   return (
     <section className="marketing-hero relative overflow-hidden px-5 pb-16 pt-24 text-white sm:px-8 sm:pb-20 sm:pt-32">
-      {/* Ambient brand lighting. The blue orbs use the bright brand
-          blue so they still read against the blue field. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-[20%] -top-[24%] h-[38rem] w-[38rem] rounded-full bg-brand-blue-bright/20 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-[16%] top-[10%] h-[30rem] w-[30rem] rounded-full bg-brand-orange/18 blur-3xl"
-      />
+      {/* The warm peach–ivory field shared with the Home hero. */}
 
       <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-8 lg:gap-12">
         {/* ---------------- Copy ---------------- */}
         <div>
           <div className="flex items-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-orange-light backdrop-blur-sm">
+            <span
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-orange-strong backdrop-blur-sm"
+              style={{ color: "var(--color-brand-orange-strong)" }}
+            >
               SMH Services
             </span>
           </div>
 
-          <h1 className="mt-8 text-h1 font-bold leading-[1.1] tracking-tight text-white">
+          <h1 className="mt-8 text-h1 font-bold leading-[1.1] tracking-tight text-brand-blue-deep">
             Turn Social Media Attention Into{" "}
-            <span className="text-brand-orange">Business Growth.</span>
+            <span
+              className="text-brand-orange-strong"
+              style={{ color: "var(--color-brand-orange-strong)" }}
+            >
+              Business Growth.
+            </span>
           </h1>
 
-          <p className="mt-6 text-lg font-medium leading-8 text-white/90">
+          <p className="mt-6 text-lg font-medium leading-8 text-brand-blue-deep">
             Creative campaigns. Smarter targeting. Meaningful engagement.
             Measurable results.
           </p>
 
-          <p className="mt-4 max-w-xl text-base leading-7 text-white/70">
+          <p className="mt-4 max-w-xl text-base leading-7 text-brand-blue-deep">
             We help brands build a powerful social presence through strategic
             content, AI-assisted insights, engaging creatives and
             performance-focused campaigns. From the first impression to the next
@@ -63,7 +62,7 @@ export default function SmpHero() {
             </Link>
             <Link
               href={`#${smpAnchors.strategy}`}
-              className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-brand-orange-on-dark hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-sm font-semibold text-brand-blue-deep backdrop-blur-sm transition-all duration-200 hover:border-brand-orange-on-dark hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Explore Our Strategy
             </Link>
@@ -140,7 +139,7 @@ export default function SmpHero() {
           <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3.5 backdrop-blur-xl sm:absolute sm:-bottom-6 sm:right-4 sm:mt-0 sm:w-56">
             <ServiceIcon name="ai-automation" className="h-4 w-4 shrink-0 text-brand-orange-light" />
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/55">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-blue-deep">
                 Audience insight
               </p>
               <div className="mt-2 flex items-end gap-1">
@@ -155,7 +154,7 @@ export default function SmpHero() {
             </div>
           </div>
 
-          <p className="mt-4 text-center text-[10px] uppercase tracking-[0.14em] text-white/55 sm:absolute sm:-bottom-16 sm:left-0 sm:right-0 sm:mt-0">
+          <p className="mt-4 text-center text-[10px] uppercase tracking-[0.14em] text-brand-blue-deep sm:absolute sm:-bottom-16 sm:left-0 sm:right-0 sm:mt-0">
             Illustrative composition — no real campaign data
           </p>
         </div>

@@ -35,30 +35,30 @@ export function ServiceDetailTrail({
 }) {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-white">
+      <ol className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-brand-blue-deep">
         <li>
           <Link
             href="/services"
-            className="transition-colors hover:text-white hover:underline hover:underline-offset-4"
+            className="transition-colors hover:text-brand-blue hover:underline hover:underline-offset-4"
           >
             Services
           </Link>
         </li>
-        <li aria-hidden="true" className="text-white">
+        <li aria-hidden="true" className="text-brand-blue-deep">
           /
         </li>
         <li>
           <Link
             href={`/services/${category.slug}`}
-            className="transition-colors hover:text-white hover:underline hover:underline-offset-4"
+            className="transition-colors hover:text-brand-blue hover:underline hover:underline-offset-4"
           >
             {category.name}
           </Link>
         </li>
-        <li aria-hidden="true" className="text-white">
+        <li aria-hidden="true" className="text-brand-blue-deep">
           /
         </li>
-        <li aria-current="page" className="font-semibold text-white">
+        <li aria-current="page" className="font-semibold text-brand-blue-deep">
           {service.name}
         </li>
       </ol>
@@ -93,7 +93,7 @@ export function ServiceDetailActions({
         </Link>
         <Link
           href={`/services/${category.slug}`}
-          className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors duration-200 hover:border-brand-orange-on-dark hover:text-brand-orange-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-6 py-3 text-sm font-semibold text-brand-blue-deep backdrop-blur-sm transition-colors duration-200 hover:border-brand-orange-on-dark hover:text-brand-orange-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           ← {category.name}
         </Link>

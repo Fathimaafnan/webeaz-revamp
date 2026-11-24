@@ -64,7 +64,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #c96a08;
+  color: var(--color-brand-orange-strong);
 }
 
 .cardName {

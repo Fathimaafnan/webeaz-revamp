@@ -15,32 +15,31 @@ import { heroMicrocopy, semAnchors } from "@/lib/sem-page-content";
 export default function SemHero() {
   return (
     <section className="marketing-hero relative overflow-hidden px-5 pb-16 pt-24 text-white sm:px-8 sm:pb-20 sm:pt-32">
-      {/* The blue orb uses the bright brand blue so it stays visible
-          against the blue field, and the orange stays restrained. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-[18%] -top-[22%] h-[36rem] w-[36rem] rounded-full bg-brand-blue-bright/20 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-[14%] top-[4%] h-[28rem] w-[28rem] rounded-full bg-brand-orange/18 blur-3xl"
-      />
+      {/* The warm peach–ivory field shared with the Home hero. */}
 
       <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-8 lg:gap-12">
         {/* ---------------- Copy ---------------- */}
         <div>
           <div className="flex items-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-orange-light backdrop-blur-sm">
+            <span
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-orange-strong backdrop-blur-sm"
+              style={{ color: "var(--color-brand-orange-strong)" }}
+            >
               SEM Services
             </span>
           </div>
 
-          <h1 className="mt-8 text-h1 font-bold leading-[1.1] tracking-tight text-white">
+          <h1 className="mt-8 text-h1 font-bold leading-[1.1] tracking-tight text-brand-blue-deep">
             Turn High-Intent Searches Into{" "}
-            <span className="text-brand-orange">Real Business Growth</span>
+            <span
+              className="text-brand-orange-strong"
+              style={{ color: "var(--color-brand-orange-strong)" }}
+            >
+              Real Business Growth
+            </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-8 text-white/75 sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-8 text-brand-blue-deep sm:text-lg">
             Be there when your next customer is searching. WebEaz combines
             intelligent search advertising, AI-assisted campaign optimization,
             and conversion-focused strategies to help your business attract the
@@ -59,16 +58,16 @@ export default function SemHero() {
             </Link>
             <Link
               href={`#${semAnchors.process}`}
-              className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-brand-orange-on-dark hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-flex items-center justify-center rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-sm font-semibold text-brand-blue-deep backdrop-blur-sm transition-all duration-200 hover:border-brand-orange-on-dark hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Explore Our Approach
             </Link>
           </div>
 
-          <p className="mt-7 max-w-lg border-l-2 border-brand-orange/60 pl-4 text-sm leading-6 text-white/70">
+          <p className="mt-7 max-w-lg border-l-2 border-brand-orange/60 pl-4 text-sm leading-6 text-brand-blue-deep">
             {heroMicrocopy}
           </p>
-          <p className="mt-3 max-w-lg text-sm leading-6 text-white/50">
+          <p className="mt-3 max-w-lg text-sm leading-6 text-brand-blue-deep">
             From your first campaign to your next stage of growth, every decision
             starts with your objectives.
           </p>
@@ -118,20 +117,23 @@ export default function SemHero() {
 
             {/* Intent chips */}
             <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/50">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-blue-deep">
                 Search intent
               </span>
               <div className="mt-3 flex flex-wrap gap-2">
-                <span className="rounded-full border border-brand-orange/30 bg-brand-orange/10 px-2.5 py-1 text-[10px] font-medium text-brand-orange-light">
+                <span
+                  className="rounded-full border border-brand-orange/30 bg-brand-orange/10 px-2.5 py-1 text-[10px] font-medium text-brand-orange-strong"
+                  style={{ color: "var(--color-brand-orange-strong)" }}
+                >
                   Transactional
                 </span>
-                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-white">
+                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-brand-blue-deep">
                   Commercial
                 </span>
-                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-white">
+                <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-1 text-[10px] font-medium text-brand-blue-deep">
                   Informational
                 </span>
-                <span className="rounded-full border border-brand-blue/30 bg-brand-blue/10 px-2.5 py-1 text-[10px] font-medium text-brand-blue-light">
+                <span className="rounded-full border border-brand-blue/30 bg-brand-blue/10 px-2.5 py-1 text-[10px] font-medium text-brand-blue-deep">
                   High intent
                 </span>
               </div>
@@ -141,7 +143,7 @@ export default function SemHero() {
             <div className="mt-3 rounded-xl border border-brand-blue/25 bg-brand-blue/10 p-4">
               <div className="flex items-center gap-2">
                 <ServiceIcon name="ai-automation" className="h-3.5 w-3.5 text-brand-blue-light" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-blue-light">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-blue-deep">
                   AI-assisted optimization
                 </span>
               </div>
@@ -161,7 +163,7 @@ export default function SemHero() {
               </div>
             </div>
 
-            <p className="mt-4 text-center text-[10px] uppercase tracking-[0.14em] text-white/55">
+            <p className="mt-4 text-center text-[10px] uppercase tracking-[0.14em] text-brand-blue-deep">
               Illustrative interface — not live campaign data
             </p>
           </div>

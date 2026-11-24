@@ -14,13 +14,21 @@ export default function OurTeamsPage() {
   return (
     <main>
       <section className="relative overflow-hidden bg-brand-blue-deep px-5 pb-24 pt-32 text-white sm:px-8 sm:pb-32 sm:pt-40">
-        <div className="absolute inset-0">
-          <Image src="/reference/team-background.webp" alt="" fill priority sizes="100vw" className="object-cover opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#06283f]/95 via-[#06283f]/70 to-transparent" />
-        </div>
+        {/* The same warm peach–ivory gradient image as the Home hero. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "url('/assets/hero/webeaz-hero-bg-warm-2026.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
         <div className="relative mx-auto max-w-6xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-orange-light">{TEAM.title}</p>
-          <h1 className="mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-orange-strong">{TEAM.title}</p>
+          <h1 className="mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-brand-blue-deep sm:text-4xl lg:text-5xl">
             {TEAM.subtitle}
           </h1>
         </div>

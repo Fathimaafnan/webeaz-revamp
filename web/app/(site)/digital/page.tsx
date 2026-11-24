@@ -64,31 +64,39 @@ export default function DigitalPage() {
     <>
       {/* ============ HERO ============ */}
       <section className="relative overflow-hidden brand-surface-brand px-5 pb-20 pt-32 text-white sm:px-8 sm:pb-24 sm:pt-40">
+        {/* The same warm peach–ivory gradient image as the Home hero. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-[18%] -top-[24%] h-[34rem] w-[34rem] rounded-full bg-brand-blue/22 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-[14%] top-[8%] h-[28rem] w-[28rem] rounded-full bg-brand-orange/16 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(16,118,188,0.16),transparent_70%)]"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "url('/assets/hero/webeaz-hero-bg-warm-2026.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
         />
 
         <div className="relative mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
             <Reveal>
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand-orange-light backdrop-blur-sm">
+              <p
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand-orange backdrop-blur-sm"
+                style={{ color: "var(--color-brand-orange)" }}
+              >
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-brand-orange" />
                 Digital marketing solutions
               </p>
-              <h1 className="mt-7 text-[2.35rem] font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.75rem]">
+              <h1 className="mt-7 text-[2.35rem] font-semibold leading-[1.12] tracking-tight text-brand-blue-deep sm:text-5xl lg:text-[3.75rem]">
                 Build Your Digital Presence.{" "}
-                <span className="text-brand-orange">Accelerate Your Growth.</span>
+                <span
+                  className="text-brand-orange"
+                  style={{ color: "var(--color-brand-orange)" }}
+                >
+                  Accelerate Your Growth.
+                </span>
               </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/70 sm:text-lg">
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-brand-blue-deep sm:text-lg">
                 Discover digital marketing solutions designed to improve your
                 online visibility, reach the right audience and create meaningful
                 business opportunities. Explore our specialised services in search

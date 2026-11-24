@@ -265,19 +265,10 @@ button.bg-brand-orange {
    `.home-canvas` uses, so the homepage, the SEO, SEM and Social Media
    heroes and the site chrome all sit in one blue. */
 .marketing-hero {
-  background:
-    linear-gradient(rgba(6, 24, 39, 0.3), rgba(6, 24, 39, 0.3)),
-    radial-gradient(
-      ellipse 68% 55% at 84% 6%,
-      rgba(26, 134, 212, 0.5),
-      transparent 62%
-    ),
-    radial-gradient(
-      ellipse 60% 52% at 8% 96%,
-      rgba(11, 90, 150, 0.55),
-      transparent 64%
-    ),
-    linear-gradient(162deg, #0b5a96 0%, #0f6aab 48%, #1180c4 100%);
+  /* Reuses the Home hero's warm peach–ivory gradient image so the
+     marketing heroes share the same field. */
+  background: url("/assets/hero/webeaz-hero-bg-warm-2026.png") center / cover
+    no-repeat;
 }
 
 html {

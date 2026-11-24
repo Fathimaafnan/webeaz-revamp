@@ -65,7 +65,8 @@ export type TestimonialItem = {
 
 export const DEFAULT_HOME: HomeContent = {
   heroEyebrow: "Technology • Growth • Automation • AI",
-  heroTitle: "Build. Transform. Automate. Grow.",
+  heroTitle:
+    "Digital Marketing Agency, Software Development & Business Solutions In Calicut",
   heroDescription:
     "Technology and digital solutions that help businesses build, transform, automate and grow.",
   heroPrimaryLabel: "Let's Talk",
